@@ -5,17 +5,26 @@
  */
 package clinicalappointmentregistrationsystemclient;
 
+import ejb.session.stateless.StaffEntitySessionBeanRemote;
+import javax.ejb.EJB;
+
 /**
  *
  * @author crs
  */
 public class Main {
+    
+    @EJB
+    private static StaffEntitySessionBeanRemote staffEntitySessionBeanRemote;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        MainApp mainApp = new MainApp(staffEntitySessionBeanRemote);
+        mainApp.runApp();
     }
     
 }
