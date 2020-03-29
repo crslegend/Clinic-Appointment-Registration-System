@@ -31,6 +31,8 @@ public class DoctorEntity implements Serializable {
     }
 
     public DoctorEntity(String firstName, String lastName, String registration, String qualifications) {
+        this();
+        
         this.firstName = firstName;
         this.lastName = lastName;
         this.registration = registration;

@@ -35,6 +35,8 @@ public class PatientEntity implements Serializable {
     }
 
     public PatientEntity(String firstName, String lastName, String identityNumber, String gender, Integer age, String phone, String address, String password) {
+        this();
+        
         this.firstName = firstName;
         this.lastName = lastName;
         this.identityNumber = identityNumber;

@@ -31,6 +31,8 @@ public class StaffEntity implements Serializable {
     }
 
     public StaffEntity(String firstName, String lastName, String userName, String password) {
+        this();
+        
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
