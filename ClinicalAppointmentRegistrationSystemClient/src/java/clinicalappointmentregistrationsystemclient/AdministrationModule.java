@@ -8,9 +8,12 @@ package clinicalappointmentregistrationsystemclient;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
+import entity.PatientEntity;
 import entity.StaffEntity;
 import java.util.List;
 import java.util.Scanner;
+import util.exception.PatientExistException;
+import util.exception.PatientNotFoundException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
 
@@ -85,7 +88,212 @@ public class AdministrationModule {
             System.out.println("5: View All Patients");
             System.out.println("6: Back\n");
             response = 0;
+            
+            while(response < 1 || response > 6) {
+                System.out.print("> ");
+                response = scanner.nextInt();
+                
+                if (response == 1) {
+                    doAddPatient();
+                } else if (response == 2) {
+                    doViewPatientDetails();
+                } else if (response == 3) {
+                    doUpdatePatient();
+                } else if (response == 4) {
+                    doDeletePatient();
+                } else if (response == 5) {
+                    doViewAllPatients();
+                } else if (response == 6) {
+                    break;
+                } else {
+                    System.out.println("Invalid option, please try again!\n"); 
+                }
+            }
+            
+            if (response == 6) {
+                break;
+            }
         }
+    }
+    
+    public void doAddPatient() {
+        Scanner scanner = new Scanner(System.in);
+        PatientEntity newPatientEntity = new PatientEntity();
+        
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Patient Management :: Add New Patient ***\n");
+            System.out.print("Enter First Name> ");
+            String firstName = scanner.nextLine().trim();
+            System.out.print("Enter Last Name> ");
+            String lastName = scanner.nextLine().trim();
+            System.out.print("Enter Identity Number> ");
+            String identityNum = scanner.nextLine().trim();
+            System.out.print("Enter Gender> ");
+            String gender = scanner.nextLine().trim();
+            System.out.print("Enter Phone> ");
+            String phone = scanner.nextLine().trim();
+            System.out.print("Enter Address> ");
+            String address = scanner.nextLine().trim();
+            System.out.print("Enter Password> ");
+            String password = scanner.nextLine().trim();
+            System.out.print("Enter Age> ");
+            Integer age = scanner.nextInt();
+            scanner.nextLine();
+            
+            if (firstName.length() > 0 && lastName.length() > 0 && identityNum.length() > 0 && 
+                    gender.length() > 0 && phone.length() > 0 && address.length() > 0 &&
+                    password.length() > 0 && age > 0) {
+                newPatientEntity.setFirstName(firstName);
+                newPatientEntity.setLastName(lastName);
+                newPatientEntity.setIdentityNumber(identityNum);
+                newPatientEntity.setGender(gender);
+                newPatientEntity.setPhone(phone);
+                newPatientEntity.setAddress(address);
+                newPatientEntity.setPassword(password);
+                newPatientEntity.setAge(age);
+                break;
+            } else {
+                System.out.println("Input fields cannot be empty and password has to be 6 digits!\n");
+            }
+        
+        }
+        
+        try {
+            patientEntitySessionBeanRemote.addNewPatient(newPatientEntity);
+            System.out.println("New staff created successfully!: \n");
+        } catch (PatientExistException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void doViewPatientDetails() {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("*** CARS :: Administration Operation :: Patient Management :: View Patient Details ***\n");
+        System.out.print("Enter Patient Identity Number> ");
+        String identityNum = scanner.nextLine().trim();
+        
+        try {
+            PatientEntity pe = patientEntitySessionBeanRemote.retrievePatientByIdNum(identityNum);
+            
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", "Patient Id", "Identity Number", "First Name", "Last Name", "Gender", "Age", "Phone", "Address", "Password");
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", pe.getPatientId(), pe.getIdentityNumber(), pe.getFirstName(), pe.getLastName(), pe.getGender(), pe.getAge(), pe.getPhone(), pe.getAddress(), pe.getPassword());
+            System.out.print("Press any key to continue...> ");
+            scanner.nextLine();
+        } catch (PatientNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }   
+    }
+    
+    public void doUpdatePatient() {
+        Scanner scanner = new Scanner(System.in);
+        String identityNum = "";
+        
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Patient Management :: Update Patient ***\n");
+            System.out.print("Enter patient's identity number to update> ");
+            identityNum = scanner.nextLine().trim();
+            
+            if (identityNum.length() > 0) {
+                break;
+            } else {
+                System.out.println("Identity number cannot be empty!\n");
+            }
+        }
+        
+        try {
+            PatientEntity pe = patientEntitySessionBeanRemote.retrievePatientByIdNum(identityNum);
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", "Patient Id", "Identity Number", "First Name", "Last Name", "Gender", "Age", "Phone", "Address", "Password");
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", pe.getPatientId(), pe.getIdentityNumber(), pe.getFirstName(), pe.getLastName(), pe.getGender(), pe.getAge(), pe.getPhone(), pe.getAddress(), pe.getPassword());
+            PatientEntity patientEntity = new PatientEntity(pe.getFirstName(), pe.getLastName(), pe.getIdentityNumber(), pe.getGender(), pe.getAge(), pe.getPhone(), pe.getAddress(), pe.getPassword());
+            
+            System.out.print("Enter First Name (blank if no change)> ");
+            String input = scanner.nextLine().trim();
+            if (input.length() > 0) {
+                patientEntity.setFirstName(input);
+            }
+            
+            System.out.print("Enter Last Name (blank if no change)> ");
+            input = scanner.nextLine().trim();
+            if (input.length() > 0) {
+                patientEntity.setLastName(input);
+            }
+            
+            System.out.print("Enter Age (type -1 if no change)> ");
+            Integer temp = scanner.nextInt();
+            scanner.nextLine();
+            if (temp > 0) {
+                patientEntity.setAge(temp);
+            }
+            
+            System.out.print("Enter Phone (blank if no change)> ");
+            input = scanner.nextLine().trim();
+            if (input.length() > 0) {
+                patientEntity.setPhone(input);
+            }
+            
+            System.out.print("Enter Address (blank if no change)> ");
+            input = scanner.nextLine().trim();
+            if (input.length() > 0) {
+                patientEntity.setAddress(input);
+            }
+            
+            patientEntitySessionBeanRemote.updatePatient(patientEntity);
+            System.out.println("Patient updated successfully!\n");
+            
+        } catch (PatientNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void doDeletePatient() {
+        Scanner scanner = new Scanner(System.in);
+        String identityNum = "";
+        
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Patient Management :: Delete Patient ***\n");
+            System.out.print("Enter patient's identity number to delete> ");
+            identityNum = scanner.nextLine().trim();
+            
+            if (identityNum.length() > 0) {
+                break;
+            } else {
+                System.out.println("Identity number cannot be empty!\n");
+            }
+        }
+        
+        try {
+            PatientEntity pe = patientEntitySessionBeanRemote.retrievePatientByIdNum(identityNum);
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", "Patient Id", "Identity Number", "First Name", "Last Name", "Gender", "Age", "Phone", "Address", "Password");
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", pe.getPatientId(), pe.getIdentityNumber(), pe.getFirstName(), pe.getLastName(), pe.getGender(), pe.getAge(), pe.getPhone(), pe.getAddress(), pe.getPassword());
+            System.out.print("Confirm delete this staff? (Enter y if yes, n if no) > ");
+            String input = scanner.nextLine().trim();
+
+            if (input.equals("y")) {
+                // need to check in future whether patient got existings appointments
+                System.out.println("Patient is deleted successfully\n");
+            } else {
+                System.out.println("Patient is not deleted\n");
+            }
+            
+        } catch (PatientNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void doViewAllPatients() {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("*** CARS :: Administration Operation :: Patient Management :: View All Patients ***\n");
+        List<PatientEntity> listOfPatients = patientEntitySessionBeanRemote.retrieveAllPatients();
+        
+        System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", "Patient Id", "Identity Number", "First Name", "Last Name", "Gender", "Age", "Phone", "Address", "Password");
+    
+        for (PatientEntity pe : listOfPatients) {
+            System.out.printf("%-10s|%-15s|%-15s|%-15s|%-10s|%-10s|%-15s|%-20s|%-20s\n", pe.getPatientId(), pe.getIdentityNumber(), pe.getFirstName(), pe.getLastName(), pe.getGender(), pe.getAge(), pe.getPhone(), pe.getAddress(), pe.getPassword());
+        }
+        System.out.print("Press any key to continue...> ");
+        scanner.nextLine();
     }
     
     public void doctorManagement() {
@@ -139,7 +347,7 @@ public class AdministrationModule {
         StaffEntity newStaffEntity = new StaffEntity();
         
         while (true) {
-            System.out.println("*** CARS :: Administration Operation :: Staff Management :: Create New Staff ***\n");
+            System.out.println("*** CARS :: Administration Operation :: Staff Management :: Add New Staff ***\n");
             System.out.print("Enter First Name> ");
             String firstName = scanner.nextLine().trim();
             System.out.print("Enter Last Name> ");
@@ -224,13 +432,8 @@ public class AdministrationModule {
                 newStaffEntity.setLastName(input);
             }
 
-            try {
-                staffEntitySessionBeanRemote.updateStaff(newStaffEntity);
-                System.out.println("Staff updated successfully!\n");
-            } catch (StaffNotFoundException ex) {
-                System.out.println(ex.getMessage());
-            }
-
+            staffEntitySessionBeanRemote.updateStaff(newStaffEntity);
+            System.out.println("Staff updated successfully!\n");
         } catch (StaffNotFoundException ex) {
            System.out.println(ex.getMessage());
         }
