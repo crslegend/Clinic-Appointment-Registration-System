@@ -23,6 +23,7 @@ public class MainApp {
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     
     private AdministrationModule administrationModule;
+    private RegistrationModule registrationModule;
     
     private StaffEntity currentStaffEntity;
 
@@ -57,7 +58,7 @@ public class MainApp {
                         System.out.println("Login successful!\n");
                         
                         administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity);
-                        
+                        registrationModule = new RegistrationModule(patientEntitySessionBeanRemote, currentStaffEntity);
                         menuMain();
                     } catch (InvalidLoginCredentialException ex) {
                         System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
@@ -112,7 +113,7 @@ public class MainApp {
                 response = scanner.nextInt();
                 
                 if (response == 1) {
-                    System.out.println("to add");
+                    registrationModule.registrationOperation();
                 } else if (response == 2) {
                     System.out.println("to add");
                 } else if (response == 3) {
