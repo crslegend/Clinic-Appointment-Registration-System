@@ -39,7 +39,7 @@ public class RegistrationModule {
         Integer response = 0;
 
         while (true) {
-            System.out.println("*** CARS :: Registration Operation ***\n");
+            System.out.println("\n*** CARS :: Registration Operation ***\n");
             System.out.println("1: Register New Patient");
             System.out.println("2: Register Walk-In Consultation");
             System.out.println("3: Register Consultation By Appointment");
@@ -55,7 +55,7 @@ public class RegistrationModule {
                         registerNewPatient();
                         System.out.println("Patient has been registered successfully!");
                     } catch (InvalidInputException | PatientExistException ex) {
-                        System.out.println("Error: " + ex);
+                        System.out.println("Error: " + ex.getMessage());
                     }
                 } else if (response == 2) {
                     break;
@@ -79,7 +79,7 @@ public class RegistrationModule {
         PatientEntity pe = new PatientEntity();
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("*** CARS :: Registration Operation :: Register New Patient ***\n");
+        System.out.println("\n*** CARS :: Registration Operation :: Register New Patient ***\n");
 
         try {
 
@@ -151,6 +151,7 @@ public class RegistrationModule {
             System.out.print("Enter Age> ");
             while (true) {
                 int input = sc.nextInt();
+                sc.nextLine();
                 if (input > 0 && input < 120) {
                     pe.setAge(input);
                     break;
@@ -158,7 +159,6 @@ public class RegistrationModule {
                     System.out.println("Error! Invalid Age Entered\n");
                     System.out.print("Re-enter Age> ");
                 }
-                sc.nextLine();
             }
 
             System.out.print("Enter Phone> ");
@@ -192,6 +192,13 @@ public class RegistrationModule {
         } catch (InputMismatchException ex) {
             throw new InvalidInputException("Invalid Identity Number!");
         }
+
+    }
+
+    public void registerWalkInConsult() {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n*** CARS :: Registration Operation :: Register New Patient ***\n");
 
     }
 

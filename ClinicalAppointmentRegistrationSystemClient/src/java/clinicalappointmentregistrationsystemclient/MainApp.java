@@ -81,7 +81,7 @@ public class MainApp {
         String username = "";
         String password = "";
         
-        System.out.println("*** CARS :: Login ***\n");
+        System.out.println("\n*** CARS :: Login ***\n");
         System.out.print("Enter username> ");
         username = scanner.nextLine().trim();
         System.out.print("Enter password> ");
