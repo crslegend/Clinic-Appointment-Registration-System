@@ -134,4 +134,8 @@ public class DoctorEntity implements Serializable {
         this.listOfAppointmentEntities = listOfAppointmentEntities;
     }
     
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+    
 }
