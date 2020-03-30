@@ -5,10 +5,23 @@
  */
 package ejb.session.stateless;
 
+import entity.DoctorEntity;
+import java.util.List;
+import util.exception.DoctorExistException;
+import util.exception.DoctorNotFoundException;
+
 /**
  *
  * @author crs
  */
 public interface DoctorEntitySessionBeanLocal {
+    
+    public void addNewDoctor(DoctorEntity newDoctorEntity) throws DoctorExistException;
+    
+    public DoctorEntity retrieveDoctorByRegistration(String registration) throws DoctorNotFoundException;
+    
+    public List<DoctorEntity> retrieveAllDoctors();
+    
+    public void updateDoctor(DoctorEntity newDoctorEntity) throws DoctorNotFoundException;
     
 }

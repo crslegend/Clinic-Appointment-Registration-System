@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,14 +25,25 @@ public class PatientEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long patientId;
+    @Column(nullable = false, length = 32)
     private String firstName;
+    @Column(nullable = false, length = 32)
     private String lastName;
+    @Column(nullable = false, unique = true, length = 32)
     private String identityNumber;
+    @Column(nullable = false, length = 2)
     private String gender;
+    @Column(nullable = false)
     private Integer age;
+    @Column(nullable = false, length = 32)
     private String phone;
+    @Column(nullable = false, length = 32)
     private String address;
+    @Column(nullable = false, length = 32)
     private String password;
+    
+    @OneToMany(mappedBy = "patientEntity")
+     private List<AppointmentEntity> listOfAppointmentEntities;
 
     public PatientEntity() {
     }
@@ -142,6 +156,14 @@ public class PatientEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<AppointmentEntity> getListOfAppointmentEntities() {
+        return listOfAppointmentEntities;
+    }
+
+    public void setListOfAppointmentEntities(List<AppointmentEntity> listOfAppointmentEntities) {
+        this.listOfAppointmentEntities = listOfAppointmentEntities;
     }
     
 }

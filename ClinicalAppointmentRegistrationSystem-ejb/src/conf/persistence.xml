@@ -5,6 +5,8 @@
     <class>entity.DoctorEntity</class>
     <class>entity.PatientEntity</class>
     <class>entity.StaffEntity</class>
+    <class>entity.AppointmentEntity</class>
+    <class>entity.LeaveEntity</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
