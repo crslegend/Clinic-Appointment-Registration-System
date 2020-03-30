@@ -6,10 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,10 +25,21 @@ public class DoctorEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
+    @Column(nullable = false, length = 32)
     private String firstName;
+    @Column(nullable = false, length = 32)
     private String lastName;
+    @Column(nullable = false, unique = true, length = 32)
     private String registration;
+    @Column(nullable = false, length = 32)
     private String qualifications;
+    
+    @OneToMany(mappedBy = "doctorEntity")
+    private List<LeaveEntity> listOfLeaveEntities;
+    
+    @OneToMany(mappedBy = "doctorEntity")
+    private List<AppointmentEntity> listOfAppointmentEntities;
+    
 
     public DoctorEntity() {
     }
@@ -102,6 +116,22 @@ public class DoctorEntity implements Serializable {
 
     public void setQualifications(String qualifications) {
         this.qualifications = qualifications;
+    }
+
+    public List<LeaveEntity> getListOfLeaveEntities() {
+        return listOfLeaveEntities;
+    }
+
+    public void setListOfLeaveEntities(List<LeaveEntity> listOfLeaveEntities) {
+        this.listOfLeaveEntities = listOfLeaveEntities;
+    }
+
+    public List<AppointmentEntity> getListOfAppointmentEntities() {
+        return listOfAppointmentEntities;
+    }
+
+    public void setListOfAppointmentEntities(List<AppointmentEntity> listOfAppointmentEntities) {
+        this.listOfAppointmentEntities = listOfAppointmentEntities;
     }
     
 }
