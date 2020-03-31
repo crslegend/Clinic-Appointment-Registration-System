@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.PatientEntity;
 import java.util.List;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
 
@@ -24,5 +25,7 @@ public interface PatientEntitySessionBeanRemote {
     public List<PatientEntity> retrieveAllPatients();
 
     public void updatePatient(PatientEntity patientEntity) throws PatientNotFoundException;
+
+    PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException;
     
 }

@@ -84,11 +84,7 @@ public class RegistrationModule {
                 } else if (response == 2) {
                     try {
                         registerWalkInConsult();
-                    } catch (DoctorNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (InvalidInputException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (PatientNotFoundException ex) {
+                    } catch (DoctorNotFoundException | InvalidInputException | PatientNotFoundException ex) {
                         System.out.println(ex.getMessage());
                     } catch (InputMismatchException | IllegalArgumentException ex) {
                         System.out.println("Invalid Input!");
@@ -96,9 +92,7 @@ public class RegistrationModule {
                 } else if (response == 3) {
                     try {
                         registerConsultByAppointment();
-                    } catch (PatientNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (AppointmentNotFoundException ex) {
+                    } catch (PatientNotFoundException | AppointmentNotFoundException ex) {
                         System.out.println(ex.getMessage());
                     }
                 } else if (response == 4) {
