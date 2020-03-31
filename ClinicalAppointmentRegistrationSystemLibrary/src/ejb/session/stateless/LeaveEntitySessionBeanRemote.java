@@ -17,14 +17,14 @@ import util.exception.LeaveNotFoundException;
 @Remote
 public interface LeaveEntitySessionBeanRemote {
 
-    void createNewLeaveEntity(LeaveEntity leaveEntity);
+    public void createNewLeaveEntity(LeaveEntity leaveEntity);
 
-    void updateLeaveEntity(LeaveEntity leaveEntity) throws LeaveNotFoundException;
+    public void updateLeaveEntity(LeaveEntity leaveEntity) throws LeaveNotFoundException;
 
-    List<LeaveEntity> retrieveAllLeaveEntities();
+    public List<LeaveEntity> retrieveAllLeaveEntities();
 
-    LeaveEntity deleteLeaveEntity(LeaveEntity leaveEntity) throws LeaveNotFoundException;
+    public LeaveEntity deleteLeaveEntity(LeaveEntity leaveEntity) throws LeaveNotFoundException;
 
-    LeaveEntity retrieveLeaveEntityById(Long leaveId) throws LeaveNotFoundException;
+    public LeaveEntity retrieveLeaveEntityById(Long leaveId) throws LeaveNotFoundException;
     
 }

@@ -18,14 +18,15 @@ import util.exception.AppointmentNotFoundException;
 @Remote
 public interface AppointmentEntitySessionBeanRemote {
 
-    void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException;
+    public void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException;
 
-    List<AppointmentEntity> retrieveListOfAppointments();
+    public List<AppointmentEntity> retrieveListOfAppointments();
 
-    void updateAppointmentEntity(AppointmentEntity appointmentEntity) throws AppointmentNotFoundException;
+    public void updateAppointmentEntity(AppointmentEntity appointmentEntity) throws AppointmentNotFoundException;
 
-    AppointmentEntity retrieveAppointmentById(Long appointmentId) throws AppointmentNotFoundException;
+    public AppointmentEntity retrieveAppointmentById(Long appointmentId) throws AppointmentNotFoundException;
 
-    AppointmentEntity cancelAppointment(Long appointmentId) throws AppointmentNotFoundException;
+    public AppointmentEntity cancelAppointment(Long appointmentId) throws AppointmentNotFoundException;
+
     
 }

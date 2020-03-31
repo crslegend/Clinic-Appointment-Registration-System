@@ -62,6 +62,8 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
         }
     }
     
+    
+    
     @Override
     public void updateAppointmentEntity(AppointmentEntity appointmentEntity) throws AppointmentNotFoundException {
         AppointmentEntity curr = retrieveAppointmentById(appointmentEntity.getAppointmentId());
@@ -77,5 +79,6 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
         em.remove(curr);
         return curr;
     }
+
 
 }
