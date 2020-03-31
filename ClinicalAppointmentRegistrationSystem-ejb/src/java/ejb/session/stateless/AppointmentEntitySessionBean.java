@@ -80,11 +80,5 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
         return curr;
     }
 
-    @Override
-    public List<AppointmentEntity> retrieveAppointmentByDoctorId(long doctorId) {
-        
-        
-        return null;
-    }
 
 }

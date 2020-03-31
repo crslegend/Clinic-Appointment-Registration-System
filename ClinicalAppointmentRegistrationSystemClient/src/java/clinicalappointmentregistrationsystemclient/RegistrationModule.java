@@ -230,12 +230,12 @@ public class RegistrationModule {
         System.out.println();
         List<Time> nextSixTimeSlots = computationSessionBeanRemote.getNextSixTimeSlots();
         nextSixTimeSlots.forEach(time -> {
-            System.out.print(time.toString().substring(0,5) + "|");
+            System.out.print(time.toString().substring(0,5) + " |");
             doctors.forEach(doc -> {
                 if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doc, time, currentDate)) {
-                    System.out.println("O  |");
+                    System.out.print("O  |");
                 } else {
-                    System.out.println("X  |");
+                    System.out.print("X  |");
                 }
             });
             System.out.println();

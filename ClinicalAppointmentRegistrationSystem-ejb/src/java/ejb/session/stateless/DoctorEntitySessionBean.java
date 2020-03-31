@@ -103,9 +103,13 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     @Override
     public Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) {
 
-        List<AppointmentEntity> appointments = doctorEntity.getListOfAppointmentEntities();
-
+        DoctorEntity newDoctorEntity = em.find(DoctorEntity.class, doctorEntity.getDoctorId());
+        
+        List<AppointmentEntity> appointments = newDoctorEntity.getListOfAppointmentEntities();
+        appointments.size();
+        
         for (AppointmentEntity ae : appointments) {
+            ae.getClass();
             if (ae.getStartTime().equals(time) && ae.getDate().equals(date)) {
                 return Boolean.FALSE;
             }
