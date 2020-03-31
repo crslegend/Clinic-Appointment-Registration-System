@@ -87,30 +87,39 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public List<DoctorEntity> retrieveDoctorsOnDuty() {
+    public List<DoctorEntity> retrieveDoctorsOnDuty()  {
 
         // get today's date
         Date currentDate = new Date(System.currentTimeMillis());
         List<DoctorEntity> doctors = retrieveAllDoctors();
         for (DoctorEntity de : doctors) {
-            if (!isAvailableAtDate(de, currentDate)) {
-                doctors.remove(de);
+            try {
+                em.refresh(de);
+                if (!isAvailableAtDate(de, currentDate)) {
+                    doctors.remove(de);
+                }
+            } catch (DoctorNotFoundException ex) {
+                // do nothing at all bro
             }
         } // end outer
         return doctors;
     }
 
     @Override
-    public Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) {
+    public Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) throws DoctorNotFoundException {
 
-        DoctorEntity newDoctorEntity = em.find(DoctorEntity.class, doctorEntity.getDoctorId());
+        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorEntity.getDoctorId());
+        em.refresh(newDoctorEntity);
         
         List<AppointmentEntity> appointments = newDoctorEntity.getListOfAppointmentEntities();
         appointments.size();
         
+        System.out.println(newDoctorEntity.getDoctorId() + " " + appointments.size());
+        
         for (AppointmentEntity ae : appointments) {
-            ae.getClass();
-            if (ae.getStartTime().equals(time) && ae.getDate().equals(date)) {
+            System.out.println("Time: " + ae.getStartTime().equals(time));
+            System.out.println("Date: " + ae.getDate().equals(date));
+            if (ae.getStartTime().equals(time) && ae.getDate().toString().equals(date.toString())) {
                 return Boolean.FALSE;
             }
         }
@@ -119,14 +128,32 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date currentDate) {
-        List<LeaveEntity> leaveRecords = doctorEntity.getListOfLeaveEntities();
+    public Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date currentDate) throws DoctorNotFoundException {
+        
+        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorEntity.getDoctorId());
+        em.refresh(newDoctorEntity);
+        
+        List<LeaveEntity> leaveRecords = newDoctorEntity.getListOfLeaveEntities();
+        leaveRecords.size();
+        
         for (LeaveEntity le : leaveRecords) {
             if (le.getStartDate().equals(currentDate)) {
                 return Boolean.FALSE;
             }
         } // end inner
         return Boolean.TRUE;
+    }
+
+    @Override
+    public DoctorEntity retrieveDoctorById(long doctorId) throws DoctorNotFoundException {
+        Query query = em.createQuery("SELECT d from DoctorEntity d WHERE d.doctorId = :id");
+        query.setParameter("id", doctorId);
+        
+        try {
+            return (DoctorEntity) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new DoctorNotFoundException("Doctor with id " + doctorId + " does not exist!");
+        }
     }
 
 }

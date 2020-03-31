@@ -28,8 +28,10 @@ public interface DoctorEntitySessionBeanLocal {
 
     public List<DoctorEntity> retrieveDoctorsOnDuty();
 
-    Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date);
+    Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) throws DoctorNotFoundException;
 
-    Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date date);
+    Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date date) throws DoctorNotFoundException;
+
+    DoctorEntity retrieveDoctorById(long doctorId) throws DoctorNotFoundException;
     
 }

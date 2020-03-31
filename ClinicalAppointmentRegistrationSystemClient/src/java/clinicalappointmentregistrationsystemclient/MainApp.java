@@ -5,7 +5,8 @@
  */
 package clinicalappointmentregistrationsystemclient;
 
-import ejb.session.stateless.ComputationSessionBeanRemote;
+import ejb.session.singleton.ComputationSessionBeanRemote;
+import ejb.session.singleton.ConsultationSessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -23,6 +24,7 @@ public class MainApp {
     private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     private ComputationSessionBeanRemote computationSessionBeanRemote;
+    private ConsultationSessionBeanRemote consultationSessionBeanRemote;
     
     private AdministrationModule administrationModule;
     private RegistrationModule registrationModule;
@@ -36,11 +38,13 @@ public class MainApp {
             StaffEntitySessionBeanRemote staffEntitySessionBeanRemote, 
             DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote, 
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
-            ComputationSessionBeanRemote computationSessionBeanRemote) {
+            ComputationSessionBeanRemote computationSessionBeanRemote,
+            ConsultationSessionBeanRemote consultationSessionBeanRemote) {
         this.staffEntitySessionBeanRemote = staffEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.computationSessionBeanRemote = computationSessionBeanRemote;
+        this.consultationSessionBeanRemote = consultationSessionBeanRemote;
     }
     
     
@@ -65,7 +69,13 @@ public class MainApp {
                         System.out.println("Login successful!\n");
                         
                         administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity);
-                        registrationModule = new RegistrationModule(patientEntitySessionBeanRemote, doctorEntitySessionBeanRemote, currentStaffEntity, computationSessionBeanRemote);
+                        registrationModule = new RegistrationModule(
+                                patientEntitySessionBeanRemote, 
+                                doctorEntitySessionBeanRemote, 
+                                currentStaffEntity, 
+                                computationSessionBeanRemote,
+                                consultationSessionBeanRemote
+                        );
                         menuMain();
                     } catch (InvalidLoginCredentialException ex) {
                         System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
