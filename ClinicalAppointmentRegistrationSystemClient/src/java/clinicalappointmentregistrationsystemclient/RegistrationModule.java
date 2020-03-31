@@ -248,9 +248,9 @@ public class RegistrationModule {
 
         System.out.println("Doctor:");
         System.out.printf("%-3s|%-64s\n", "Id", "Name");
-        for (DoctorEntity de : doctors) {
+        doctors.forEach((de) -> {
             System.out.printf("%-3s|%-64s\n", de.getDoctorId(), de.getFullName());
-        }
+        });
         System.out.println("\nAvailability: ");
         System.out.print("Time  |");
         doctors.forEach(doc -> {

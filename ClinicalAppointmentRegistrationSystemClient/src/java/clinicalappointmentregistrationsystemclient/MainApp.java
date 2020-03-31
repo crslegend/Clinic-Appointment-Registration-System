@@ -21,6 +21,7 @@ import util.exception.InvalidLoginCredentialException;
  */
 public class MainApp {
     
+    // session beans
     private StaffEntitySessionBeanRemote staffEntitySessionBeanRemote;
     private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
@@ -28,8 +29,10 @@ public class MainApp {
     private ConsultationSessionBeanRemote consultationSessionBeanRemote;
     private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
     
+    // modules
     private AdministrationModule administrationModule;
     private RegistrationModule registrationModule;
+    private AppointmentModule appointmentModule;
     
     private StaffEntity currentStaffEntity;
 
@@ -81,6 +84,7 @@ public class MainApp {
                                 consultationSessionBeanRemote,
                                 appointmentEntitySessionBeanRemote
                         );
+                        appointmentModule = new AppointmentModule(patientEntitySessionBeanRemote, appointmentEntitySessionBeanRemote, doctorEntitySessionBeanRemote, computationSessionBeanRemote);
                         menuMain();
                     } catch (InvalidLoginCredentialException ex) {
                         System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
@@ -137,7 +141,7 @@ public class MainApp {
                 if (response == 1) {
                     registrationModule.registrationOperation();
                 } else if (response == 2) {
-                    System.out.println("to add");
+                    appointmentModule.appointmentOperation();
                 } else if (response == 3) {
                     administrationModule.administrationOperation();
                 } else if (response == 4) {

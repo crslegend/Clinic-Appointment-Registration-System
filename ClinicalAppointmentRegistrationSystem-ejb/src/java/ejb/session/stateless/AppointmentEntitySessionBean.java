@@ -52,7 +52,7 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
     
     @Override
     public AppointmentEntity retrieveAppointmentById(Long appointmentId) throws AppointmentNotFoundException  {
-        Query query = em.createQuery("SELECT a FROM PatientEntity a WHERE a.appointmentId = :id");
+        Query query = em.createQuery("SELECT a FROM AppointmentEntity a WHERE a.appointmentId = :id");
         query.setParameter("id", appointmentId);
         
         try {
