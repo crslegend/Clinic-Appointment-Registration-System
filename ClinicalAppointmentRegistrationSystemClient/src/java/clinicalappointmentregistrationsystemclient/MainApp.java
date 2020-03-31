@@ -58,7 +58,7 @@ public class MainApp {
                         System.out.println("Login successful!\n");
                         
                         administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity);
-                        registrationModule = new RegistrationModule(patientEntitySessionBeanRemote, currentStaffEntity);
+                        registrationModule = new RegistrationModule(patientEntitySessionBeanRemote, doctorEntitySessionBeanRemote, currentStaffEntity);
                         menuMain();
                     } catch (InvalidLoginCredentialException ex) {
                         System.out.println("Invalid login credential: " + ex.getMessage() + "\n");

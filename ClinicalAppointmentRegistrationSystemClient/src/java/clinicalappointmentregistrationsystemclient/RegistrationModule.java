@@ -5,10 +5,15 @@
  */
 package clinicalappointmentregistrationsystemclient;
 
+import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
+import entity.DoctorEntity;
 import entity.PatientEntity;
 import entity.StaffEntity;
+import java.sql.Time;
+import java.sql.Date;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 import util.exception.InvalidInputException;
 import util.exception.PatientExistException;
@@ -20,6 +25,7 @@ import util.exception.PatientExistException;
 public class RegistrationModule {
 
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
+    private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     private StaffEntity currStaffEntity;
 
     public RegistrationModule() {
@@ -27,9 +33,11 @@ public class RegistrationModule {
 
     public RegistrationModule(
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
+            DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote,
             StaffEntity staffEntity) {
 
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
+        this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.currStaffEntity = staffEntity;
 
     }
@@ -58,7 +66,7 @@ public class RegistrationModule {
                         System.out.println("Error: " + ex.getMessage());
                     }
                 } else if (response == 2) {
-                    break;
+                    registerWalkInConsult();
                 } else if (response == 3) {
                     break;
                 } else if (response == 4) {
@@ -199,7 +207,20 @@ public class RegistrationModule {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register New Patient ***\n");
-
+        
+        // set default current date and time to today and12:42
+        Date currentDate = new Date(System.currentTimeMillis());
+        Time defaultTime = Time.valueOf("12:42:35");
+        
+        // get docs not on leave
+        List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveDoctorsOnDuty(currentDate);
+        
+        System.out.println("Doctor:");
+        System.out.printf("%-3s|%-64s\n", "Id", "Name");
+        for (DoctorEntity de : doctors) {
+            System.out.printf("%-3s|%-64s", de.getDoctorId(), de.getFullName() + "\n");
+        }
+        System.out.println("\nAvailability: \n\n");
     }
 
 }

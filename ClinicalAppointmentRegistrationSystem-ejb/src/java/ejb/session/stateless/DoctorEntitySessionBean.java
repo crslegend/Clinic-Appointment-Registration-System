@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import entity.DoctorEntity;
+import entity.LeaveEntity;
+import java.sql.Date;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -82,5 +84,20 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
         
     }
 
+    @Override
+    public List<DoctorEntity> retrieveDoctorsOnDuty(Date currentDate) {
+        List<DoctorEntity> doctors = retrieveAllDoctors();
+        for (DoctorEntity de : doctors) {
+            
+            List<LeaveEntity> leaveRecords = de.getListOfLeaveEntities();
+            for (LeaveEntity le : leaveRecords) {
+                if (le.getStartDate().equals(currentDate)) {
+                    doctors.remove(de);
+                }
+            } // end inner
+            
+        } // end outer
+        return doctors;
+    }
     
 }
