@@ -7,6 +7,7 @@ package clinicalappointmentregistrationsystemclient;
 
 import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
+import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -28,6 +29,8 @@ public class Main {
     private static ComputationSessionBeanRemote computationSessionBeanRemote;
     @EJB
     private static ConsultationSessionBeanRemote consultationSessionBeanRemote;
+    @EJB
+    private static AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
 
     public static void main(String[] args) {
         MainApp mainApp = new MainApp(
@@ -35,7 +38,8 @@ public class Main {
                 doctorEntitySessionBeanRemote,
                 patientEntitySessionBeanRemote,
                 computationSessionBeanRemote,
-                consultationSessionBeanRemote);
+                consultationSessionBeanRemote,
+                appointmentEntitySessionBeanRemote);
         mainApp.runApp();
     }
 

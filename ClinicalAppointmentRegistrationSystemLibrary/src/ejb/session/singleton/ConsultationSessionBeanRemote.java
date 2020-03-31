@@ -20,5 +20,7 @@ import util.exception.AppointmentInvalidException;
 public interface ConsultationSessionBeanRemote {
 
     Long createNewConsultation(DoctorEntity doctorEntity, PatientEntity patientEntity, Time time, Date date) throws AppointmentInvalidException;
+
+    long confirmConsultation();
     
 }

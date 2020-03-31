@@ -62,4 +62,15 @@ public class ConsultationSessionBean implements ConsultationSessionBeanRemote, C
         return queueNumber;
     }
 
+    @Override
+    public long confirmConsultation() {
+        if (!new Date(System.currentTimeMillis()).toString().equals(currentDate.toString())) {
+            queueNumber = 0;
+            currentDate = new Date(System.currentTimeMillis());
+        }
+        
+        queueNumber++;
+        return queueNumber;
+    }
+
 }

@@ -28,5 +28,7 @@ public interface AppointmentEntitySessionBeanRemote {
 
     public AppointmentEntity cancelAppointment(Long appointmentId) throws AppointmentNotFoundException;
 
+    List<AppointmentEntity> retrieveListOfAppointmentsByPatientId(long pId);
+
     
 }

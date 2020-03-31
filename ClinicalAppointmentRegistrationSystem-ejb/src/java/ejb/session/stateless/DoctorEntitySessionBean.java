@@ -114,11 +114,11 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
         List<AppointmentEntity> appointments = newDoctorEntity.getListOfAppointmentEntities();
         appointments.size();
         
-        System.out.println(newDoctorEntity.getDoctorId() + " " + appointments.size());
+//        System.out.println(newDoctorEntity.getDoctorId() + " " + appointments.size());
         
         for (AppointmentEntity ae : appointments) {
-            System.out.println("Time: " + ae.getStartTime().equals(time));
-            System.out.println("Date: " + ae.getDate().equals(date));
+//            System.out.println("Time: " + ae.getStartTime().equals(time));
+//            System.out.println("Date: " + ae.getDate().equals(date));
             if (ae.getStartTime().equals(time) && ae.getDate().toString().equals(date.toString())) {
                 return Boolean.FALSE;
             }

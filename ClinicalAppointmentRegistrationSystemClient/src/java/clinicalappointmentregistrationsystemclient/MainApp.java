@@ -7,6 +7,7 @@ package clinicalappointmentregistrationsystemclient;
 
 import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
+import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -25,6 +26,7 @@ public class MainApp {
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     private ComputationSessionBeanRemote computationSessionBeanRemote;
     private ConsultationSessionBeanRemote consultationSessionBeanRemote;
+    private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
     
     private AdministrationModule administrationModule;
     private RegistrationModule registrationModule;
@@ -39,12 +41,14 @@ public class MainApp {
             DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote, 
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
             ComputationSessionBeanRemote computationSessionBeanRemote,
-            ConsultationSessionBeanRemote consultationSessionBeanRemote) {
+            ConsultationSessionBeanRemote consultationSessionBeanRemote,
+            AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote) {
         this.staffEntitySessionBeanRemote = staffEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.computationSessionBeanRemote = computationSessionBeanRemote;
         this.consultationSessionBeanRemote = consultationSessionBeanRemote;
+        this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
     }
     
     
@@ -74,7 +78,8 @@ public class MainApp {
                                 doctorEntitySessionBeanRemote, 
                                 currentStaffEntity, 
                                 computationSessionBeanRemote,
-                                consultationSessionBeanRemote
+                                consultationSessionBeanRemote,
+                                appointmentEntitySessionBeanRemote
                         );
                         menuMain();
                     } catch (InvalidLoginCredentialException ex) {
