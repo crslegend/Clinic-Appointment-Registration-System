@@ -5,6 +5,7 @@
  */
 package clinicalappointmentregistrationsystemclient;
 
+import ejb.session.stateless.ComputationSessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import entity.DoctorEntity;
@@ -26,6 +27,7 @@ public class RegistrationModule {
 
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
+    private ComputationSessionBeanRemote computationSessionBeanRemote;
     private StaffEntity currStaffEntity;
 
     public RegistrationModule() {
@@ -34,12 +36,13 @@ public class RegistrationModule {
     public RegistrationModule(
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
             DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote,
-            StaffEntity staffEntity) {
+            StaffEntity staffEntity,
+            ComputationSessionBeanRemote computationSessionBeanRemote) {
 
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.currStaffEntity = staffEntity;
-
+        this.computationSessionBeanRemote = computationSessionBeanRemote;
     }
 
     public void registrationOperation() {
@@ -207,20 +210,37 @@ public class RegistrationModule {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register New Patient ***\n");
-        
-        // set default current date and time to today and12:42
+
+        // get current date
         Date currentDate = new Date(System.currentTimeMillis());
-        Time defaultTime = Time.valueOf("12:42:35");
         
         // get docs not on leave
-        List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveDoctorsOnDuty(currentDate);
-        
+        List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveDoctorsOnDuty();
+
         System.out.println("Doctor:");
         System.out.printf("%-3s|%-64s\n", "Id", "Name");
         for (DoctorEntity de : doctors) {
-            System.out.printf("%-3s|%-64s", de.getDoctorId(), de.getFullName() + "\n");
+            System.out.printf("%-3s|%-64s\n", de.getDoctorId(), de.getFullName());
         }
-        System.out.println("\nAvailability: \n\n");
+        System.out.println("\nAvailability: ");
+        System.out.print("Time  |");
+        doctors.forEach(doc -> {
+            System.out.print(doc.getDoctorId() + "  |");
+        });
+        System.out.println();
+        List<Time> nextSixTimeSlots = computationSessionBeanRemote.getNextSixTimeSlots();
+        nextSixTimeSlots.forEach(time -> {
+            System.out.print(time.toString().substring(0,5) + "|");
+            doctors.forEach(doc -> {
+                if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doc, time, currentDate)) {
+                    System.out.println("O  |");
+                } else {
+                    System.out.println("X  |");
+                }
+            });
+            System.out.println();
+        });
+
     }
 
 }

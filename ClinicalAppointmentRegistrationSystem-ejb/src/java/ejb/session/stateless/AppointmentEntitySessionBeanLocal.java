@@ -28,6 +28,8 @@ public interface AppointmentEntitySessionBeanLocal {
 
     public AppointmentEntity cancelAppointment(Long appointmentId) throws AppointmentNotFoundException;
 
+    List<AppointmentEntity> retrieveAppointmentByDoctorId(long doctorId);
+
     
     
 }

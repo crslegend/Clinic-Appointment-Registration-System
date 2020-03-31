@@ -5,9 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.AppointmentEntity;
 import entity.DoctorEntity;
 import entity.LeaveEntity;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -27,8 +29,8 @@ import util.exception.LeaveRejectedException;
  * @author crs
  */
 @Stateless
-@Local (DoctorEntitySessionBeanLocal.class)
-@Remote (DoctorEntitySessionBeanRemote.class)
+@Local(DoctorEntitySessionBeanLocal.class)
+@Remote(DoctorEntitySessionBeanRemote.class)
 public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, DoctorEntitySessionBeanLocal {
 
     @PersistenceContext(unitName = "ClinicalAppointmentRegistrationSystem-ejbPU")
@@ -46,7 +48,7 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
             throw new DoctorExistException("New doctor cannot be created!: The registration already exist");
         }
     }
-    
+
     @Override
     public void updateDoctor(DoctorEntity newDoctorEntity) throws DoctorNotFoundException {
         DoctorEntity doctorEntity = retrieveDoctorByRegistration(newDoctorEntity.getRegistration());
@@ -54,50 +56,73 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
         doctorEntity.setLastName(newDoctorEntity.getLastName());
         doctorEntity.setQualifications(newDoctorEntity.getQualifications());
     }
-    
+
     // WIP
     public void deleteDoctor(String registration) throws DoctorNotFoundException {
         DoctorEntity doctorEntity = retrieveDoctorByRegistration(registration);
         em.remove(doctorEntity);
     }
-    
+
     @Override
     public DoctorEntity retrieveDoctorByRegistration(String registration) throws DoctorNotFoundException {
         Query query = em.createQuery("SELECT d FROM DoctorEntity d WHERE d.registration = :inRegistration");
         query.setParameter("inRegistration", registration);
-        
+
         try {
             return (DoctorEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new DoctorNotFoundException("Doctor with registration " + registration + " does not exist!");
         }
     }
-    
+
     @Override
     public List<DoctorEntity> retrieveAllDoctors() {
         Query query = em.createQuery("SELECT d FROM DoctorEntity d");
         return query.getResultList();
     }
-    
+
     // WIP
     public void applyLeave(String registration) throws LeaveRejectedException {
-        
+
     }
 
     @Override
-    public List<DoctorEntity> retrieveDoctorsOnDuty(Date currentDate) {
+    public List<DoctorEntity> retrieveDoctorsOnDuty() {
+
+        // get today's date
+        Date currentDate = new Date(System.currentTimeMillis());
         List<DoctorEntity> doctors = retrieveAllDoctors();
         for (DoctorEntity de : doctors) {
-            
-            List<LeaveEntity> leaveRecords = de.getListOfLeaveEntities();
-            for (LeaveEntity le : leaveRecords) {
-                if (le.getStartDate().equals(currentDate)) {
-                    doctors.remove(de);
-                }
-            } // end inner
-            
+            if (!isAvailableAtDate(de, currentDate)) {
+                doctors.remove(de);
+            }
         } // end outer
         return doctors;
     }
-    
+
+    @Override
+    public Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) {
+
+        List<AppointmentEntity> appointments = doctorEntity.getListOfAppointmentEntities();
+
+        for (AppointmentEntity ae : appointments) {
+            if (ae.getStartTime().equals(time) && ae.getDate().equals(date)) {
+                return Boolean.FALSE;
+            }
+        }
+
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date currentDate) {
+        List<LeaveEntity> leaveRecords = doctorEntity.getListOfLeaveEntities();
+        for (LeaveEntity le : leaveRecords) {
+            if (le.getStartDate().equals(currentDate)) {
+                return Boolean.FALSE;
+            }
+        } // end inner
+        return Boolean.TRUE;
+    }
+
 }

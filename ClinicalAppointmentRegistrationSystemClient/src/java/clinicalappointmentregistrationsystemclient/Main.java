@@ -5,6 +5,7 @@
  */
 package clinicalappointmentregistrationsystemclient;
 
+import ejb.session.stateless.ComputationSessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -15,22 +16,28 @@ import javax.ejb.EJB;
  * @author crs
  */
 public class Main {
-    
+
     @EJB
     private static StaffEntitySessionBeanRemote staffEntitySessionBeanRemote;
     @EJB
     private static DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     @EJB
     private static PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
+    @EJB
+    private static ComputationSessionBeanRemote computationSessionBeanRemote;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
-        MainApp mainApp = new MainApp(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote);
+
+        MainApp mainApp = new MainApp(
+                staffEntitySessionBeanRemote,
+                doctorEntitySessionBeanRemote,
+                patientEntitySessionBeanRemote,
+                computationSessionBeanRemote);
         mainApp.runApp();
     }
-    
+
 }

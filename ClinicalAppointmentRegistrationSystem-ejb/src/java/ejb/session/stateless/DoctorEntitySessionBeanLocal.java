@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.DoctorEntity;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import util.exception.DoctorExistException;
 import util.exception.DoctorNotFoundException;
@@ -25,6 +26,10 @@ public interface DoctorEntitySessionBeanLocal {
     
     public void updateDoctor(DoctorEntity newDoctorEntity) throws DoctorNotFoundException;
 
-    public List<DoctorEntity> retrieveDoctorsOnDuty(Date currentDate);
+    public List<DoctorEntity> retrieveDoctorsOnDuty();
+
+    Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date);
+
+    Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date date);
     
 }
