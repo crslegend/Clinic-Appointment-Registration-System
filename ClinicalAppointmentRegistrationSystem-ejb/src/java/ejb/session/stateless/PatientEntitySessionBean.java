@@ -16,6 +16,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
 
@@ -76,5 +77,18 @@ public class PatientEntitySessionBean implements PatientEntitySessionBeanRemote,
         Query query = em.createQuery("SELECT p FROM PatientEntity p");
         return query.getResultList();
     }
+
+    @Override
+    public PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException {
+        PatientEntity patientEntity = retrievePatientByIdNum(pId);
+        
+        if (patientEntity.getPassword().equals(password)) {
+            return patientEntity;
+        } else {
+            throw new InvalidLoginCredentialException("Password does not match!");
+        }
+    }
+    
+    
     
 }

@@ -7,6 +7,7 @@ package clinicalappointmentregistrationsystemclient;
 
 import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
+import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -20,14 +21,18 @@ import util.exception.InvalidLoginCredentialException;
  */
 public class MainApp {
     
+    // session beans
     private StaffEntitySessionBeanRemote staffEntitySessionBeanRemote;
     private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     private ComputationSessionBeanRemote computationSessionBeanRemote;
     private ConsultationSessionBeanRemote consultationSessionBeanRemote;
+    private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
     
+    // modules
     private AdministrationModule administrationModule;
     private RegistrationModule registrationModule;
+    private AppointmentModule appointmentModule;
     
     private StaffEntity currentStaffEntity;
 
@@ -39,12 +44,14 @@ public class MainApp {
             DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote, 
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
             ComputationSessionBeanRemote computationSessionBeanRemote,
-            ConsultationSessionBeanRemote consultationSessionBeanRemote) {
+            ConsultationSessionBeanRemote consultationSessionBeanRemote,
+            AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote) {
         this.staffEntitySessionBeanRemote = staffEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.computationSessionBeanRemote = computationSessionBeanRemote;
         this.consultationSessionBeanRemote = consultationSessionBeanRemote;
+        this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
     }
     
     
@@ -74,8 +81,10 @@ public class MainApp {
                                 doctorEntitySessionBeanRemote, 
                                 currentStaffEntity, 
                                 computationSessionBeanRemote,
-                                consultationSessionBeanRemote
+                                consultationSessionBeanRemote,
+                                appointmentEntitySessionBeanRemote
                         );
+                        appointmentModule = new AppointmentModule(patientEntitySessionBeanRemote, appointmentEntitySessionBeanRemote, doctorEntitySessionBeanRemote, computationSessionBeanRemote);
                         menuMain();
                     } catch (InvalidLoginCredentialException ex) {
                         System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
@@ -132,7 +141,7 @@ public class MainApp {
                 if (response == 1) {
                     registrationModule.registrationOperation();
                 } else if (response == 2) {
-                    System.out.println("to add");
+                    appointmentModule.appointmentOperation();
                 } else if (response == 3) {
                     administrationModule.administrationOperation();
                 } else if (response == 4) {

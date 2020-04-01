@@ -52,7 +52,7 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
     
     @Override
     public AppointmentEntity retrieveAppointmentById(Long appointmentId) throws AppointmentNotFoundException  {
-        Query query = em.createQuery("SELECT a FROM PatientEntity a WHERE a.appointmentId = :id");
+        Query query = em.createQuery("SELECT a FROM AppointmentEntity a WHERE a.appointmentId = :id");
         query.setParameter("id", appointmentId);
         
         try {
@@ -61,8 +61,6 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
             throw new AppointmentNotFoundException("Appoint does not exist!");
         }
     }
-    
-    
     
     @Override
     public void updateAppointmentEntity(AppointmentEntity appointmentEntity) throws AppointmentNotFoundException {
@@ -80,5 +78,12 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
         return curr;
     }
 
+    @Override
+    public List<AppointmentEntity> retrieveListOfAppointmentsByPatientId(long pId) {
+        Query query = em.createQuery("SELECT a from AppointmentEntity a WHERE a.patientEntity.patientId = :id");
+        query.setParameter("id", pId);
+        
+        return query.getResultList();
+    }
 
 }
