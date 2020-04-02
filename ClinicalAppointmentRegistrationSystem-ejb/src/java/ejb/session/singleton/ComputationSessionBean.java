@@ -7,6 +7,7 @@ package ejb.session.singleton;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,12 +18,14 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 /**
  *
  * @author p.tm
  */
 @Singleton
+@Startup
 @Local(ComputationSessionBeanLocal.class)
 @Remote(ComputationSessionBeanRemote.class)
 public class ComputationSessionBean implements ComputationSessionBeanRemote, ComputationSessionBeanLocal {
@@ -50,34 +53,46 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
     public List<Time> getNextSixTimeSlots() {
 
         // set default time to 12:42
-        //Time defaultTime = new Time(System.currentTimeMillis());
-        ZonedDateTime defaultTime = ZonedDateTime.now(ZoneId.of( "Asia/Singapore" ));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         //Time defaultTime = Time.valueOf("12:42:35");
+        
+//        ZonedDateTime defaultTime = ZonedDateTime.now(ZoneId.of("Asia/Singapore"));
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
+        
+        Time defaultTime = Time.valueOf(LocalTime.now());
         System.out.println(day);
 
+//        if (day > 1 && day < 5) {
+//            return getMonWed(defaultTime.format(formatter));
+//        } else if (day == 5) {
+//            return getThur(defaultTime.format(formatter));
+//        } else if (day == 6) {
+//            return getFri(defaultTime.format(formatter));
+//        } else {
+//            return new ArrayList<>();
+//        }
+
         if (day > 1 && day < 5) {
-            return getMonWed(defaultTime.format(formatter));
+            return getMonWed(defaultTime);
         } else if (day == 5) {
-            return getThur(defaultTime.format(formatter));
+            return getThur(defaultTime);
         } else if (day == 6) {
-            return getFri(defaultTime.format(formatter));
+            return getFri(defaultTime);
         } else {
             return new ArrayList<>();
         }
 
     }
 
-    private List<Time> getMonWed(String currentTime) {
+    private List<Time> getMonWed(Time currentTime) {
         List<Time> monToWed = new ArrayList<>(operatingHours);
         System.out.println(monToWed);
         monToWed.removeIf(time -> {
-            //System.out.println(time.toString());
-            System.out.println(time.toString().compareTo(currentTime) < 0);
-            //return time.before(currentTime);
-            return time.toString().compareTo(currentTime) < 0;
+            System.out.println(time.before(currentTime));
+            return time.before(currentTime);
+//            System.out.println(time.toString().compareTo(currentTime) < 0);
+//            return time.toString().compareTo(currentTime) < 0;
         });
 
         System.out.println(monToWed.size());
@@ -88,15 +103,16 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
 
     }
 
-    private List<Time> getThur(String currentTime) {
+    private List<Time> getThur(Time currentTime) {
         List<Time> thurs = new ArrayList<>(operatingHours);
         thurs.remove(Time.valueOf("17:00:00"));
         thurs.remove(Time.valueOf("17:30:00"));
 
         thurs.removeIf(time -> {
-            //time.before(currentTime)
-            System.out.println(time.toString().compareTo(currentTime) < 0);
-            return time.toString().compareTo(currentTime) < 0;
+            System.out.println(time.before(currentTime));
+            return time.before(currentTime);
+//            System.out.println(tsime.toString().compareTo(currentTime) < 0);
+//            return time.toString().compareTo(currentTime) < 0;
         });
         while (thurs.size() > 6) {
             thurs.remove(thurs.size() - 1);
@@ -104,10 +120,16 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
         return thurs;
     }
 
-    private List<Time> getFri(String currentTime) {
+    private List<Time> getFri(Time currentTime) {
         List<Time> fri = new ArrayList<>(operatingHours);
         fri.remove(Time.valueOf("17:00:00"));
 
+        fri.removeIf(time -> {
+            System.out.println(time.before(currentTime));
+            return time.before(currentTime);
+//            System.out.println(time.toString().compareTo(currentTime) < 0);
+//            return time.toString().compareTo(currentTime) < 0;
+        });
         while (fri.size() > 6) {
             fri.remove(fri.size() - 1);
         }
