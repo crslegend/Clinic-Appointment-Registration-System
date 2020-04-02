@@ -16,6 +16,7 @@ import entity.PatientEntity;
 import entity.StaffEntity;
 import java.sql.Time;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -235,7 +236,7 @@ public class RegistrationModule {
         System.out.println("\n*** CARS :: Registration Operation :: Register Walk-In Consultation ***\n");
 
         // get current date
-        Date currentDate = new Date(System.currentTimeMillis());
+        Date currentDate = Date.valueOf(LocalDate.now());
 
         // get docs not on leave
         List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveDoctorsOnDuty();

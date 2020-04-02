@@ -14,6 +14,7 @@ import entity.DoctorEntity;
 import entity.PatientEntity;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -158,12 +159,12 @@ public class AppointmentModule {
         sc.nextLine();
 
         System.out.print("Enter Date> ");
-        Date date = Date.valueOf(sc.nextLine().trim());
+        Date date = Date.valueOf(sc.nextLine().trim()); // "2020-05-20"
         if (!doctorEntitySessionBeanRemote.isAvailableAtDate(doctorEntity, date)) {
             throw new InvalidInputException("Doctor is not available!");
         }
-        if (date.before(new Date(System.currentTimeMillis()))) {
-            throw new InvalidInputException("Date is invalid!");
+        if (date.before(Date.valueOf(LocalDate.now().plusDays(2)))) {
+            throw new InvalidInputException("Appointment should be booked 2 days in advance!");
         }
         System.out.println();
 

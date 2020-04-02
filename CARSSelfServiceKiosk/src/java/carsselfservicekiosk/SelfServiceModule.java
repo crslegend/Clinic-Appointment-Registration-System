@@ -14,6 +14,7 @@ import entity.DoctorEntity;
 import entity.PatientEntity;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -201,7 +202,7 @@ public class SelfServiceModule {
     
     public void registerConsultByAppointment() throws AppointmentNotFoundException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** CARS :: Registration Operation :: Register Consultation By Appointment ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Registration Operation :: Register Consultation By Appointment ***\n");
         
         System.out.println("\nAppointments: ");
         System.out.printf("%-3s|%-11s|%-6s|%-64s\n", "Id", "Date", "Time", "Doctor");
@@ -239,7 +240,7 @@ public class SelfServiceModule {
     
     public void viewPatientAppointments() {
 
-        System.out.println("\n*** CARS :: Appointment Operation :: View Patient Appointments ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Appointment Operation :: View Patient Appointments ***\n");
 
         List<AppointmentEntity> appointments = appointmentEntitySessionBeanRemote.retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());
 
@@ -257,7 +258,7 @@ public class SelfServiceModule {
     public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, AppointmentInvalidException, InputMismatchException {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** CARS :: Appointment Operation :: Add Appointment ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Appointment Operation :: Add Appointment ***\n");
 
         List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveAllDoctors();
 
@@ -277,8 +278,8 @@ public class SelfServiceModule {
         if (!doctorEntitySessionBeanRemote.isAvailableAtDate(doctorEntity, date)) {
             throw new InvalidInputException("Doctor is not available!");
         }
-        if (date.before(new Date(System.currentTimeMillis()))) {
-            throw new InvalidInputException("Date is invalid!");
+       if (date.before(Date.valueOf(LocalDate.now().plusDays(2)))) {
+            throw new InvalidInputException("Appointment should be booked 2 days in advance!");
         }
         System.out.println();
 
@@ -320,7 +321,7 @@ public class SelfServiceModule {
     public void cancelAppointment() throws AppointmentNotFoundException {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** CARS :: Appointment Operation :: Add Appointment ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Appointment Operation :: Add Appointment ***\n");
 
         
         List<AppointmentEntity> appointments = appointmentEntitySessionBeanRemote.retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());

@@ -112,8 +112,8 @@ public class MainApp {
         String patientId = "";
         String password = "";
 
-        System.out.println("\n*** CARS :: Login ***\n");
-        System.out.print("Enter username> ");
+        System.out.println("\n*** Self-Service Kiosk :: Login ***\n");
+        System.out.print("Enter Identity Number> ");
         patientId = scanner.nextLine().trim();
         System.out.print("Enter password> ");
         password = scanner.nextLine().trim();

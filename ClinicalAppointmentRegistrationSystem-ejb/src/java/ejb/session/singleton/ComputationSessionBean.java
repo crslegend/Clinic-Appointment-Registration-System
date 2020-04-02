@@ -8,9 +8,6 @@ package ejb.session.singleton;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,15 +50,17 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
     public List<Time> getNextSixTimeSlots() {
 
         // set default time to 12:42
-        //Time defaultTime = Time.valueOf("12:42:35");
-        
+//        Time defaultTime = Time.valueOf("12:42:35");
 //        ZonedDateTime defaultTime = ZonedDateTime.now(ZoneId.of("Asia/Singapore"));
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        
+
         Time defaultTime = Time.valueOf(LocalTime.now());
-        System.out.println(day);
+//        System.out.println("Time should be before " + defaultTime.before(Time.valueOf("23:59:00")));
+//        System.out.println("Time should be after " + defaultTime.before(Time.valueOf("10:59:00")));
+
+//        System.out.println(day);
 
 //        if (day > 1 && day < 5) {
 //            return getMonWed(defaultTime.format(formatter));
@@ -72,7 +71,6 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
 //        } else {
 //            return new ArrayList<>();
 //        }
-
         if (day > 1 && day < 5) {
             return getMonWed(defaultTime);
         } else if (day == 5) {
@@ -145,6 +143,7 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
         List<Time> opHr = new ArrayList<>(operatingHours);
 
         int day = calendar.get(Calendar.DAY_OF_WEEK);
+        
 
         if (day > 1 && day < 5) {
             return opHr;

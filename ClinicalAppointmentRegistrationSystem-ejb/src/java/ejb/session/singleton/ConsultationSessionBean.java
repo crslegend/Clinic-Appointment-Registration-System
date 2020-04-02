@@ -35,7 +35,7 @@ public class ConsultationSessionBean implements ConsultationSessionBeanRemote, C
     
     @PostConstruct
     public void postConstruct() {
-        System.out.println("************* Donald Trump's a walking dick with blonde hair");
+        System.out.println("********** Donald Trump has small hands");
         
         queueNumber = 0;
         currentDate = new Date(System.currentTimeMillis());
