@@ -28,8 +28,7 @@ public class LeaveEntity implements Serializable {
     private Long leaveId;
     @Column(nullable = false)
     private Date startDate;
-    @Column(nullable = false)
-    private Date endDate;
+
     
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
@@ -39,9 +38,8 @@ public class LeaveEntity implements Serializable {
     public LeaveEntity() {
     }
 
-    public LeaveEntity(Date startDate, Date endDate) {
+    public LeaveEntity(Date startDate) {
         this.startDate = startDate;
-        this.endDate = endDate;
     }
 
     public Long getLeaveId() {
@@ -83,14 +81,6 @@ public class LeaveEntity implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public DoctorEntity getDoctorEntity() {

@@ -43,7 +43,6 @@ public class LeaveEntitySessionBean implements LeaveEntitySessionBeanRemote, Lea
         LeaveEntity curr = retrieveLeaveEntityById(leaveEntity.getLeaveId());
         curr.setDoctorEntity(leaveEntity.getDoctorEntity());
         curr.setStartDate(leaveEntity.getStartDate());
-        curr.setEndDate(leaveEntity.getEndDate());
     }
 
     @Override

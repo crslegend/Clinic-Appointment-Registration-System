@@ -11,10 +11,13 @@ import ejb.session.stateless.StaffEntitySessionBeanRemote;
 import entity.DoctorEntity;
 import entity.PatientEntity;
 import entity.StaffEntity;
+import java.sql.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import util.exception.DoctorExistException;
 import util.exception.DoctorNotFoundException;
+import util.exception.LeaveRejectedException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
 import util.exception.StaffNotFoundException;
@@ -329,7 +332,11 @@ public class AdministrationModule {
                 } else if (response == 5) {
                     doViewAllDoctors();
                 } else if (response == 6) {
-                    doLeaveManage();
+                    try {
+                        doLeaveManage();
+                    } catch (InputMismatchException | IllegalArgumentException ex) {
+                        System.out.println("Invalid Input!");
+                    }
                 } else if (response == 7) {
                     break;
                 } else {
@@ -462,8 +469,31 @@ public class AdministrationModule {
     }
     
     // WIP
-    public void doLeaveManage() {
+    public void doLeaveManage() throws InputMismatchException, IllegalArgumentException {
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
         
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Doctor Management :: Add Leave Request ***\n");
+            System.out.print("Enter Doctor's Registration> ");
+            input = scanner.nextLine().trim();
+            
+            if (input.length() > 0) {
+                break;
+            } else {
+                System.out.println("Input field cannot be empty!\n");
+            }
+        }
+        
+        System.out.print("Enter Date> ");
+        Date date = Date.valueOf(scanner.nextLine().trim());
+        
+        try {
+            doctorEntitySessionBeanRemote.applyLeave(input, date);
+            System.out.println("Leave has been applied successfully!\n");
+        } catch (LeaveRejectedException | DoctorNotFoundException ex) {
+            System.out.println(ex.getMessage() + "\n");
+        }
     }
      
     public void staffManagement() {
