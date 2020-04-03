@@ -16,6 +16,7 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import util.exception.ClinicNotOpenException;
 
 /**
  *
@@ -47,7 +48,7 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
     }
 
     @Override
-    public List<Time> getNextSixTimeSlots() {
+    public List<Time> getNextSixTimeSlots() throws ClinicNotOpenException {
 
         // set default time to 12:42
 //        Time defaultTime = Time.valueOf("12:42:35");
@@ -61,7 +62,6 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
 //        System.out.println("Time should be after " + defaultTime.before(Time.valueOf("10:59:00")));
 
 //        System.out.println(day);
-
 //        if (day > 1 && day < 5) {
 //            return getMonWed(defaultTime.format(formatter));
 //        } else if (day == 5) {
@@ -78,7 +78,7 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
         } else if (day == 6) {
             return getFri(defaultTime);
         } else {
-            return new ArrayList<>();
+            throw new ClinicNotOpenException("Clinic is not open!");
         }
 
     }
@@ -135,15 +135,11 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
     }
 
     @Override
-    public List<Time> getAllTimeSlots(Date date) {
+    public List<Time> getAllTimeSlots(Date date) throws ClinicNotOpenException {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        int day = getDayOfWeek(date);
 
         List<Time> opHr = new ArrayList<>(operatingHours);
-
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-        
 
         if (day > 1 && day < 5) {
             return opHr;
@@ -156,7 +152,21 @@ public class ComputationSessionBean implements ComputationSessionBeanRemote, Com
             return opHr;
         }
 
-        return new ArrayList<>();
+        throw new ClinicNotOpenException("Clinic is not open on " + date.toString() + "!");
+    }
+
+    @Override
+    public int getDayOfWeek(Date date) throws ClinicNotOpenException {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        if (day == 1 || day == 7) {
+            throw new ClinicNotOpenException("Clinic is not open on " + date.toString() + "!");
+        }
+        return day;
+
     }
 
 }

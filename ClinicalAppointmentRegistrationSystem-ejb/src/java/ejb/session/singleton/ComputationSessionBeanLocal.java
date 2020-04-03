@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.ClinicNotOpenException;
 
 /**
  *
@@ -17,8 +18,10 @@ import javax.ejb.Local;
 @Local
 public interface ComputationSessionBeanLocal {
 
-    List<Time> getNextSixTimeSlots();
+    List<Time> getNextSixTimeSlots() throws ClinicNotOpenException;
 
-    List<Time> getAllTimeSlots(Date date);
+    List<Time> getAllTimeSlots(Date date) throws ClinicNotOpenException;
+
+    int getDayOfWeek(Date date) throws ClinicNotOpenException;
     
 }

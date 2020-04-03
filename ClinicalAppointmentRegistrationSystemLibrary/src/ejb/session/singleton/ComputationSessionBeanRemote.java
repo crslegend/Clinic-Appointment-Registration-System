@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import javax.ejb.Remote;
+import util.exception.ClinicNotOpenException;
 
 /**
  *
@@ -17,8 +18,10 @@ import javax.ejb.Remote;
 @Remote
 public interface ComputationSessionBeanRemote {
 
-    List<Time> getNextSixTimeSlots();
+    List<Time> getNextSixTimeSlots() throws ClinicNotOpenException;
 
-    List<Time> getAllTimeSlots(Date date);
+    List<Time> getAllTimeSlots(Date date) throws ClinicNotOpenException;
+
+    int getDayOfWeek(Date date) throws ClinicNotOpenException;
     
 }

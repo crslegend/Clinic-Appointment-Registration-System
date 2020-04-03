@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Scanner;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
+import util.exception.ClinicNotOpenException;
 import util.exception.DoctorNotFoundException;
 import util.exception.InvalidInputException;
 import util.exception.PatientNotFoundException;
 
 /**
  *
- * @author crs
+ * @author p.tm
  */
 public class AppointmentModule {
 
@@ -75,18 +76,14 @@ public class AppointmentModule {
                 } else if (response == 2) {
                     try {
                         addNewAppointment();
-                    } catch (DoctorNotFoundException ex) {
+                    } catch (DoctorNotFoundException | InvalidInputException | PatientNotFoundException | AppointmentInvalidException ex) {
                         System.out.println(ex.getMessage());
                     } catch (IllegalArgumentException ex) {
                         System.out.println("Invalid Input!");
-                    } catch (InvalidInputException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (PatientNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (AppointmentInvalidException ex) {
-                        System.out.println(ex.getMessage());
                     } catch (InputMismatchException ex) {
                         System.out.println("Invalid Input!");
+                    } catch (ClinicNotOpenException ex) {
+                        System.out.println(ex.getMessage());
                     }
                 } else if (response == 3) {
                     try {
@@ -140,7 +137,7 @@ public class AppointmentModule {
 
     }
 
-    public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, PatientNotFoundException, AppointmentInvalidException, InputMismatchException {
+    public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, PatientNotFoundException, AppointmentInvalidException, InputMismatchException, ClinicNotOpenException {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Appointment Operation :: Add Appointment ***\n");
