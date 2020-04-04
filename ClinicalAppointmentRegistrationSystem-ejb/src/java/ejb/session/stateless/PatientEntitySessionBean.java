@@ -5,8 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.AppointmentEntity;
 import entity.PatientEntity;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -16,6 +18,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.AppointmentNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
@@ -31,6 +34,9 @@ public class PatientEntitySessionBean implements PatientEntitySessionBeanRemote,
 
     @PersistenceContext(unitName = "ClinicalAppointmentRegistrationSystem-ejbPU")
     private EntityManager em;
+    
+    @EJB
+    private AppointmentEntitySessionBeanLocal appointmentEntitySessionBeanLocal;
 
     public PatientEntitySessionBean() {
     }
@@ -55,8 +61,22 @@ public class PatientEntitySessionBean implements PatientEntitySessionBeanRemote,
         pe.setAddress(patientEntity.getAddress());
     }
     
+    @Override
     public void deletePatient(String identityNum) throws PatientNotFoundException {
         PatientEntity pe = retrievePatientByIdNum(identityNum);
+        List<AppointmentEntity> listOfAppointmentEntities = pe.getListOfAppointmentEntities();
+        listOfAppointmentEntities.size();
+        
+        if (!listOfAppointmentEntities.isEmpty()) {
+            for (AppointmentEntity ae : listOfAppointmentEntities) {
+                try {
+                    appointmentEntitySessionBeanLocal.cancelAppointment(ae.getAppointmentId());
+                } catch (AppointmentNotFoundException ex) {
+                    // do nothing
+                }
+            }
+        }
+        
         em.remove(pe);
     }
 

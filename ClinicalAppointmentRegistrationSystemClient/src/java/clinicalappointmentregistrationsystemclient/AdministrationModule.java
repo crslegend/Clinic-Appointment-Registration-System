@@ -302,7 +302,7 @@ public class AdministrationModule {
             String input = scanner.nextLine().trim();
 
             if (input.equals("y")) {
-                // need to check in future whether patient got existings appointments
+                patientEntitySessionBeanRemote.deletePatient(identityNum);
                 System.out.println("Patient is deleted successfully\n");
             } else {
                 System.out.println("Patient is not deleted\n");

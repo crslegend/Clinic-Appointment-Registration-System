@@ -26,5 +26,7 @@ public interface PatientEntitySessionBeanLocal {
     public void updatePatient(PatientEntity patientEntity) throws PatientNotFoundException;
 
     PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException;
+    
+    public void deletePatient(String identityNum) throws PatientNotFoundException;
 
 }
