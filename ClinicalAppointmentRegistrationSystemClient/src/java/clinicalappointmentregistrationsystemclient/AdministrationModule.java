@@ -59,22 +59,28 @@ public class AdministrationModule {
             System.out.println("4: Back\n");
             response = 0;
             
-            while(response < 1 || response > 4) {
-                System.out.print("> ");
-                response = scanner.nextInt();
-                
-                if (response == 1) {
-                    patientManagement();
-                } else if (response == 2) {
-                    doctorManagement();
-                } else if (response == 3) {
-                    staffManagement();
-                } else if (response == 4) {
-                    break;
-                } else {
-                    System.out.println("Invalid option, please try again!\n"); 
-                }
+            try {
+               while(response < 1 || response > 4) {
+                    System.out.print("> ");
+                    response = scanner.nextInt();
+
+                    if (response == 1) {
+                        patientManagement();
+                    } else if (response == 2) {
+                        doctorManagement();
+                    } else if (response == 3) {
+                        staffManagement();
+                    } else if (response == 4) {
+                        break;
+                    } else {
+                        System.out.println("Invalid option, please try again!\n"); 
+                    }
+                } 
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid input! Please try again!\n");
+                scanner.nextLine();
             }
+            
             
             if (response == 4) {
                 break;
@@ -96,26 +102,32 @@ public class AdministrationModule {
             System.out.println("6: Back\n");
             response = 0;
             
-            while(response < 1 || response > 6) {
-                System.out.print("> ");
-                response = scanner.nextInt();
-                
-                if (response == 1) {
-                    doAddPatient();
-                } else if (response == 2) {
-                    doViewPatientDetails();
-                } else if (response == 3) {
-                    doUpdatePatient();
-                } else if (response == 4) {
-                    doDeletePatient();
-                } else if (response == 5) {
-                    doViewAllPatients();
-                } else if (response == 6) {
-                    break;
-                } else {
-                    System.out.println("Invalid option, please try again!\n"); 
+            try {
+                while(response < 1 || response > 6) {
+                    System.out.print("> ");
+                    response = scanner.nextInt();
+
+                    if (response == 1) {
+                        doAddPatient();
+                    } else if (response == 2) {
+                        doViewPatientDetails();
+                    } else if (response == 3) {
+                        doUpdatePatient();
+                    } else if (response == 4) {
+                        doDeletePatient();
+                    } else if (response == 5) {
+                        doViewAllPatients();
+                    } else if (response == 6) {
+                        break;
+                    } else {
+                        System.out.println("Invalid option, please try again!\n"); 
+                    }
                 }
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid input! Please try again!\n");
+                scanner.nextLine();
             }
+            
             
             if (response == 6) {
                 break;
@@ -127,58 +139,71 @@ public class AdministrationModule {
         Scanner scanner = new Scanner(System.in);
         PatientEntity newPatientEntity = new PatientEntity();
         
-        while (true) {
-            System.out.println("*** CARS :: Administration Operation :: Patient Management :: Add New Patient ***\n");
-            System.out.print("Enter First Name> ");
-            String firstName = scanner.nextLine().trim();
-            System.out.print("Enter Last Name> ");
-            String lastName = scanner.nextLine().trim();
-            System.out.print("Enter Identity Number> ");
-            String identityNum = scanner.nextLine().trim();
-            System.out.print("Enter Gender> ");
-            String gender = scanner.nextLine().trim();
-            System.out.print("Enter Phone> ");
-            String phone = scanner.nextLine().trim();
-            System.out.print("Enter Address> ");
-            String address = scanner.nextLine().trim();
-            System.out.print("Enter Password> ");
-            String password = scanner.nextLine().trim();
-            System.out.print("Enter Age> ");
-            Integer age = scanner.nextInt();
-            scanner.nextLine();
-            
-            if (firstName.length() > 0 && lastName.length() > 0 && identityNum.length() > 0 && 
-                    gender.length() > 0 && phone.length() > 0 && address.length() > 0 &&
-                    password.length() > 0 && age > 0) {
-                newPatientEntity.setFirstName(firstName);
-                newPatientEntity.setLastName(lastName);
-                newPatientEntity.setIdentityNumber(identityNum);
-                newPatientEntity.setGender(gender);
-                newPatientEntity.setPhone(phone);
-                newPatientEntity.setAddress(address);
-                newPatientEntity.setPassword(password);
-                newPatientEntity.setAge(age);
-                break;
-            } else {
-                System.out.println("Input fields cannot be empty and password has to be 6 digits!\n");
-            }
-        
-        }
-        
         try {
-            patientEntitySessionBeanRemote.addNewPatient(newPatientEntity);
-            System.out.println("New staff created successfully!: \n");
-        } catch (PatientExistException ex) {
-            System.out.println(ex.getMessage() + "\n");
+            while (true) {
+                System.out.println("*** CARS :: Administration Operation :: Patient Management :: Add New Patient ***\n");
+                System.out.print("Enter First Name> ");
+                String firstName = scanner.nextLine().trim();
+                System.out.print("Enter Last Name> ");
+                String lastName = scanner.nextLine().trim();
+                System.out.print("Enter Identity Number> ");
+                String identityNum = scanner.nextLine().trim();
+                System.out.print("Enter Gender> ");
+                String gender = scanner.nextLine().trim();
+                System.out.print("Enter Phone> ");
+                String phone = scanner.nextLine().trim();
+                System.out.print("Enter Address> ");
+                String address = scanner.nextLine().trim();
+                System.out.print("Enter Password> ");
+                String password = scanner.nextLine().trim();
+                System.out.print("Enter Age> ");
+                Integer age = scanner.nextInt();
+                scanner.nextLine();
+
+                if (firstName.length() > 0 && lastName.length() > 0 && identityNum.length() > 0 && 
+                        gender.length() > 0 && phone.length() > 0 && address.length() > 0 &&
+                        password.length() > 0 && age > 0) {
+                    newPatientEntity.setFirstName(firstName);
+                    newPatientEntity.setLastName(lastName);
+                    newPatientEntity.setIdentityNumber(identityNum);
+                    newPatientEntity.setGender(gender);
+                    newPatientEntity.setPhone(phone);
+                    newPatientEntity.setAddress(address);
+                    newPatientEntity.setPassword(password);
+                    newPatientEntity.setAge(age);
+                    break;
+                } else {
+                    System.out.println("Input fields cannot be empty and password has to be 6 digits!\n");
+                }
+            }
+            
+            try {
+                patientEntitySessionBeanRemote.addNewPatient(newPatientEntity);
+                System.out.println("New staff created successfully!: \n");
+            } catch (PatientExistException ex) {
+                System.out.println(ex.getMessage() + "\n");
+            }
+        } catch (IllegalArgumentException | InputMismatchException ex) {
+            System.out.println("Invalid input! Please try again!\n");
+            scanner.nextLine();
         }
     }
     
     public void doViewPatientDetails() {
         Scanner scanner = new Scanner(System.in);
+        String identityNum = "";
         
-        System.out.println("*** CARS :: Administration Operation :: Patient Management :: View Patient Details ***\n");
-        System.out.print("Enter Patient Identity Number> ");
-        String identityNum = scanner.nextLine().trim();
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Patient Management :: View Patient Details ***\n");
+            System.out.print("Enter Patient Identity Number> ");
+            identityNum = scanner.nextLine().trim();
+            
+            if (identityNum.length() > 0) {
+                break;
+            } else {
+                System.out.println("Identity number cannot be empty!\n");
+            }
+        }
         
         try {
             PatientEntity pe = patientEntitySessionBeanRemote.retrievePatientByIdNum(identityNum);
@@ -307,7 +332,7 @@ public class AdministrationModule {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
         
-         while (true) {
+        while (true) {
             System.out.println("*** CARS :: Administration Operation :: Doctor Management ***\n");
             System.out.println("1: Add Doctor");
             System.out.println("2: View Doctor Details");
@@ -318,32 +343,38 @@ public class AdministrationModule {
             System.out.println("7: Back\n");
             response = 0;
             
-            while (response < 1 || response > 7) {
-                System.out.print("> ");
-                response = scanner.nextInt();
-                
-                if (response == 1) {
-                    doAddDoctor();
-                } else if (response == 2) {
-                    doViewDoctorDetails();
-                } else if (response == 3) {
-                    doUpdateDoctor();
-                } else if (response == 4) {
-                    doDeleteDoctor();
-                } else if (response == 5) {
-                    doViewAllDoctors();
-                } else if (response == 6) {
-                    try {
-                        doLeaveManage();
-                    } catch (InputMismatchException | IllegalArgumentException ex) {
-                        System.out.println("Invalid Input!");
+            try {
+                while (response < 1 || response > 7) {
+                    System.out.print("> ");
+                    response = scanner.nextInt();
+
+                    if (response == 1) {
+                        doAddDoctor();
+                    } else if (response == 2) {
+                        doViewDoctorDetails();
+                    } else if (response == 3) {
+                        doUpdateDoctor();
+                    } else if (response == 4) {
+                        doDeleteDoctor();
+                    } else if (response == 5) {
+                        doViewAllDoctors();
+                    } else if (response == 6) {
+                        try {
+                            doLeaveManage();
+                        } catch (InputMismatchException | IllegalArgumentException ex) {
+                            System.out.println("Invalid Input! Please try again!\n");
+                        }
+                    } else if (response == 7) {
+                        break;
+                    } else {
+                        System.out.println("Invalid option, please try again!\n"); 
                     }
-                } else if (response == 7) {
-                    break;
-                } else {
-                    System.out.println("Invalid option, please try again!\n"); 
                 }
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid input! Please try again!\n");
+                scanner.nextLine();
             }
+            
             
             if (response == 7) {
                 break;
@@ -387,10 +418,19 @@ public class AdministrationModule {
     
     public void doViewDoctorDetails() {
         Scanner scanner = new Scanner(System.in);
+        String registration = "";
         
-        System.out.println("*** CARS :: Administration Operation :: Doctor Management :: View Doctor Details ***\n");
-        System.out.print("Enter Doctor Registration> ");
-        String registration = scanner.nextLine().trim();
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Doctor Management :: View Doctor Details ***\n");
+            System.out.print("Enter Doctor Registration> ");
+            registration = scanner.nextLine().trim();
+            
+            if (registration.length() > 0) {
+                break;
+            } else {
+                System.out.println("Doctor registration cannot be empty!\n");
+            }
+        }
         
         try {
             DoctorEntity de = doctorEntitySessionBeanRemote.retrieveDoctorByRegistration(registration);
@@ -452,10 +492,19 @@ public class AdministrationModule {
     
     public void doDeleteDoctor() {
         Scanner scanner = new Scanner(System.in);
+        String input = "";
         
-        System.out.println("*** CARS :: Administration Operation :: Doctor Management :: Delete Doctor ***\n");
-        System.out.print("Enter Doctor's registration: ");
-        String input = scanner.nextLine().trim(); 
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Doctor Management :: Delete Doctor ***\n");
+            System.out.print("Enter Doctor's registration: ");
+            input = scanner.nextLine().trim(); 
+            
+            if (input.length() > 0) {
+                break;
+            } else {
+                System.out.println("Doctor registration cannot be empty!\n");
+            }
+        }
         
         try {
             DoctorEntity de = doctorEntitySessionBeanRemote.retrieveDoctorByRegistration(input);
@@ -489,7 +538,6 @@ public class AdministrationModule {
         scanner.nextLine();
     }
     
-    // WIP
     public void doLeaveManage() throws InputMismatchException, IllegalArgumentException {
         Scanner scanner = new Scanner(System.in);
         String input = "";
@@ -502,7 +550,7 @@ public class AdministrationModule {
             if (input.length() > 0) {
                 break;
             } else {
-                System.out.println("Input field cannot be empty!\n");
+                System.out.println("Doctor registration cannot be empty!\n");
             }
         }
         
@@ -531,26 +579,32 @@ public class AdministrationModule {
             System.out.println("6: Back\n");
             response = 0;
             
-            while(response < 1 || response > 6) {
-                System.out.print("> ");
-                response = scanner.nextInt();
-                
-                if (response == 1) {
-                    doAddStaff();
-                } else if (response == 2) {
-                    doViewStaffDetails();
-                } else if (response == 3) {
-                    doUpdateStaff();
-                } else if (response == 4) {
-                    doDeleteStaff();
-                } else if (response == 5) {
-                    doViewAllStaffs();
-                } else if (response == 6) {
-                    break;
-                } else {
-                    System.out.println("Invalid option, please try again!\n"); 
+            try {
+                while(response < 1 || response > 6) {
+                    System.out.print("> ");
+                    response = scanner.nextInt();
+
+                    if (response == 1) {
+                        doAddStaff();
+                    } else if (response == 2) {
+                        doViewStaffDetails();
+                    } else if (response == 3) {
+                        doUpdateStaff();
+                    } else if (response == 4) {
+                        doDeleteStaff();
+                    } else if (response == 5) {
+                        doViewAllStaffs();
+                    } else if (response == 6) {
+                        break;
+                    } else {
+                        System.out.println("Invalid option, please try again!\n"); 
+                    }
                 }
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid input! Please try again!\n");
+                scanner.nextLine();
             }
+            
             
             if (response == 6) {
                 break;
@@ -593,13 +647,22 @@ public class AdministrationModule {
         
     }
     
-    public void doViewStaffDetails() {
+    public void doViewStaffDetails() throws IllegalArgumentException, InputMismatchException {
         Scanner scanner = new Scanner(System.in);
+        Long staffId = 0L;
         
-        System.out.println("*** CARS :: Administration Operation :: Staff Management :: View Staff Details ***\n");
-        System.out.print("Enter Staff ID> ");
-        Long staffId = scanner.nextLong();
-        scanner.nextLine();
+        while (true) {
+            System.out.println("*** CARS :: Administration Operation :: Staff Management :: View Staff Details ***\n");
+            System.out.print("Enter Staff ID> ");
+            staffId = scanner.nextLong();
+            scanner.nextLine();
+            
+            if (staffId > 0) {
+                break;
+            } else {
+                System.out.println("Staff ID cannot be negative!\n");
+            }
+        }
         
         try {
             StaffEntity staffEntity = staffEntitySessionBeanRemote.retrieveStaffById(staffId);
@@ -613,7 +676,7 @@ public class AdministrationModule {
         }
     }
     
-    public void doUpdateStaff() {
+    public void doUpdateStaff() throws IllegalArgumentException, InputMismatchException {
         Scanner scanner = new Scanner(System.in);
         Long staffId = 0L;
         
@@ -625,7 +688,7 @@ public class AdministrationModule {
             if (staffId > 0) {
                 break;
             } else {
-                System.out.println("Staff ID cannot be empty!\n");
+                System.out.println("Staff ID cannot be negative!\n");
             }
         }
         
@@ -655,7 +718,7 @@ public class AdministrationModule {
         }
     }
     
-    public void doDeleteStaff() {
+    public void doDeleteStaff() throws IllegalArgumentException, InputMismatchException {
         Scanner scanner = new Scanner(System.in);
         Long staffId = 0L;
         
@@ -667,7 +730,7 @@ public class AdministrationModule {
             if (staffId > 0) {
                 break;
             } else {
-                System.out.println("Staff ID cannot be empty!\n");
+                System.out.println("Staff ID cannot be negative!\n");
             }
         }
         

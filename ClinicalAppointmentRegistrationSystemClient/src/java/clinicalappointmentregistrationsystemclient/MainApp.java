@@ -12,6 +12,7 @@ import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
 import entity.StaffEntity;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import util.exception.InvalidLoginCredentialException;
 
@@ -58,51 +59,56 @@ public class MainApp {
     public void runApp() {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
-        
+
         while (true) {
             System.out.println("*** Welcome to Clinic Appointment Registration System (CARS) ***\n");
             System.out.println("1: Login");
             System.out.println("2: Exit\n");
             response = 0;
             
-            while(response < 1 || response > 2) {
-                System.out.print("> ");
+            try {
+                while(response < 1 || response > 2) {
+                    System.out.print("> ");
 
-                response = scanner.nextInt();
-                
-                if (response == 1) {
-                    try {
-                        doLogin();
-                        System.out.println("Login successful!\n");
-                        
-                        administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity);
-                        registrationModule = new RegistrationModule(
-                                patientEntitySessionBeanRemote, 
-                                doctorEntitySessionBeanRemote, 
-                                currentStaffEntity, 
-                                computationSessionBeanRemote,
-                                consultationSessionBeanRemote,
-                                appointmentEntitySessionBeanRemote
-                        );
-                        appointmentModule = new AppointmentModule(patientEntitySessionBeanRemote, appointmentEntitySessionBeanRemote, doctorEntitySessionBeanRemote, computationSessionBeanRemote);
-                        menuMain();
-                    } catch (InvalidLoginCredentialException ex) {
-                        System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
+                    response = scanner.nextInt();
+
+                    if (response == 1) {
+                        try {
+                            doLogin();
+                            System.out.println("Login successful!\n");
+
+                            administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity);
+                            registrationModule = new RegistrationModule(
+                                    patientEntitySessionBeanRemote, 
+                                    doctorEntitySessionBeanRemote, 
+                                    currentStaffEntity, 
+                                    computationSessionBeanRemote,
+                                    consultationSessionBeanRemote,
+                                    appointmentEntitySessionBeanRemote
+                            );
+                            appointmentModule = new AppointmentModule(patientEntitySessionBeanRemote, appointmentEntitySessionBeanRemote, doctorEntitySessionBeanRemote, computationSessionBeanRemote);
+                            menuMain();
+                        } catch (InvalidLoginCredentialException ex) {
+                            System.out.println("Invalid login credential: " + ex.getMessage() + "\n");
+                        } 
+                    } else if (response == 2) {
+                        break;
+                    } else {
+                       System.out.println("Invalid option, please try again!\n"); 
                     }
-                } else if (response == 2) {
-                    break;
-                } else {
-                   System.out.println("Invalid option, please try again!\n"); 
                 }
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid input! Please try again!\n");
+                scanner.nextLine();
             }
-            
+
             if (response == 2) {
                 break;
             }
         }
     }
     
-    private void doLogin()throws InvalidLoginCredentialException {
+    private void doLogin() throws InvalidLoginCredentialException{
         Scanner scanner = new Scanner(System.in);
         String username = "";
         String password = "";
@@ -133,27 +139,32 @@ public class MainApp {
             System.out.println("4: Logout\n");
             response = 0;
             
-             while(response < 1 || response > 4) {
-                System.out.print("> ");
+            try {
+                while(response < 1 || response > 4) {
+                    System.out.print("> ");
 
-                response = scanner.nextInt();
-                
-                if (response == 1) {
-                    registrationModule.registrationOperation();
-                } else if (response == 2) {
-                    appointmentModule.appointmentOperation();
-                } else if (response == 3) {
-                    administrationModule.administrationOperation();
-                } else if (response == 4) {
-                    break;
-                } else {
-                    System.out.println("Invalid option, please try again!\n");
-                }
-             }
+                    response = scanner.nextInt();
+
+                    if (response == 1) {
+                        registrationModule.registrationOperation();
+                    } else if (response == 2) {
+                        appointmentModule.appointmentOperation();
+                    } else if (response == 3) {
+                        administrationModule.administrationOperation();
+                    } else if (response == 4) {
+                        break;
+                    } else {
+                        System.out.println("Invalid option, please try again!\n");
+                    }
+                } 
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid input! Please try again!\n");
+                scanner.nextLine();
+            }
              
-             if (response == 4) {
-                 break;
-             }
+            if (response == 4) {
+                break;
+            }
         }
     }
 }
