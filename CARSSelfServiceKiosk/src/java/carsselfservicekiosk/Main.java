@@ -11,6 +11,7 @@ import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
+import java.util.InputMismatchException;
 import javax.ejb.EJB;
 
 /**
@@ -37,6 +38,11 @@ public class Main {
                 computationSessionBeanRemote,
                 consultationSessionBeanRemote,
                 appointmentEntitySessionBeanRemote);
-        mainApp.runApp();
+        try {
+            mainApp.runApp();
+        } catch (InputMismatchException ex) {
+            System.out.println("Invalid input! Please try again");
+        }
+        
     }
 }

@@ -53,7 +53,7 @@ public class MainApp {
         this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
     }
 
-    public void runApp() {
+    public void runApp() throws InputMismatchException {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
 
@@ -72,12 +72,13 @@ public class MainApp {
                 if (response == 1) {
                     try {
                         doRegister();
+                        System.out.println("Registration Successful!\n");
                     } catch (InvalidInputException ex) {
                         System.out.println("Invalid input!");
                     } catch (PatientExistException ex) {
                         System.out.println(ex.getMessage());
                     }
-                    System.out.println("Registration Successful!\n");
+                    
                 } else if (response == 2) {
                     try {
                         doLogin();
@@ -241,7 +242,7 @@ public class MainApp {
             patientEntitySessionBeanRemote.addNewPatient(patientEntity);
 
         } catch (InputMismatchException ex) {
-            throw new InvalidInputException("Invalid Identity Number!");
+            throw new InvalidInputException("Invalid input!");
         }
 
     }

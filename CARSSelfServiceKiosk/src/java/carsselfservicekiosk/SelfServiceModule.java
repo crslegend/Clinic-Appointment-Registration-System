@@ -59,7 +59,7 @@ public class SelfServiceModule {
         Integer response = 0;
 
         while (true) {
-            System.out.println("\n*** Self-Service Kisosk :: Main ***\n");
+            System.out.println("\n*** Self-Service Kiosk :: Main ***\n");
             System.out.println("You are login as " + currentPatientEntity.getFullName() + "\n");
             System.out.println("1: Register Walk-In Consultation");
             System.out.println("2: Register Consultation By Appointment");
@@ -69,58 +69,64 @@ public class SelfServiceModule {
             System.out.println("6: Logout\n");
             response = 0;
 
-            while (response < 1 || response > 6) {
-                System.out.print("> ");
-                response = scanner.nextInt();
+            try {
+                while (response < 1 || response > 6) {
+                    System.out.print("> ");
+                    response = scanner.nextInt();
 
-                if (response == 1) {
-                    try {
-                        registerWalkInConsult();
-                    } catch (DoctorNotFoundException | InvalidInputException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (InputMismatchException | IllegalArgumentException ex) {
-                        System.out.println("Invalid Input!");
-                    } catch (ClinicNotOpenException ex) {
-                        System.out.println(ex.getMessage());
+                    if (response == 1) {
+                        try {
+                            registerWalkInConsult();
+                        } catch (DoctorNotFoundException | InvalidInputException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (InputMismatchException | IllegalArgumentException ex) {
+                            System.out.println("Invalid Input!");
+                        } catch (ClinicNotOpenException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                        ;
+                    } else if (response == 2) {
+                        try {
+                            registerConsultByAppointment();
+                        } catch (AppointmentNotFoundException ex) {
+                            System.out.println(ex.getMessage());
+                        };
+                    } else if (response == 3) {
+                        viewPatientAppointments();
+                    } else if (response == 4) {
+                        try {
+                            addNewAppointment();
+                        } catch (DoctorNotFoundException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println("Invalid Input!");
+                        } catch (InvalidInputException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (AppointmentInvalidException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Invalid Input!");
+                        } catch (ClinicNotOpenException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                        ;
+                    } else if (response == 5) {
+                        try {
+                            cancelAppointment();
+                        } catch (AppointmentNotFoundException ex) {
+                            System.out.println(ex.getMessage());
+                        };
+                    } else if (response == 6) {
+                        break;
+                    } else {
+                        System.out.println("Invalid option, please try again!\n");
                     }
-                    ;
-                } else if (response == 2) {
-                    try {
-                        registerConsultByAppointment();
-                    } catch (AppointmentNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    };
-                } else if (response == 3) {
-                    viewPatientAppointments();
-                } else if (response == 4) {
-                    try {
-                        addNewAppointment();
-                    } catch (DoctorNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (IllegalArgumentException ex) {
-                        System.out.println("Invalid Input!");
-                    } catch (InvalidInputException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (AppointmentInvalidException ex) {
-                        System.out.println(ex.getMessage());
-                    } catch (InputMismatchException ex) {
-                        System.out.println("Invalid Input!");
-                    } catch (ClinicNotOpenException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                    ;
-                } else if (response == 5) {
-                    try {
-                        cancelAppointment();
-                    } catch (AppointmentNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    };
-                } else if (response == 6) {
-                    break;
-                } else {
-                    System.out.println("Invalid option, please try again!\n");
                 }
+            } catch (IllegalArgumentException | InputMismatchException ex) {
+                System.out.println("Invalid Input! Please try again");
+                scanner.nextLine();
             }
+            
 
             if (response == 6) {
                 break;
@@ -128,9 +134,9 @@ public class SelfServiceModule {
         }
     }
 
-    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, ClinicNotOpenException {
+    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, ClinicNotOpenException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** CARS :: Registration Operation :: Register Walk-In Consultation ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Register Walk-In Consultation ***\n");
 
         // get current date
         Date currentDate = new Date(System.currentTimeMillis());
@@ -206,9 +212,9 @@ public class SelfServiceModule {
         }
     }
 
-    public void registerConsultByAppointment() throws AppointmentNotFoundException {
+    public void registerConsultByAppointment() throws AppointmentNotFoundException, IllegalArgumentException, InputMismatchException {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** Self-Service Kiosk :: Registration Operation :: Register Consultation By Appointment ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Register Consultation By Appointment ***\n");
 
         System.out.println("\nAppointments: ");
         System.out.printf("%-3s|%-11s|%-6s|%-64s\n", "Id", "Date", "Time", "Doctor");
@@ -246,7 +252,7 @@ public class SelfServiceModule {
 
     public void viewPatientAppointments() {
 
-        System.out.println("\n*** Self-Service Kiosk :: Appointment Operation :: View Patient Appointments ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: View Patient Appointments ***\n");
 
         List<AppointmentEntity> appointments = appointmentEntitySessionBeanRemote.retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());
 
@@ -264,7 +270,7 @@ public class SelfServiceModule {
     public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, AppointmentInvalidException, InputMismatchException, ClinicNotOpenException {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** Self-Service Kiosk :: Appointment Operation :: Add Appointment ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Add Appointment ***\n");
 
         List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveAllDoctors();
 
@@ -323,10 +329,10 @@ public class SelfServiceModule {
 
     }
 
-    public void cancelAppointment() throws AppointmentNotFoundException {
+    public void cancelAppointment() throws AppointmentNotFoundException, IllegalArgumentException, InputMismatchException {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** Self-Service Kiosk :: Appointment Operation :: Add Appointment ***\n");
+        System.out.println("\n*** Self-Service Kiosk :: Cancel Appointment ***\n");
 
         List<AppointmentEntity> appointments = appointmentEntitySessionBeanRemote.retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());
 
