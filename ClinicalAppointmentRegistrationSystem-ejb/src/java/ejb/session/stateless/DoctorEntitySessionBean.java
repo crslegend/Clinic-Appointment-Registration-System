@@ -23,8 +23,10 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.DeleteDoctorException;
 import util.exception.DoctorExistException;
 import util.exception.DoctorNotFoundException;
+import util.exception.LeaveNotFoundException;
 import util.exception.LeaveRejectedException;
 
 /**
@@ -63,10 +65,30 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
         doctorEntity.setQualifications(newDoctorEntity.getQualifications());
     }
 
-    // WIP
-    public void deleteDoctor(String registration) throws DoctorNotFoundException {
+    @Override
+    public void deleteDoctor(String registration) throws DoctorNotFoundException, DeleteDoctorException {
         DoctorEntity doctorEntity = retrieveDoctorByRegistration(registration);
-        em.remove(doctorEntity);
+        List<AppointmentEntity> listOfAppointmentEntities = doctorEntity.getListOfAppointmentEntities();
+        listOfAppointmentEntities.size();
+        
+        if (listOfAppointmentEntities.isEmpty()) {
+            List<LeaveEntity> listOfLeaveEntities = doctorEntity.getListOfLeaveEntities();
+            listOfLeaveEntities.size();
+            
+            if (!listOfLeaveEntities.isEmpty()) {
+                for (LeaveEntity leave : listOfLeaveEntities) {
+                    try {
+                         leaveEntitySessionBeanLocal.deleteLeaveEntity(leave);
+                    } catch (LeaveNotFoundException ex) {
+                      // do nothing
+                    }
+                }
+            }
+            
+            em.remove(doctorEntity);
+        } else {
+            throw new DeleteDoctorException("Doctor cannot be deleted as doctor has associating appointments!");
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import entity.DoctorEntity;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import util.exception.DeleteDoctorException;
 import util.exception.DoctorExistException;
 import util.exception.DoctorNotFoundException;
 import util.exception.LeaveRejectedException;
@@ -37,5 +38,7 @@ public interface DoctorEntitySessionBeanRemote {
     DoctorEntity retrieveDoctorById(long doctorId) throws DoctorNotFoundException;
 
     public void applyLeave(String registration, Date dateOfLeave) throws LeaveRejectedException, DoctorNotFoundException;
+
+    public void deleteDoctor(String registration) throws DoctorNotFoundException, DeleteDoctorException;
     
 }

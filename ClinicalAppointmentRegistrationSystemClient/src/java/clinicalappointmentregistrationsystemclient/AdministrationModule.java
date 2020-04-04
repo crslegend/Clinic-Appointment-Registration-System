@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import util.exception.DeleteDoctorException;
 import util.exception.DoctorExistException;
 import util.exception.DoctorNotFoundException;
 import util.exception.LeaveRejectedException;
@@ -449,9 +450,29 @@ public class AdministrationModule {
         }
     }
     
-    // WIP
     public void doDeleteDoctor() {
+        Scanner scanner = new Scanner(System.in);
         
+        System.out.println("*** CARS :: Administration Operation :: Doctor Management :: Delete Doctor ***\n");
+        System.out.print("Enter Doctor's registration: ");
+        String input = scanner.nextLine().trim(); 
+        
+        try {
+            DoctorEntity de = doctorEntitySessionBeanRemote.retrieveDoctorByRegistration(input);
+            System.out.printf("%-10s|%-15s|%-15s|%-13s|%-13s\n", "Doctor Id", "First Name", "Last Name", "Registration", "Qualifications");
+            System.out.printf("%-10s|%-15s|%-15s|%-13s|%-13s\n", de.getDoctorId(), de.getFirstName(), de.getLastName(), de.getRegistration(), de.getQualifications());
+            System.out.print("Confirm Delete Doctor? (Type y if yes, n if no): ");
+            input = scanner.nextLine().trim();
+            
+            if (input.equals("y")) {
+                doctorEntitySessionBeanRemote.deleteDoctor(de.getRegistration());
+                System.out.println("Doctor is deleted successfully!\n");
+            } else {
+                System.out.println("Doctor is not deleted!\n");
+            }
+        } catch (DoctorNotFoundException | DeleteDoctorException ex) {
+            System.out.println(ex.getMessage() + "\n");
+        }
     }
     
     public void doViewAllDoctors() {
