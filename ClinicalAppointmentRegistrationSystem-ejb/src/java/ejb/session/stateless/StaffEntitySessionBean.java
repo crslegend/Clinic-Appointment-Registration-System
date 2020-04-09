@@ -19,6 +19,7 @@ import javax.persistence.Query;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -91,8 +92,9 @@ public class StaffEntitySessionBean implements StaffEntitySessionBeanRemote, Sta
     public StaffEntity staffLogin(String username, String password) throws InvalidLoginCredentialException {
         try {
             StaffEntity staffEntity = retrieveStaffByUsername(username);
+            String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
             
-            if(staffEntity.getPassword().equals(password)) {
+            if(staffEntity.getPassword().equals(hashPassword)) {
                 return staffEntity;
             } else {
                 throw new InvalidLoginCredentialException("Invalid password!");

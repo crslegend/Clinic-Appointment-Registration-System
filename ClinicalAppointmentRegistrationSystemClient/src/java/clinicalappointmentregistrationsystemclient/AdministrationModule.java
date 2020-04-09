@@ -23,6 +23,7 @@ import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -631,7 +632,9 @@ public class AdministrationModule {
                 newStaffEntity.setFirstName(firstName);
                 newStaffEntity.setLastName(lastName);
                 newStaffEntity.setUserName(username);
-                newStaffEntity.setPassword(password);
+                
+                String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
+                newStaffEntity.setPassword(hashPassword);
                 break;
             } else {
                 System.out.println("Input fields cannot be empty!\n");
