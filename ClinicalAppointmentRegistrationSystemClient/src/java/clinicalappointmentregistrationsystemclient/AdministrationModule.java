@@ -163,30 +163,37 @@ public class AdministrationModule {
 
                 if (firstName.length() > 0 && lastName.length() > 0 && identityNum.length() > 0 && 
                         gender.length() > 0 && phone.length() > 0 && address.length() > 0 &&
-                        password.length() > 0 && age > 0) {
-                    newPatientEntity.setFirstName(firstName);
-                    newPatientEntity.setLastName(lastName);
-                    newPatientEntity.setIdentityNumber(identityNum);
-                    newPatientEntity.setGender(gender);
-                    newPatientEntity.setPhone(phone);
-                    newPatientEntity.setAddress(address);
-                    newPatientEntity.setPassword(password);
-                    newPatientEntity.setAge(age);
-                    break;
+                        password.length() == 6 && age > 0) {
+                    if (gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("M")) {
+                        Long num = Long.parseLong(password);
+                        num = Long.parseLong(phone);
+                        newPatientEntity.setFirstName(firstName);
+                        newPatientEntity.setLastName(lastName);
+                        newPatientEntity.setIdentityNumber(identityNum);
+                        newPatientEntity.setGender(gender);
+                        newPatientEntity.setPhone(phone);
+                        newPatientEntity.setAddress(address);
+
+                        String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
+                        newPatientEntity.setPassword(hashPassword);
+                        newPatientEntity.setAge(age);
+                        break;
+                    } else {
+                        System.out.println("Gender has to be either male (M) or female (F)!\n");
+                    }
                 } else {
-                    System.out.println("Input fields cannot be empty and password has to be 6 digits!\n");
+                    System.out.println("Input fields cannot be empty and password has to be a 6-digit number!\n");
                 }
             }
             
             try {
                 patientEntitySessionBeanRemote.addNewPatient(newPatientEntity);
-                System.out.println("New staff created successfully!: \n");
+                System.out.println("New patient created successfully!: \n");
             } catch (PatientExistException ex) {
                 System.out.println(ex.getMessage() + "\n");
             }
         } catch (IllegalArgumentException | InputMismatchException ex) {
-            System.out.println("Invalid input! Please try again!\n");
-            scanner.nextLine();
+            System.out.println("Invalid input! Age, phone and password has to be a number and password has to be a 6-digit number. Please try again!\n");
         }
     }
     

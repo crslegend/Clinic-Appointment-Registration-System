@@ -27,6 +27,7 @@ import util.exception.DoctorNotFoundException;
 import util.exception.InvalidInputException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -137,11 +138,13 @@ public class RegistrationModule {
             System.out.print("Enter Password> ");
             while (true) {
                 String input = sc.nextLine().trim();
-                if (input.length() > 0) {
-                    pe.setPassword(input);
+                if (input.length() == 6) {
+                    Long num = Long.parseLong(input);
+                    String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(input));
+                    pe.setPassword(hashPassword);
                     break;
                 } else {
-                    System.out.println("Error! Password cannot be empty\n");
+                    System.out.println("Error! Password cannot be empty. Password has to be a 6-digit number!\n");
                     System.out.print("Re-enter Password> ");
                 }
 
@@ -177,8 +180,13 @@ public class RegistrationModule {
             while (true) {
                 String input = sc.nextLine().trim();
                 if (input.length() > 0) {
-                    pe.setGender(input);
-                    break;
+                   if (input.equalsIgnoreCase("F") || input.equalsIgnoreCase("M")) {
+                        pe.setGender(input);
+                        break;
+                    } else {
+                        System.out.println("Gender has to be either male (M) or female (F)!\n");
+                        System.out.print("Re-enter Gender> ");
+                    }
                 } else {
                     System.out.println("Error! Gender cannot be empty\n");
                     System.out.print("Re-enter Gender> ");
@@ -203,6 +211,7 @@ public class RegistrationModule {
             while (true) {
                 String input = sc.nextLine().trim();
                 if (input.length() > 0) {
+                    Long num = Long.parseLong(input);
                     pe.setPhone(input);
                     break;
                 } else {
@@ -227,13 +236,13 @@ public class RegistrationModule {
 
             patientEntitySessionBeanRemote.addNewPatient(pe);
 
-        } catch (InputMismatchException ex) {
-            throw new InvalidInputException("Invalid Identity Number!");
+        } catch (IllegalArgumentException | InputMismatchException ex) {
+            throw new InvalidInputException("Invalid input! Age, phone and password has to be a number and password has to be a 6-digit number. Please try again!");
         }
 
     }
 
-    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, PatientNotFoundException, ClinicNotOpenException {
+    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, PatientNotFoundException, ClinicNotOpenException {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register Walk-In Consultation ***\n");
@@ -321,7 +330,7 @@ public class RegistrationModule {
 
     }
 
-    public void registerConsultByAppointment() throws PatientNotFoundException, AppointmentNotFoundException {
+    public void registerConsultByAppointment() throws PatientNotFoundException, AppointmentNotFoundException, InputMismatchException, IllegalArgumentException {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register Consultation By Appointment ***\n");
 

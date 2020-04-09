@@ -22,6 +22,7 @@ import util.exception.AppointmentNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -101,8 +102,9 @@ public class PatientEntitySessionBean implements PatientEntitySessionBeanRemote,
     @Override
     public PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException {
         PatientEntity patientEntity = retrievePatientByIdNum(pId);
+        String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
         
-        if (patientEntity.getPassword().equals(password)) {
+        if (patientEntity.getPassword().equals(hashPassword)) {
             return patientEntity;
         } else {
             throw new InvalidLoginCredentialException("Password does not match!");
