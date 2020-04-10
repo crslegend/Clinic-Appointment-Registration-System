@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.stateless;
+package ejb.session.stateful;
 
 import entity.LeaveEntity;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -21,7 +21,7 @@ import util.exception.LeaveNotFoundException;
  *
  * @author p.tm
  */
-@Stateless
+@Stateful
 @Local (LeaveEntitySessionBeanLocal.class)
 @Remote (LeaveEntitySessionBeanRemote.class)
 public class LeaveEntitySessionBean implements LeaveEntitySessionBeanRemote, LeaveEntitySessionBeanLocal {

@@ -7,7 +7,7 @@ package carsselfservicekiosk;
 
 import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
-import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
+import ejb.session.stateful.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import entity.PatientEntity;

@@ -7,7 +7,7 @@ package clinicalappointmentregistrationsystemclient;
 
 import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
-import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
+import ejb.session.stateful.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import entity.AppointmentEntity;
@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 import util.exception.ClinicNotOpenException;
@@ -87,7 +88,7 @@ public class RegistrationModule {
                 } else if (response == 2) {
                     try {
                         registerWalkInConsult();
-                    } catch (DoctorNotFoundException | InvalidInputException | PatientNotFoundException ex) {
+                    } catch (DoctorNotFoundException | InvalidInputException | PatientNotFoundException | AlreadyBookedAppointment ex) {
                         System.out.println(ex.getMessage());
                     } catch (InputMismatchException | IllegalArgumentException ex) {
                         System.out.println("Invalid Input!");
@@ -242,7 +243,7 @@ public class RegistrationModule {
 
     }
 
-    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, PatientNotFoundException, ClinicNotOpenException {
+    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, PatientNotFoundException, ClinicNotOpenException, AlreadyBookedAppointment {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register Walk-In Consultation ***\n");
@@ -308,6 +309,10 @@ public class RegistrationModule {
             throw new InvalidInputException("Invalid Patient Id!");
         }
         PatientEntity patientEntity = patientEntitySessionBeanRemote.retrievePatientByIdNum(pId);
+        
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity, currentDate)) {
+            throw new AlreadyBookedAppointment("Patient already has appointment on " + currentDate.toString());
+        }
 
         for (Time time : nextSixTimeSlots) {
             if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(currentDoctorEntity, time, currentDate)) {

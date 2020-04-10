@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.PatientEntity;
+import java.sql.Date;
 import java.util.List;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
@@ -28,5 +29,7 @@ public interface PatientEntitySessionBeanLocal {
     PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException;
     
     public void deletePatient(String identityNum) throws PatientNotFoundException;
+
+    Boolean hasAppointmentOnDay(PatientEntity patientEntity, Date date);
 
 }

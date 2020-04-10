@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.stateless;
+package ejb.session.stateful;
 
 import entity.AppointmentEntity;
 import java.util.List;
-import javax.ejb.Remote;
+import javax.ejb.Local;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 
@@ -15,8 +15,8 @@ import util.exception.AppointmentNotFoundException;
  *
  * @author p.tm
  */
-@Remote
-public interface AppointmentEntitySessionBeanRemote {
+@Local
+public interface AppointmentEntitySessionBeanLocal {
 
     public void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException;
 
@@ -29,6 +29,6 @@ public interface AppointmentEntitySessionBeanRemote {
     public AppointmentEntity cancelAppointment(Long appointmentId) throws AppointmentNotFoundException;
 
     List<AppointmentEntity> retrieveListOfAppointmentsByPatientId(long pId);
-
+    
     
 }

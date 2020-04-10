@@ -5,7 +5,7 @@
  */
 package ejb.session.singleton;
 
-import ejb.session.stateless.AppointmentEntitySessionBeanLocal;
+import ejb.session.stateful.AppointmentEntitySessionBeanLocal;
 import entity.AppointmentEntity;
 import entity.DoctorEntity;
 import entity.PatientEntity;

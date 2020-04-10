@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.stateless;
+package ejb.session.stateful;
 
 import entity.LeaveEntity;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 import util.exception.LeaveNotFoundException;
 
 /**
  *
  * @author p.tm
  */
-@Local
-public interface LeaveEntitySessionBeanLocal {
+@Remote
+public interface LeaveEntitySessionBeanRemote {
 
     public void createNewLeaveEntity(LeaveEntity leaveEntity);
 

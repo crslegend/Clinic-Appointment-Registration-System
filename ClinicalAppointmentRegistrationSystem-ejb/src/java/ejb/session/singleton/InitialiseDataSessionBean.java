@@ -55,11 +55,11 @@ public class InitialiseDataSessionBean {
         
         try {
             staffEntitySessionBeanLocal.addNewStaff(staffEntity);
-            doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity1);
-            doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity2);
-            doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity3);
+//            doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity1);
+//            doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity2);
+//            doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity3);
             
-        } catch (StaffUsernameExistException | DoctorExistException ex) {
+        } catch (StaffUsernameExistException ex) {
             System.out.println(ex.getMessage() + "\n");
         }
     }

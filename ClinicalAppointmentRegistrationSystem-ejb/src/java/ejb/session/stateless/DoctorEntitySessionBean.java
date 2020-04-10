@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import ejb.session.stateful.LeaveEntitySessionBeanLocal;
 import entity.AppointmentEntity;
 import entity.DoctorEntity;
 import entity.LeaveEntity;

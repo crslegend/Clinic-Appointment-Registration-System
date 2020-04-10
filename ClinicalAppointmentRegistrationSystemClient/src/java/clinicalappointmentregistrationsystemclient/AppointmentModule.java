@@ -6,7 +6,7 @@
 package clinicalappointmentregistrationsystemclient;
 
 import ejb.session.singleton.ComputationSessionBeanRemote;
-import ejb.session.stateless.AppointmentEntitySessionBeanRemote;
+import ejb.session.stateful.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import entity.AppointmentEntity;
@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 import util.exception.ClinicNotOpenException;
@@ -76,7 +77,7 @@ public class AppointmentModule {
                 } else if (response == 2) {
                     try {
                         addNewAppointment();
-                    } catch (DoctorNotFoundException | InvalidInputException | PatientNotFoundException | AppointmentInvalidException ex) {
+                    } catch (DoctorNotFoundException | InvalidInputException | PatientNotFoundException | AppointmentInvalidException | AlreadyBookedAppointment ex) {
                         System.out.println(ex.getMessage());
                     } catch (IllegalArgumentException ex) {
                         System.out.println("Invalid Input!");
@@ -84,7 +85,7 @@ public class AppointmentModule {
                         System.out.println("Invalid Input!");
                     } catch (ClinicNotOpenException ex) {
                         System.out.println(ex.getMessage());
-                    }
+                    } 
                 } else if (response == 3) {
                     try {
                         cancelAppointment();
@@ -137,7 +138,7 @@ public class AppointmentModule {
 
     }
 
-    public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, PatientNotFoundException, AppointmentInvalidException, InputMismatchException, ClinicNotOpenException {
+    public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, PatientNotFoundException, AppointmentInvalidException, InputMismatchException, ClinicNotOpenException, AlreadyBookedAppointment {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Appointment Operation :: Add Appointment ***\n");
@@ -186,6 +187,10 @@ public class AppointmentModule {
         System.out.print("Enter Patient Identity Number> ");
         PatientEntity patientEntity = patientEntitySessionBeanRemote.retrievePatientByIdNum(sc.nextLine().trim());
 
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity, date)) {
+            throw new AlreadyBookedAppointment("Patient already has appointment on " + date.toString());
+        }
+        
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDate(date);
         appointmentEntity.setDoctorEntity(doctorEntity);

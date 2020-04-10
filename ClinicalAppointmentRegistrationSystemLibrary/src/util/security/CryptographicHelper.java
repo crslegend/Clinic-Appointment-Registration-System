@@ -193,21 +193,21 @@ public class CryptographicHelper
     
     
     
-    public RSAPublicKeyImpl getRSAPublicKeyFromHexString(String publicKeyHexString)
-    {
-        try
-        {
-            byte[] publicKeyByteArray = hexStringToByteArray(publicKeyHexString);
-
-            return new RSAPublicKeyImpl(publicKeyByteArray);
-        }
-        catch(InvalidKeyException ex)
-        {
-            ex.printStackTrace();
-            
-            return null;
-        }
-    }
+//    public RSAPublicKeyImpl getRSAPublicKeyFromHexString(String publicKeyHexString)
+//    {
+//        try
+//        {
+//            byte[] publicKeyByteArray = hexStringToByteArray(publicKeyHexString);
+//
+//            return new RSAPublicKeyImpl(publicKeyByteArray);
+//        }
+//        catch(InvalidKeyException ex)
+//        {
+//            ex.printStackTrace();
+//            
+//            return null;
+//        }
+//    }
     
     
     
