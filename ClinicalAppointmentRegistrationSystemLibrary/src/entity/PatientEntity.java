@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import util.security.EncryptionHelper;
 
 /**
  *
@@ -155,7 +156,8 @@ public class PatientEntity implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
+        this.password = hashPassword;
     }
 
     public List<AppointmentEntity> getListOfAppointmentEntities() {

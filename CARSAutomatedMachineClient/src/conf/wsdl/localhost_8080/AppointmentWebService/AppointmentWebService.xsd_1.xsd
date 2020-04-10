@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.3 (RELEASE-2.4.3-ad3323c; 2019-01-21T17:46:06+0000) JAXWS-RI/2.3.2 JAXWS-API/2.3.2 JAXB-RI/2.3.2 JAXB-API/2.3.2 git-revision#unknown. --><xs:schema xmlns:tns="http://ws.session.ejb/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.session.ejb/">
+
+<xs:element name="AppointmentInvalidException" type="tns:AppointmentInvalidException"/>
+
+<xs:element name="AppointmentNotFoundException" type="tns:AppointmentNotFoundException"/>
+
+<xs:element name="ClinicNotOpenException" type="tns:ClinicNotOpenException"/>
+
+<xs:element name="DoctorNotFoundException" type="tns:DoctorNotFoundException"/>
+
+<xs:element name="cancelAppointment" type="tns:cancelAppointment"/>
+
+<xs:element name="cancelAppointmentResponse" type="tns:cancelAppointmentResponse"/>
+
+<xs:element name="createNewAppointment" type="tns:createNewAppointment"/>
+
+<xs:element name="createNewAppointmentResponse" type="tns:createNewAppointmentResponse"/>
+
+<xs:element name="getAllTimeSlots" type="tns:getAllTimeSlots"/>
+
+<xs:element name="getAllTimeSlotsResponse" type="tns:getAllTimeSlotsResponse"/>
+
+<xs:element name="hasAppointmentOnDay" type="tns:hasAppointmentOnDay"/>
+
+<xs:element name="hasAppointmentOnDayResponse" type="tns:hasAppointmentOnDayResponse"/>
+
+<xs:element name="isAvailableAtDate" type="tns:isAvailableAtDate"/>
+
+<xs:element name="isAvailableAtDateResponse" type="tns:isAvailableAtDateResponse"/>
+
+<xs:element name="isAvailableAtTimeDate" type="tns:isAvailableAtTimeDate"/>
+
+<xs:element name="isAvailableAtTimeDateResponse" type="tns:isAvailableAtTimeDateResponse"/>
+
+<xs:element name="retrieveAllDoctors" type="tns:retrieveAllDoctors"/>
+
+<xs:element name="retrieveAllDoctorsResponse" type="tns:retrieveAllDoctorsResponse"/>
+
+<xs:element name="retrieveAppointmentById" type="tns:retrieveAppointmentById"/>
+
+<xs:element name="retrieveAppointmentByIdResponse" type="tns:retrieveAppointmentByIdResponse"/>
+
+<xs:element name="retrieveDoctorById" type="tns:retrieveDoctorById"/>
+
+<xs:element name="retrieveDoctorByIdResponse" type="tns:retrieveDoctorByIdResponse"/>
+
+<xs:element name="retrieveListOfAppointmentsByPatientId" type="tns:retrieveListOfAppointmentsByPatientId"/>
+
+<xs:element name="retrieveListOfAppointmentsByPatientIdResponse" type="tns:retrieveListOfAppointmentsByPatientIdResponse"/>
+
+<xs:complexType name="isAvailableAtTimeDate">
+<xs:sequence>
+<xs:element name="arg0" type="tns:doctorEntity" minOccurs="0"/>
+<xs:element name="arg1" type="tns:time" minOccurs="0"/>
+<xs:element name="arg2" type="tns:date" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="doctorEntity">
+<xs:sequence>
+<xs:element name="doctorId" type="xs:long" minOccurs="0"/>
+<xs:element name="firstName" type="xs:string" minOccurs="0"/>
+<xs:element name="lastName" type="xs:string" minOccurs="0"/>
+<xs:element name="listOfLeaveEntities" type="tns:leaveEntity" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="qualifications" type="xs:string" minOccurs="0"/>
+<xs:element name="registration" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="leaveEntity">
+<xs:sequence>
+<xs:element name="leaveId" type="xs:long" minOccurs="0"/>
+<xs:element name="startDate" type="tns:date" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="date">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="time">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="isAvailableAtTimeDateResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DoctorNotFoundException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveAllDoctors">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="retrieveAllDoctorsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:doctorEntity" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllTimeSlots">
+<xs:sequence>
+<xs:element name="arg0" type="tns:date" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllTimeSlotsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:time" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ClinicNotOpenException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hasAppointmentOnDay">
+<xs:sequence>
+<xs:element name="arg0" type="tns:patientEntity" minOccurs="0"/>
+<xs:element name="arg1" type="tns:date" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="patientEntity">
+<xs:sequence>
+<xs:element name="address" type="xs:string" minOccurs="0"/>
+<xs:element name="age" type="xs:int" minOccurs="0"/>
+<xs:element name="firstName" type="xs:string" minOccurs="0"/>
+<xs:element name="gender" type="xs:string" minOccurs="0"/>
+<xs:element name="identityNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="lastName" type="xs:string" minOccurs="0"/>
+<xs:element name="listOfAppointmentEntities" type="tns:appointmentEntity" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="patientId" type="xs:long" minOccurs="0"/>
+<xs:element name="phone" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="appointmentEntity">
+<xs:sequence>
+<xs:element name="appointmentId" type="xs:long" minOccurs="0"/>
+<xs:element name="date" type="tns:date" minOccurs="0"/>
+<xs:element name="doctorEntity" type="tns:doctorEntity" minOccurs="0"/>
+<xs:element name="startTime" type="tns:time" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hasAppointmentOnDayResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveAppointmentById">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveAppointmentByIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:appointmentEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="AppointmentNotFoundException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cancelAppointment">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cancelAppointmentResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:appointmentEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="isAvailableAtDate">
+<xs:sequence>
+<xs:element name="arg0" type="tns:doctorEntity" minOccurs="0"/>
+<xs:element name="arg1" type="tns:date" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="isAvailableAtDateResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveDoctorById">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveDoctorByIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:doctorEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createNewAppointment">
+<xs:sequence>
+<xs:element name="arg0" type="tns:appointmentEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createNewAppointmentResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="AppointmentInvalidException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveListOfAppointmentsByPatientId">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveListOfAppointmentsByPatientIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:appointmentEntity" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

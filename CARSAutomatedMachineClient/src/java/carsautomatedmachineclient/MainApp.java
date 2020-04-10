@@ -3,20 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package carsselfservicekiosk;
+package carsautomatedmachineclient;
 
-import ejb.session.singleton.ComputationSessionBeanRemote;
-import ejb.session.singleton.ConsultationSessionBeanRemote;
-import ejb.session.stateful.AppointmentEntitySessionBeanRemote;
-import ejb.session.stateless.DoctorEntitySessionBeanRemote;
-import ejb.session.stateless.PatientEntitySessionBeanRemote;
-import entity.PatientEntity;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import util.exception.InvalidInputException;
-import util.exception.InvalidLoginCredentialException;
-import util.exception.PatientExistException;
-import util.exception.PatientNotFoundException;
+import ws.client.userop.InvalidLoginCredentialException;
+import ws.client.userop.InvalidLoginCredentialException_Exception;
+import ws.client.userop.PatientEntity;
+import ws.client.userop.PatientExistException_Exception;
+import ws.client.userop.PatientNotFoundException_Exception;
 
 /**
  *
@@ -24,33 +19,11 @@ import util.exception.PatientNotFoundException;
  */
 public class MainApp {
 
-    // session beans
-    private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
-    private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
-    private ComputationSessionBeanRemote computationSessionBeanRemote;
-    private ConsultationSessionBeanRemote consultationSessionBeanRemote;
-    private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
-
     // current logged in patient
     private PatientEntity currentPatientEntity;
-
-    // modules
-    private SelfServiceModule selfServiceModule;
+    private AppointmentServiceModule appointmentServiceModule;
 
     public MainApp() {
-    }
-
-    public MainApp(
-            DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote,
-            PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
-            ComputationSessionBeanRemote computationSessionBeanRemote,
-            ConsultationSessionBeanRemote consultationSessionBeanRemote,
-            AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote) {
-        this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
-        this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
-        this.computationSessionBeanRemote = computationSessionBeanRemote;
-        this.consultationSessionBeanRemote = consultationSessionBeanRemote;
-        this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
     }
 
     public void runApp() throws InputMismatchException {
@@ -73,27 +46,19 @@ public class MainApp {
                     try {
                         doRegister();
                         System.out.println("Registration Successful!\n");
-                    } catch (InvalidInputException ex) {
-                        System.out.println("Invalid input!");
-                    } catch (PatientExistException ex) {
+                    } catch (PatientExistException_Exception ex) {
                         System.out.println(ex.getMessage());
                     }
-                    
+
                 } else if (response == 2) {
                     try {
                         doLogin();
                         System.out.println("Login Successful!");
-                        selfServiceModule = new SelfServiceModule(
-                                doctorEntitySessionBeanRemote,
-                                computationSessionBeanRemote,
-                                consultationSessionBeanRemote,
-                                appointmentEntitySessionBeanRemote,
-                                patientEntitySessionBeanRemote,
-                                currentPatientEntity);
-                        selfServiceModule.selfServiceOperation();
-                    } catch (InvalidLoginCredentialException ex) {
+                        appointmentServiceModule = new AppointmentServiceModule(currentPatientEntity);
+                        appointmentServiceModule.appointmentServiceOperation();
+                    } catch (InvalidLoginCredentialException_Exception ex) {
                         System.out.println(ex.getMessage());
-                    } catch (PatientNotFoundException ex) {
+                    } catch (PatientNotFoundException_Exception ex) {
                         System.out.println(ex.getMessage());
                     }
                 } else if (response == 3) {
@@ -109,7 +74,7 @@ public class MainApp {
         }
     }
 
-    public void doLogin() throws InvalidLoginCredentialException, PatientNotFoundException {
+    public void doLogin() throws InvalidLoginCredentialException_Exception, PatientNotFoundException_Exception {
         Scanner scanner = new Scanner(System.in);
         String patientId = "";
         String password = "";
@@ -121,13 +86,13 @@ public class MainApp {
         password = scanner.nextLine().trim();
 
         if (patientId.length() > 0 && password.length() > 0) {
-            currentPatientEntity = patientEntitySessionBeanRemote.patientLogin(patientId, password);
+            currentPatientEntity = patientLogin(patientId, password);
         } else {
-            throw new InvalidLoginCredentialException("Missing login credentials!");
+            throw new InvalidLoginCredentialException_Exception("Missing login credentials!", new InvalidLoginCredentialException());
         }
     }
 
-    public void doRegister() throws InvalidInputException, PatientExistException {
+    public void doRegister() throws PatientExistException_Exception {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** Welcome to Self-Service Kiosk :: Register ***\n");
@@ -230,7 +195,7 @@ public class MainApp {
                     break;
                 } else {
                     System.out.println("Error! Phone cannot be empty\n");
-                    System.out.print("Re-enter Phone> ");
+                    System.out.print("Re-enter Phone> "); 
                 }
 
             }
@@ -248,11 +213,24 @@ public class MainApp {
 
             }
 
-            patientEntitySessionBeanRemote.addNewPatient(patientEntity);
+            addNewPatient(patientEntity);
 
         } catch (IllegalArgumentException | InputMismatchException ex) {
-            throw new InvalidInputException("Invalid input! Age, phone and password has to be a number and password has to be a 6-digit number. Please try again!");
+            System.out.println("Invalid input! Age, phone and password has to be a number and password has to be a 6-digit number. Please try again!");
         }
 
     }
+
+    private static PatientEntity patientLogin(java.lang.String arg0, java.lang.String arg1) throws PatientNotFoundException_Exception, InvalidLoginCredentialException_Exception {
+        ws.client.userop.CARSWebService service = new ws.client.userop.CARSWebService();
+        ws.client.userop.CARSRemoteUserWebService port = service.getCARSRemoteUserWebServicePort();
+        return port.patientLogin(arg0, arg1);
+    }
+
+    private static void addNewPatient(ws.client.userop.PatientEntity arg0) throws PatientExistException_Exception {
+        ws.client.userop.CARSWebService service = new ws.client.userop.CARSWebService();
+        ws.client.userop.CARSRemoteUserWebService port = service.getCARSRemoteUserWebServicePort();
+        port.addNewPatient(arg0);
+    }
+
 }

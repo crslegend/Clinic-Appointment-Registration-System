@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+        *** GENERATED FROM jax-ws.xml - DO NOT EDIT !                             ***
+        *** TO MODIFY wsimport options USE Web Service node -> Edit WS Attributes ***
+        *** TO CHANGE TARGETS GENERATED TO jaxws-build.xml COPY THOSE             ***
+        *** TARGETS TO ../build.xml AND MODIFY THAT FILE INSTEAD                  ***
+
+        --><project xmlns:carproject="http://www.netbeans.org/ns/car-project/1" xmlns:xalan="http://xml.apache.org/xslt" xmlns:jaxws="http://www.netbeans.org/ns/jax-ws/1">
+    <!--
+                ===================
+                JAX-WS WSIMPORT SECTION
+                ===================
+            -->
+    <target name="wsimport-init" depends="init">
+        <fail if="${wsimport.bad.version}" message="WsImport ant task defined in the classpath ${j2ee.platform.wsimport.classpath} has a serious bug. See http://wiki.netbeans.org/MetroIssue for details."/>
+        <mkdir dir="${build.generated.sources.dir}/jax-ws"/>
+        <property name="j2ee.platform.wsimport.classpath" value="${libs.jaxws21.classpath}"/>
+        <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+            <classpath path="${java.home}/../lib/tools.jar:${j2ee.platform.wsimport.classpath}"/>
+        </taskdef>
+    </target>
+    <target name="wsimport-client-AppointmentWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/AppointmentWebService"/>
+        <property name="wsdl-AppointmentWebService" location="${meta.inf}/xml-resources/web-service-references/AppointmentWebService/wsdl/localhost_8080/AppointmentWebService/AppointmentWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/AppointmentWebService" destdir="${build.generated.dir}/jax-wsCache/AppointmentWebService" wsdl="${wsdl-AppointmentWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/AppointmentWebService/AppointmentWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.appointmentop">
+            <depends file="${wsdl-AppointmentWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/AppointmentWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/AppointmentWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-AppointmentWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/AppointmentWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/appointmentop"/>
+    </target>
+    <target name="wsimport-client-CARSRemoteUserWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/CARSRemoteUserWebService"/>
+        <property name="wsdl-CARSRemoteUserWebService" location="${meta.inf}/xml-resources/web-service-references/CARSRemoteUserWebService/wsdl/localhost_8080/CARSWebService/CARSRemoteUserWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/CARSRemoteUserWebService" destdir="${build.generated.dir}/jax-wsCache/CARSRemoteUserWebService" wsdl="${wsdl-CARSRemoteUserWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/CARSWebService/CARSRemoteUserWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.userop">
+            <depends file="${wsdl-CARSRemoteUserWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/CARSRemoteUserWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/CARSRemoteUserWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-CARSRemoteUserWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/CARSRemoteUserWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/userop"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-AppointmentWebService, wsimport-client-CARSRemoteUserWebService"/>
+</project>

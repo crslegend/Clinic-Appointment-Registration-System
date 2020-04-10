@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -127,6 +128,7 @@ public class DoctorEntity implements Serializable {
         this.listOfLeaveEntities = listOfLeaveEntities;
     }
 
+    @XmlTransient
     public List<AppointmentEntity> getListOfAppointmentEntities() {
         return listOfAppointmentEntities;
     }

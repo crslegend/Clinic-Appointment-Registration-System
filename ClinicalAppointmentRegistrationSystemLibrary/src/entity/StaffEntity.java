@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import util.security.EncryptionHelper;
 
 /**
  *
@@ -106,7 +107,8 @@ public class StaffEntity implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
+        this.password = hashPassword;
     }
     
 }

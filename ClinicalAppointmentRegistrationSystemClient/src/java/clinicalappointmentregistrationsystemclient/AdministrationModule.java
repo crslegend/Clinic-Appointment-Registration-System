@@ -174,8 +174,8 @@ public class AdministrationModule {
                         newPatientEntity.setPhone(phone);
                         newPatientEntity.setAddress(address);
 
-                        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
-                        newPatientEntity.setPassword(hashPassword);
+//                        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
+                        newPatientEntity.setPassword(password);
                         newPatientEntity.setAge(age);
                         break;
                     } else {
@@ -640,8 +640,8 @@ public class AdministrationModule {
                 newStaffEntity.setLastName(lastName);
                 newStaffEntity.setUserName(username);
                 
-                String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
-                newStaffEntity.setPassword(hashPassword);
+//                String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
+                newStaffEntity.setPassword(password);
                 break;
             } else {
                 System.out.println("Input fields cannot be empty!\n");

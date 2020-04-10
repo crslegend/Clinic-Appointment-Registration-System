@@ -26,10 +26,10 @@ public interface PatientEntitySessionBeanLocal {
 
     public void updatePatient(PatientEntity patientEntity) throws PatientNotFoundException;
 
-    PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException;
+    public PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException;
     
     public void deletePatient(String identityNum) throws PatientNotFoundException;
 
-    Boolean hasAppointmentOnDay(PatientEntity patientEntity, Date date);
+    public Boolean hasAppointmentOnDay(PatientEntity patientEntity, Date date);
 
 }
