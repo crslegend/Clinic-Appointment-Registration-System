@@ -9,6 +9,7 @@ import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
 import ejb.session.stateful.AppointmentEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
+import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import entity.AppointmentEntity;
 import entity.DoctorEntity;
 import entity.PatientEntity;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 import util.exception.ClinicNotOpenException;
@@ -35,6 +37,7 @@ public class SelfServiceModule {
     private ComputationSessionBeanRemote computationSessionBeanRemote;
     private ConsultationSessionBeanRemote consultationSessionBeanRemote;
     private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
+    private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     private PatientEntity currentPatientEntity;
 
     public SelfServiceModule() {
@@ -45,12 +48,14 @@ public class SelfServiceModule {
             ComputationSessionBeanRemote computationSessionBeanRemote,
             ConsultationSessionBeanRemote consultationSessionBeanRemote,
             AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote,
+            PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
             PatientEntity currentPatientEntity) {
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.currentPatientEntity = currentPatientEntity;
         this.computationSessionBeanRemote = computationSessionBeanRemote;
         this.consultationSessionBeanRemote = consultationSessionBeanRemote;
         this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
+        this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
     }
 
     public void selfServiceOperation() {
@@ -77,7 +82,7 @@ public class SelfServiceModule {
                     if (response == 1) {
                         try {
                             registerWalkInConsult();
-                        } catch (DoctorNotFoundException | InvalidInputException ex) {
+                        } catch (DoctorNotFoundException | InvalidInputException | AlreadyBookedAppointment ex) {
                             System.out.println(ex.getMessage());
                         } catch (InputMismatchException | IllegalArgumentException ex) {
                             System.out.println("Invalid Input!");
@@ -96,7 +101,7 @@ public class SelfServiceModule {
                     } else if (response == 4) {
                         try {
                             addNewAppointment();
-                        } catch (DoctorNotFoundException ex) {
+                        } catch (DoctorNotFoundException | AlreadyBookedAppointment ex) {
                             System.out.println(ex.getMessage());
                         } catch (IllegalArgumentException ex) {
                             System.out.println("Invalid Input!");
@@ -126,7 +131,6 @@ public class SelfServiceModule {
                 System.out.println("Invalid Input! Please try again");
                 scanner.nextLine();
             }
-            
 
             if (response == 6) {
                 break;
@@ -134,12 +138,16 @@ public class SelfServiceModule {
         }
     }
 
-    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, ClinicNotOpenException {
+    public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, ClinicNotOpenException, AlreadyBookedAppointment {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** Self-Service Kiosk :: Register Walk-In Consultation ***\n");
 
         // get current date
         Date currentDate = new Date(System.currentTimeMillis());
+
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(currentPatientEntity, currentDate)) {
+            throw new AlreadyBookedAppointment("Patient already has appointment on " + currentDate.toString());
+        }
 
         // get docs not on leave
         List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveDoctorsOnDuty();
@@ -267,7 +275,7 @@ public class SelfServiceModule {
 
     }
 
-    public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, AppointmentInvalidException, InputMismatchException, ClinicNotOpenException {
+    public void addNewAppointment() throws DoctorNotFoundException, IllegalArgumentException, InvalidInputException, AppointmentInvalidException, InputMismatchException, ClinicNotOpenException, AlreadyBookedAppointment {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** Self-Service Kiosk :: Add Appointment ***\n");
@@ -292,6 +300,9 @@ public class SelfServiceModule {
         }
         if (date.before(Date.valueOf(LocalDate.now().plusDays(2)))) {
             throw new InvalidInputException("Appointment should be booked 2 days in advance!");
+        }
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(currentPatientEntity, date)) {
+            throw new AlreadyBookedAppointment("Patient already has appointment on " + date.toString());
         }
         System.out.println();
 
