@@ -10,8 +10,6 @@ import entity.AppointmentEntity;
 import entity.PatientEntity;
 import java.sql.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -26,7 +24,7 @@ import util.exception.AppointmentNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
-import util.security.CryptographicHelper;
+import util.security.EncryptionHelper;
 
 /**
  *
@@ -106,8 +104,9 @@ public class PatientEntitySessionBean implements PatientEntitySessionBeanRemote,
     @Override
     public PatientEntity patientLogin(String pId, String password) throws PatientNotFoundException, InvalidLoginCredentialException {
         PatientEntity patientEntity = retrievePatientByIdNum(pId);
-        String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
 
+        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
+        
         if (patientEntity.getPassword().equals(hashPassword)) {
             return patientEntity;
         } else {

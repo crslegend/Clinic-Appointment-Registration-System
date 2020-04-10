@@ -17,7 +17,7 @@ import javax.ejb.Startup;
 import util.exception.DoctorExistException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
-import util.security.CryptographicHelper;
+import util.security.EncryptionHelper;
 
 /**
  *
@@ -47,7 +47,7 @@ public class InitialiseDataSessionBean {
     }
     
     public void initialiseData() {
-        String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing("password"));
+        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing("password"));
         StaffEntity staffEntity = new StaffEntity("Eric", "Some", "manager", hashPassword);
         DoctorEntity doctorEntity1 = new DoctorEntity("Tan", "Ming", "S10011", "BMBS");
         DoctorEntity doctorEntity2 = new DoctorEntity("Clair", "Hahn", "S41221", "MBBCh");

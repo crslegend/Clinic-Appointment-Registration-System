@@ -17,7 +17,7 @@ import util.exception.InvalidInputException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
-import util.security.CryptographicHelper;
+import util.security.EncryptionHelper;
 
 /**
  *
@@ -154,7 +154,7 @@ public class MainApp {
                 String input = sc.nextLine().trim();
                 if (input.length() == 6) {
                     Long num = Long.parseLong(input);
-                    String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(input));
+                    String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(input));
                     patientEntity.setPassword(hashPassword);
                     break;
                 } else {
