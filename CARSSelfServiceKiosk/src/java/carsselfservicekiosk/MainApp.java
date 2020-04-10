@@ -89,6 +89,7 @@ public class MainApp {
                                 computationSessionBeanRemote,
                                 consultationSessionBeanRemote,
                                 appointmentEntitySessionBeanRemote,
+                                patientEntitySessionBeanRemote,
                                 currentPatientEntity);
                         selfServiceModule.selfServiceOperation();
                     } catch (InvalidLoginCredentialException ex) {
