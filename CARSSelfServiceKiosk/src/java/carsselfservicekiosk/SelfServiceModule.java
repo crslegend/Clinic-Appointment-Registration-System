@@ -227,12 +227,17 @@ public class SelfServiceModule {
         System.out.println("\nAppointments: ");
         System.out.printf("%-3s|%-11s|%-6s|%-64s\n", "Id", "Date", "Time", "Doctor");
 
+        // get current date
+        Date currentDate = Date.valueOf(LocalDate.now());
+        
         List<AppointmentEntity> appointments = appointmentEntitySessionBeanRemote.retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());
         appointments.forEach(appt -> {
-            System.out.printf("%-3s|%-11s|%-6s|%-64s\n", appt.getAppointmentId(),
-                    appt.getDate().toString(),
-                    appt.getStartTime().toString().substring(0, 5),
-                    appt.getDoctorEntity().getFullName());
+            if (appt.getDate().toString().equals(currentDate.toString())) {
+                System.out.printf("%-3s|%-11s|%-6s|%-64s\n", appt.getAppointmentId(),
+                        appt.getDate().toString(),
+                        appt.getStartTime().toString().substring(0, 5),
+                        appt.getDoctorEntity().getFullName());
+            }
         });
 
         System.out.print("\nEnter Appointment Id> ");

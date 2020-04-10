@@ -35,17 +35,17 @@ import util.security.EncryptionHelper;
  * @author p.tm
  */
 public class RegistrationModule {
-
+    
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
     private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     private ComputationSessionBeanRemote computationSessionBeanRemote;
     private ConsultationSessionBeanRemote consultationSessionBeanRemote;
     private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
     private StaffEntity currStaffEntity;
-
+    
     public RegistrationModule() {
     }
-
+    
     public RegistrationModule(
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
             DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote,
@@ -53,7 +53,7 @@ public class RegistrationModule {
             ComputationSessionBeanRemote computationSessionBeanRemote,
             ConsultationSessionBeanRemote consultationSessionBeanRemote,
             AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote) {
-
+        
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.currStaffEntity = staffEntity;
@@ -61,11 +61,11 @@ public class RegistrationModule {
         this.consultationSessionBeanRemote = consultationSessionBeanRemote;
         this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
     }
-
+    
     public void registrationOperation() {
         Scanner scanner = new Scanner(System.in);
         Integer response = 0;
-
+        
         while (true) {
             System.out.println("\n*** CARS :: Registration Operation ***\n");
             System.out.println("1: Register New Patient");
@@ -73,11 +73,11 @@ public class RegistrationModule {
             System.out.println("3: Register Consultation By Appointment");
             System.out.println("4: Back\n");
             response = 0;
-
+            
             while (response < 1 || response > 4) {
                 System.out.print("> ");
                 response = scanner.nextInt();
-
+                
                 if (response == 1) {
                     try {
                         registerNewPatient();
@@ -107,22 +107,22 @@ public class RegistrationModule {
                     System.out.println("Invalid option, please try again!\n");
                 }
             }
-
+            
             if (response == 4) {
                 break;
             }
         }
     }
-
+    
     public void registerNewPatient() throws InvalidInputException, PatientExistException {
-
+        
         PatientEntity pe = new PatientEntity();
         Scanner sc = new Scanner(System.in);
-
+        
         System.out.println("\n*** CARS :: Registration Operation :: Register New Patient ***\n");
-
+        
         try {
-
+            
             System.out.print("Enter Identity Number> ");
             while (true) {
                 String input = sc.nextLine().trim();
@@ -133,9 +133,9 @@ public class RegistrationModule {
                     System.out.println("Error! Identity Number cannot be empty\n");
                     System.out.print("Re-enter Identity Number> ");
                 }
-
+                
             }
-
+            
             System.out.print("Enter Password> ");
             while (true) {
                 String input = sc.nextLine().trim();
@@ -148,9 +148,9 @@ public class RegistrationModule {
                     System.out.println("Error! Password cannot be empty. Password has to be a 6-digit number!\n");
                     System.out.print("Re-enter Password> ");
                 }
-
+                
             }
-
+            
             System.out.print("Enter First Name> ");
             while (true) {
                 String input = sc.nextLine().trim();
@@ -161,9 +161,9 @@ public class RegistrationModule {
                     System.out.println("Error! First Name cannot be empty\n");
                     System.out.print("Re-enter First Name> ");
                 }
-
+                
             }
-
+            
             System.out.print("Enter Last Name> ");
             while (true) {
                 String input = sc.nextLine().trim();
@@ -174,14 +174,14 @@ public class RegistrationModule {
                     System.out.println("Error! Last Name cannot be empty\n");
                     System.out.print("Re-enter Last Name> ");
                 }
-
+                
             }
-
+            
             System.out.print("Gender> ");
             while (true) {
                 String input = sc.nextLine().trim();
                 if (input.length() > 0) {
-                   if (input.equalsIgnoreCase("F") || input.equalsIgnoreCase("M")) {
+                    if (input.equalsIgnoreCase("F") || input.equalsIgnoreCase("M")) {
                         pe.setGender(input);
                         break;
                     } else {
@@ -192,9 +192,9 @@ public class RegistrationModule {
                     System.out.println("Error! Gender cannot be empty\n");
                     System.out.print("Re-enter Gender> ");
                 }
-
+                
             }
-
+            
             System.out.print("Enter Age> ");
             while (true) {
                 int input = sc.nextInt();
@@ -207,7 +207,7 @@ public class RegistrationModule {
                     System.out.print("Re-enter Age> ");
                 }
             }
-
+            
             System.out.print("Enter Phone> ");
             while (true) {
                 String input = sc.nextLine().trim();
@@ -219,9 +219,9 @@ public class RegistrationModule {
                     System.out.println("Error! Phone cannot be empty\n");
                     System.out.print("Re-enter Phone> ");
                 }
-
+                
             }
-
+            
             System.out.print("Enter Address> ");
             while (true) {
                 String input = sc.nextLine().trim();
@@ -232,19 +232,19 @@ public class RegistrationModule {
                     System.out.println("Error! Address cannot be empty\n");
                     System.out.print("Re-enter Address> ");
                 }
-
+                
             }
-
+            
             patientEntitySessionBeanRemote.addNewPatient(pe);
-
+            
         } catch (IllegalArgumentException | InputMismatchException ex) {
             throw new InvalidInputException("Invalid input! Age, phone and password has to be a number and password has to be a 6-digit number. Please try again!");
         }
-
+        
     }
-
+    
     public void registerWalkInConsult() throws DoctorNotFoundException, InvalidInputException, InputMismatchException, PatientNotFoundException, ClinicNotOpenException, AlreadyBookedAppointment {
-
+        
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register Walk-In Consultation ***\n");
 
@@ -253,7 +253,7 @@ public class RegistrationModule {
 
         // get docs not on leave
         List<DoctorEntity> doctors = doctorEntitySessionBeanRemote.retrieveDoctorsOnDuty();
-
+        
         System.out.println("Doctor:");
         System.out.printf("%-3s|%-64s\n", "Id", "Name");
         doctors.forEach((de) -> {
@@ -313,14 +313,14 @@ public class RegistrationModule {
         if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity, currentDate)) {
             throw new AlreadyBookedAppointment("Patient already has appointment on " + currentDate.toString());
         }
-
+        
         for (Time time : nextSixTimeSlots) {
             if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(currentDoctorEntity, time, currentDate)) {
                 apptTime = time;
                 break;
             }
         }
-
+        
         try {
             long queueNumber = consultationSessionBeanRemote.createNewConsultation(currentDoctorEntity, patientEntity, apptTime, currentDate);
             System.out.println(patientEntity.getFullName()
@@ -332,43 +332,48 @@ public class RegistrationModule {
         } catch (AppointmentInvalidException ex) {
             System.out.println("Something went wrong while creating appointment");
         }
-
+        
     }
-
+    
     public void registerConsultByAppointment() throws PatientNotFoundException, AppointmentNotFoundException, InputMismatchException, IllegalArgumentException {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** CARS :: Registration Operation :: Register Consultation By Appointment ***\n");
-
+        
         System.out.print("Enter Patient Identity Number> ");
         String pId = sc.nextLine().trim();
         PatientEntity patientEntity = patientEntitySessionBeanRemote.retrievePatientByIdNum(pId);
-
+        
         System.out.println("\nAppointments: ");
         System.out.printf("%-3s|%-11s|%-6s|%-64s\n", "Id", "Date", "Time", "Doctor");
 
+        // get current date
+        Date currentDate = Date.valueOf(LocalDate.now());
+        
         List<AppointmentEntity> appointments = appointmentEntitySessionBeanRemote.retrieveListOfAppointmentsByPatientId(patientEntity.getPatientId());
         appointments.forEach(appt -> {
-            System.out.printf("%-3s|%-11s|%-6s|%-64s\n", appt.getAppointmentId(),
-                    appt.getDate().toString(),
-                    appt.getStartTime().toString().substring(0, 5),
-                    appt.getDoctorEntity().getFullName());
+            if (appt.getDate().toString().equals(currentDate.toString())) {
+                System.out.printf("%-3s|%-11s|%-6s|%-64s\n", appt.getAppointmentId(),
+                        appt.getDate().toString(),
+                        appt.getStartTime().toString().substring(0, 5),
+                        appt.getDoctorEntity().getFullName());
+            }
         });
-
+        
         System.out.print("\nEnter Appointment Id> ");
         long aId = sc.nextLong();
         sc.nextLine();
         AppointmentEntity appointmentEntity = null;
-
+        
         for (AppointmentEntity appt : appointments) {
             if (appt.getAppointmentId() == aId) {
                 appointmentEntity = appt;
             }
         }
-
+        
         if (appointmentEntity == null) {
             throw new AppointmentNotFoundException("Appointment not found!");
         }
-
+        
         System.out.println(patientEntity.getFullName()
                 + " appointment is confirmed with Dr. "
                 + appointmentEntity.getDoctorEntity().getFullName()
@@ -376,5 +381,5 @@ public class RegistrationModule {
                 + appointmentEntity.getStartTime().toString().substring(0, 5));
         System.out.println("Queue Number is: " + consultationSessionBeanRemote.confirmConsultation() + ".");
     }
-
+    
 }
