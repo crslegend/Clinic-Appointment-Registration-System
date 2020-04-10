@@ -23,7 +23,7 @@ import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
 import util.exception.StaffNotFoundException;
 import util.exception.StaffUsernameExistException;
-import util.security.CryptographicHelper;
+import util.security.EncryptionHelper;
 
 /**
  *
@@ -174,7 +174,7 @@ public class AdministrationModule {
                         newPatientEntity.setPhone(phone);
                         newPatientEntity.setAddress(address);
 
-                        String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
+                        String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
                         newPatientEntity.setPassword(hashPassword);
                         newPatientEntity.setAge(age);
                         break;
@@ -640,7 +640,7 @@ public class AdministrationModule {
                 newStaffEntity.setLastName(lastName);
                 newStaffEntity.setUserName(username);
                 
-                String hashPassword = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password));
+                String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(password));
                 newStaffEntity.setPassword(hashPassword);
                 break;
             } else {
