@@ -5,6 +5,7 @@
  */
 package clinicalappointmentregistrationsystemclient;
 
+import ejb.session.stateful.LeaveEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -34,18 +35,24 @@ public class AdministrationModule {
     private StaffEntitySessionBeanRemote staffEntitySessionBeanRemote;
     private DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote;
     private PatientEntitySessionBeanRemote patientEntitySessionBeanRemote;
+    private LeaveEntitySessionBeanRemote leaveEntitySessionBeanRemote;
     
     private StaffEntity currentStaffEntity;
 
     public AdministrationModule() {
     }
 
-    public AdministrationModule(StaffEntitySessionBeanRemote staffEntitySessionBeanRemote, DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote, PatientEntitySessionBeanRemote patientEntitySessionBeanRemote, StaffEntity currentStaffEntity) {
+    public AdministrationModule(StaffEntitySessionBeanRemote staffEntitySessionBeanRemote, 
+            DoctorEntitySessionBeanRemote doctorEntitySessionBeanRemote, 
+            PatientEntitySessionBeanRemote patientEntitySessionBeanRemote, 
+            StaffEntity currentStaffEntity, 
+            LeaveEntitySessionBeanRemote leaveEntitySessionBeanRemote) {
         this();
         this.staffEntitySessionBeanRemote = staffEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.currentStaffEntity = currentStaffEntity;
+        this.leaveEntitySessionBeanRemote = leaveEntitySessionBeanRemote;
     }
     
     public void administrationOperation() {
@@ -566,7 +573,7 @@ public class AdministrationModule {
         Date date = Date.valueOf(scanner.nextLine().trim());
         
         try {
-            doctorEntitySessionBeanRemote.applyLeave(input, date);
+            leaveEntitySessionBeanRemote.applyLeave(input, date);
             System.out.println("Leave has been applied successfully!\n");
         } catch (LeaveRejectedException | DoctorNotFoundException ex) {
             System.out.println(ex.getMessage() + "\n");

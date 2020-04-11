@@ -70,9 +70,6 @@ public class InitialiseDataSessionBean {
         hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing("001001"));
         PatientEntity patientEntity = new PatientEntity("Sarah", "Yi", "S9867027A", "F", 22, "93718799", "13, Clementi Road", hashPassword);
         
-        AppointmentEntity appointmentEntity = new AppointmentEntity(Date.valueOf("2020-04-17"), Time.valueOf("10:00:00"));
-        appointmentEntity.setDoctorEntity(doctorEntity1);
-        appointmentEntity.setPatientEntity(patientEntity);
         
         try {
             staffEntitySessionBeanLocal.addNewStaff(staffEntity);
@@ -80,9 +77,8 @@ public class InitialiseDataSessionBean {
             doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity2);
             doctorEntitySessionBeanLocal.addNewDoctor(doctorEntity3);
             patientEntitySessionBeanLocal.addNewPatient(patientEntity);
-            appointmentEntitySessionBeanLocal.createNewAppointment(appointmentEntity);
             
-        } catch (StaffUsernameExistException | DoctorExistException | PatientExistException | AppointmentInvalidException ex) {
+        } catch (StaffUsernameExistException | DoctorExistException | PatientExistException ex) {
             System.out.println(ex.getMessage() + "\n");
         }
     }

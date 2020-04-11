@@ -6,9 +6,12 @@
 package ejb.session.stateful;
 
 import entity.LeaveEntity;
+import java.sql.Date;
 import java.util.List;
 import javax.ejb.Remote;
+import util.exception.DoctorNotFoundException;
 import util.exception.LeaveNotFoundException;
+import util.exception.LeaveRejectedException;
 
 /**
  *
@@ -26,5 +29,7 @@ public interface LeaveEntitySessionBeanRemote {
     public LeaveEntity deleteLeaveEntity(LeaveEntity leaveEntity) throws LeaveNotFoundException;
 
     public LeaveEntity retrieveLeaveEntityById(Long leaveId) throws LeaveNotFoundException;
+
+    public void applyLeave(String registration, Date dateOfLeave) throws LeaveRejectedException, DoctorNotFoundException;
     
 }
