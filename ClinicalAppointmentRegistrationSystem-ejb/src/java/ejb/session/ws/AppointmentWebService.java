@@ -14,6 +14,7 @@ import entity.DoctorEntity;
 import entity.PatientEntity;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.jws.WebService;
@@ -61,23 +62,28 @@ public class AppointmentWebService {
     }
 
     @WebMethod
-    public Boolean isAvailableAtDate(@WebParam DoctorEntity doctorEntity, @WebParam Date date) throws DoctorNotFoundException {
-        return doctorEntitySessionBeanLocal.isAvailableAtDate(doctorEntity, date);
+    public Boolean isAvailableAtDate(@WebParam DoctorEntity doctorEntity, @WebParam String date) throws DoctorNotFoundException {
+        return doctorEntitySessionBeanLocal.isAvailableAtDate(doctorEntity, Date.valueOf(date));
     }
 
     @WebMethod
-    public Boolean hasAppointmentOnDay(@WebParam PatientEntity patientEntity, @WebParam Date date) {
-        return patientEntitySessionBeanLocal.hasAppointmentOnDay(patientEntity, date);
+    public Boolean hasAppointmentOnDay(@WebParam PatientEntity patientEntity, @WebParam String date) {
+        return patientEntitySessionBeanLocal.hasAppointmentOnDay(patientEntity, Date.valueOf(date));
     }
 
     @WebMethod
-    public List<Time> getAllTimeSlots(@WebParam Date date) throws ClinicNotOpenException {
-        return computationSessionBeanLocal.getAllTimeSlots(date);
+    public List<String> getAllTimeSlots(@WebParam String date) throws ClinicNotOpenException {
+        List<Time> timings = computationSessionBeanLocal.getAllTimeSlots(Date.valueOf(date));
+        List<String> timingStrings = new ArrayList<>();
+        for (Time t : timings) {
+            timingStrings.add(t.toString());
+        }
+        return timingStrings;
     }
 
     @WebMethod
-    public Boolean isAvailableAtTimeDate(@WebParam DoctorEntity doctorEntity, @WebParam Time time, @WebParam Date date) throws DoctorNotFoundException {
-        return doctorEntitySessionBeanLocal.isAvailableAtDate(doctorEntity, date);
+    public Boolean isAvailableAtTimeDate(@WebParam DoctorEntity doctorEntity, @WebParam String time, @WebParam String date) throws DoctorNotFoundException {
+        return doctorEntitySessionBeanLocal.isAvailableAtTimeDate(doctorEntity, Time.valueOf(time), Date.valueOf(date));
     }
 
     @WebMethod

@@ -4,20 +4,26 @@
 <xsd:import namespace="http://ws.session.ejb/" schemaLocation="http://localhost:8080/AppointmentWebService/AppointmentWebService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="isAvailableAtDate">
-<part name="parameters" element="tns:isAvailableAtDate"/>
+<message name="hasAppointmentOnDay">
+<part name="parameters" element="tns:hasAppointmentOnDay"/>
 </message>
-<message name="isAvailableAtDateResponse">
-<part name="parameters" element="tns:isAvailableAtDateResponse"/>
+<message name="hasAppointmentOnDayResponse">
+<part name="parameters" element="tns:hasAppointmentOnDayResponse"/>
 </message>
-<message name="DoctorNotFoundException">
-<part name="fault" element="tns:DoctorNotFoundException"/>
+<message name="cancelAppointment">
+<part name="parameters" element="tns:cancelAppointment"/>
 </message>
-<message name="retrieveDoctorById">
-<part name="parameters" element="tns:retrieveDoctorById"/>
+<message name="cancelAppointmentResponse">
+<part name="parameters" element="tns:cancelAppointmentResponse"/>
 </message>
-<message name="retrieveDoctorByIdResponse">
-<part name="parameters" element="tns:retrieveDoctorByIdResponse"/>
+<message name="AppointmentNotFoundException">
+<part name="fault" element="tns:AppointmentNotFoundException"/>
+</message>
+<message name="retrieveListOfAppointmentsByPatientId">
+<part name="parameters" element="tns:retrieveListOfAppointmentsByPatientId"/>
+</message>
+<message name="retrieveListOfAppointmentsByPatientIdResponse">
+<part name="parameters" element="tns:retrieveListOfAppointmentsByPatientIdResponse"/>
 </message>
 <message name="retrieveAllDoctors">
 <part name="parameters" element="tns:retrieveAllDoctors"/>
@@ -25,11 +31,20 @@
 <message name="retrieveAllDoctorsResponse">
 <part name="parameters" element="tns:retrieveAllDoctorsResponse"/>
 </message>
-<message name="isAvailableAtTimeDate">
-<part name="parameters" element="tns:isAvailableAtTimeDate"/>
+<message name="retrieveDoctorById">
+<part name="parameters" element="tns:retrieveDoctorById"/>
 </message>
-<message name="isAvailableAtTimeDateResponse">
-<part name="parameters" element="tns:isAvailableAtTimeDateResponse"/>
+<message name="retrieveDoctorByIdResponse">
+<part name="parameters" element="tns:retrieveDoctorByIdResponse"/>
+</message>
+<message name="DoctorNotFoundException">
+<part name="fault" element="tns:DoctorNotFoundException"/>
+</message>
+<message name="isAvailableAtDate">
+<part name="parameters" element="tns:isAvailableAtDate"/>
+</message>
+<message name="isAvailableAtDateResponse">
+<part name="parameters" element="tns:isAvailableAtDateResponse"/>
 </message>
 <message name="getAllTimeSlots">
 <part name="parameters" element="tns:getAllTimeSlots"/>
@@ -40,6 +55,12 @@
 <message name="ClinicNotOpenException">
 <part name="fault" element="tns:ClinicNotOpenException"/>
 </message>
+<message name="isAvailableAtTimeDate">
+<part name="parameters" element="tns:isAvailableAtTimeDate"/>
+</message>
+<message name="isAvailableAtTimeDateResponse">
+<part name="parameters" element="tns:isAvailableAtTimeDateResponse"/>
+</message>
 <message name="createNewAppointment">
 <part name="parameters" element="tns:createNewAppointment"/>
 </message>
@@ -49,71 +70,16 @@
 <message name="AppointmentInvalidException">
 <part name="fault" element="tns:AppointmentInvalidException"/>
 </message>
-<message name="hasAppointmentOnDay">
-<part name="parameters" element="tns:hasAppointmentOnDay"/>
-</message>
-<message name="hasAppointmentOnDayResponse">
-<part name="parameters" element="tns:hasAppointmentOnDayResponse"/>
-</message>
 <message name="retrieveAppointmentById">
 <part name="parameters" element="tns:retrieveAppointmentById"/>
 </message>
 <message name="retrieveAppointmentByIdResponse">
 <part name="parameters" element="tns:retrieveAppointmentByIdResponse"/>
 </message>
-<message name="AppointmentNotFoundException">
-<part name="fault" element="tns:AppointmentNotFoundException"/>
-</message>
-<message name="cancelAppointment">
-<part name="parameters" element="tns:cancelAppointment"/>
-</message>
-<message name="cancelAppointmentResponse">
-<part name="parameters" element="tns:cancelAppointmentResponse"/>
-</message>
-<message name="retrieveListOfAppointmentsByPatientId">
-<part name="parameters" element="tns:retrieveListOfAppointmentsByPatientId"/>
-</message>
-<message name="retrieveListOfAppointmentsByPatientIdResponse">
-<part name="parameters" element="tns:retrieveListOfAppointmentsByPatientIdResponse"/>
-</message>
 <portType name="AppointmentWebService">
-<operation name="isAvailableAtDate">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtDateRequest" message="tns:isAvailableAtDate"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtDateResponse" message="tns:isAvailableAtDateResponse"/>
-<fault message="tns:DoctorNotFoundException" name="DoctorNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtDate/Fault/DoctorNotFoundException"/>
-</operation>
-<operation name="retrieveDoctorById">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveDoctorByIdRequest" message="tns:retrieveDoctorById"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveDoctorByIdResponse" message="tns:retrieveDoctorByIdResponse"/>
-<fault message="tns:DoctorNotFoundException" name="DoctorNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveDoctorById/Fault/DoctorNotFoundException"/>
-</operation>
-<operation name="retrieveAllDoctors">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAllDoctorsRequest" message="tns:retrieveAllDoctors"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAllDoctorsResponse" message="tns:retrieveAllDoctorsResponse"/>
-</operation>
-<operation name="isAvailableAtTimeDate">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtTimeDateRequest" message="tns:isAvailableAtTimeDate"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtTimeDateResponse" message="tns:isAvailableAtTimeDateResponse"/>
-<fault message="tns:DoctorNotFoundException" name="DoctorNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtTimeDate/Fault/DoctorNotFoundException"/>
-</operation>
-<operation name="getAllTimeSlots">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/getAllTimeSlotsRequest" message="tns:getAllTimeSlots"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/getAllTimeSlotsResponse" message="tns:getAllTimeSlotsResponse"/>
-<fault message="tns:ClinicNotOpenException" name="ClinicNotOpenException" wsam:Action="http://ws.session.ejb/AppointmentWebService/getAllTimeSlots/Fault/ClinicNotOpenException"/>
-</operation>
-<operation name="createNewAppointment">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/createNewAppointmentRequest" message="tns:createNewAppointment"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/createNewAppointmentResponse" message="tns:createNewAppointmentResponse"/>
-<fault message="tns:AppointmentInvalidException" name="AppointmentInvalidException" wsam:Action="http://ws.session.ejb/AppointmentWebService/createNewAppointment/Fault/AppointmentInvalidException"/>
-</operation>
 <operation name="hasAppointmentOnDay">
 <input wsam:Action="http://ws.session.ejb/AppointmentWebService/hasAppointmentOnDayRequest" message="tns:hasAppointmentOnDay"/>
 <output wsam:Action="http://ws.session.ejb/AppointmentWebService/hasAppointmentOnDayResponse" message="tns:hasAppointmentOnDayResponse"/>
-</operation>
-<operation name="retrieveAppointmentById">
-<input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAppointmentByIdRequest" message="tns:retrieveAppointmentById"/>
-<output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAppointmentByIdResponse" message="tns:retrieveAppointmentByIdResponse"/>
-<fault message="tns:AppointmentNotFoundException" name="AppointmentNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAppointmentById/Fault/AppointmentNotFoundException"/>
 </operation>
 <operation name="cancelAppointment">
 <input wsam:Action="http://ws.session.ejb/AppointmentWebService/cancelAppointmentRequest" message="tns:cancelAppointment"/>
@@ -124,10 +90,44 @@
 <input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveListOfAppointmentsByPatientIdRequest" message="tns:retrieveListOfAppointmentsByPatientId"/>
 <output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveListOfAppointmentsByPatientIdResponse" message="tns:retrieveListOfAppointmentsByPatientIdResponse"/>
 </operation>
+<operation name="retrieveAllDoctors">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAllDoctorsRequest" message="tns:retrieveAllDoctors"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAllDoctorsResponse" message="tns:retrieveAllDoctorsResponse"/>
+</operation>
+<operation name="retrieveDoctorById">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveDoctorByIdRequest" message="tns:retrieveDoctorById"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveDoctorByIdResponse" message="tns:retrieveDoctorByIdResponse"/>
+<fault message="tns:DoctorNotFoundException" name="DoctorNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveDoctorById/Fault/DoctorNotFoundException"/>
+</operation>
+<operation name="isAvailableAtDate">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtDateRequest" message="tns:isAvailableAtDate"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtDateResponse" message="tns:isAvailableAtDateResponse"/>
+<fault message="tns:DoctorNotFoundException" name="DoctorNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtDate/Fault/DoctorNotFoundException"/>
+</operation>
+<operation name="getAllTimeSlots">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/getAllTimeSlotsRequest" message="tns:getAllTimeSlots"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/getAllTimeSlotsResponse" message="tns:getAllTimeSlotsResponse"/>
+<fault message="tns:ClinicNotOpenException" name="ClinicNotOpenException" wsam:Action="http://ws.session.ejb/AppointmentWebService/getAllTimeSlots/Fault/ClinicNotOpenException"/>
+</operation>
+<operation name="isAvailableAtTimeDate">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtTimeDateRequest" message="tns:isAvailableAtTimeDate"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtTimeDateResponse" message="tns:isAvailableAtTimeDateResponse"/>
+<fault message="tns:DoctorNotFoundException" name="DoctorNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/isAvailableAtTimeDate/Fault/DoctorNotFoundException"/>
+</operation>
+<operation name="createNewAppointment">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/createNewAppointmentRequest" message="tns:createNewAppointment"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/createNewAppointmentResponse" message="tns:createNewAppointmentResponse"/>
+<fault message="tns:AppointmentInvalidException" name="AppointmentInvalidException" wsam:Action="http://ws.session.ejb/AppointmentWebService/createNewAppointment/Fault/AppointmentInvalidException"/>
+</operation>
+<operation name="retrieveAppointmentById">
+<input wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAppointmentByIdRequest" message="tns:retrieveAppointmentById"/>
+<output wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAppointmentByIdResponse" message="tns:retrieveAppointmentByIdResponse"/>
+<fault message="tns:AppointmentNotFoundException" name="AppointmentNotFoundException" wsam:Action="http://ws.session.ejb/AppointmentWebService/retrieveAppointmentById/Fault/AppointmentNotFoundException"/>
+</operation>
 </portType>
 <binding name="AppointmentWebServicePortBinding" type="tns:AppointmentWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="isAvailableAtDate">
+<operation name="hasAppointmentOnDay">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -135,9 +135,36 @@
 <output>
 <soap:body use="literal"/>
 </output>
-<fault name="DoctorNotFoundException">
-<soap:fault name="DoctorNotFoundException" use="literal"/>
+</operation>
+<operation name="cancelAppointment">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="AppointmentNotFoundException">
+<soap:fault name="AppointmentNotFoundException" use="literal"/>
 </fault>
+</operation>
+<operation name="retrieveListOfAppointmentsByPatientId">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveAllDoctors">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
 </operation>
 <operation name="retrieveDoctorById">
 <soap:operation soapAction=""/>
@@ -151,16 +178,7 @@
 <soap:fault name="DoctorNotFoundException" use="literal"/>
 </fault>
 </operation>
-<operation name="retrieveAllDoctors">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="isAvailableAtTimeDate">
+<operation name="isAvailableAtDate">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -184,6 +202,18 @@
 <soap:fault name="ClinicNotOpenException" use="literal"/>
 </fault>
 </operation>
+<operation name="isAvailableAtTimeDate">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="DoctorNotFoundException">
+<soap:fault name="DoctorNotFoundException" use="literal"/>
+</fault>
+</operation>
 <operation name="createNewAppointment">
 <soap:operation soapAction=""/>
 <input>
@@ -196,15 +226,6 @@
 <soap:fault name="AppointmentInvalidException" use="literal"/>
 </fault>
 </operation>
-<operation name="hasAppointmentOnDay">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="retrieveAppointmentById">
 <soap:operation soapAction=""/>
 <input>
@@ -216,27 +237,6 @@
 <fault name="AppointmentNotFoundException">
 <soap:fault name="AppointmentNotFoundException" use="literal"/>
 </fault>
-</operation>
-<operation name="cancelAppointment">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-<fault name="AppointmentNotFoundException">
-<soap:fault name="AppointmentNotFoundException" use="literal"/>
-</fault>
-</operation>
-<operation name="retrieveListOfAppointmentsByPatientId">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
 </operation>
 </binding>
 <service name="AppointmentWebService">

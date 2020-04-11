@@ -7,11 +7,11 @@ package carsautomatedmachineclient;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import ws.client.userop.InvalidLoginCredentialException;
-import ws.client.userop.InvalidLoginCredentialException_Exception;
-import ws.client.userop.PatientEntity;
-import ws.client.userop.PatientExistException_Exception;
-import ws.client.userop.PatientNotFoundException_Exception;
+import ws.client.InvalidLoginCredentialException;
+import ws.client.InvalidLoginCredentialException_Exception;
+import ws.client.PatientEntity;
+import ws.client.PatientExistException_Exception;
+import ws.client.PatientNotFoundException_Exception;
 
 /**
  *
@@ -221,16 +221,16 @@ public class MainApp {
 
     }
 
-    private static PatientEntity patientLogin(java.lang.String arg0, java.lang.String arg1) throws PatientNotFoundException_Exception, InvalidLoginCredentialException_Exception {
-        ws.client.userop.CARSWebService service = new ws.client.userop.CARSWebService();
-        ws.client.userop.CARSRemoteUserWebService port = service.getCARSRemoteUserWebServicePort();
-        return port.patientLogin(arg0, arg1);
+    private static void addNewPatient(ws.client.PatientEntity arg0) throws ws.client.PatientExistException_Exception {
+        ws.client.CARSWebService service = new ws.client.CARSWebService();
+        ws.client.CARSRemoteUserWebService port = service.getCARSRemoteUserWebServicePort();
+        port.addNewPatient(arg0);
     }
 
-    private static void addNewPatient(ws.client.userop.PatientEntity arg0) throws PatientExistException_Exception {
-        ws.client.userop.CARSWebService service = new ws.client.userop.CARSWebService();
-        ws.client.userop.CARSRemoteUserWebService port = service.getCARSRemoteUserWebServicePort();
-        port.addNewPatient(arg0);
+    private static ws.client.PatientEntity patientLogin(java.lang.String arg0, java.lang.String arg1) throws ws.client.InvalidLoginCredentialException_Exception, ws.client.PatientNotFoundException_Exception {
+        ws.client.CARSWebService service = new ws.client.CARSWebService();
+        ws.client.CARSRemoteUserWebService port = service.getCARSRemoteUserWebServicePort();
+        return port.patientLogin(arg0, arg1);
     }
 
 }

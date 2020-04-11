@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import util.security.EncryptionHelper;
 
 /**
@@ -20,6 +22,7 @@ import util.security.EncryptionHelper;
  * @author crs
  */
 @Entity
+@XmlRootElement
 public class PatientEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -160,6 +163,7 @@ public class PatientEntity implements Serializable {
         this.password = hashPassword;
     }
 
+    @XmlTransient
     public List<AppointmentEntity> getListOfAppointmentEntities() {
         return listOfAppointmentEntities;
     }

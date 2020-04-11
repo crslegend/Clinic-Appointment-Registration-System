@@ -15,7 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import util.xmlAdapters.DateAdapter;
+import util.xmlAdapters.TimeAdapter;
 
 /**
  *
@@ -28,20 +30,21 @@ public class AppointmentEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appointmentId;
+
     @Column(nullable = false)
     private Date date;
+
     @Column(nullable = false)
     private Time startTime;
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private DoctorEntity doctorEntity;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private PatientEntity patientEntity;
-    
-    
+
     public AppointmentEntity() {
     }
 
@@ -49,7 +52,6 @@ public class AppointmentEntity implements Serializable {
         this.date = date;
         this.startTime = startTime;
     }
-    
 
     public Long getAppointmentId() {
         return appointmentId;
@@ -84,6 +86,7 @@ public class AppointmentEntity implements Serializable {
         return "entity.AppointmentEntity[ id=" + appointmentId + " ]";
     }
 
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getDate() {
         return date;
     }
@@ -92,6 +95,7 @@ public class AppointmentEntity implements Serializable {
         this.date = date;
     }
 
+    @XmlJavaTypeAdapter(TimeAdapter.class)
     public Time getStartTime() {
         return startTime;
     }
@@ -108,7 +112,6 @@ public class AppointmentEntity implements Serializable {
         this.doctorEntity = doctorEntity;
     }
 
-    @XmlTransient
     public PatientEntity getPatientEntity() {
         return patientEntity;
     }
@@ -116,5 +119,5 @@ public class AppointmentEntity implements Serializable {
     public void setPatientEntity(PatientEntity patientEntity) {
         this.patientEntity = patientEntity;
     }
-    
+
 }
