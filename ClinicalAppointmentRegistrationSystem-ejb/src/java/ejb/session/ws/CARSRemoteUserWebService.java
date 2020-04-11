@@ -15,8 +15,6 @@ import javax.ejb.Stateless;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.PatientExistException;
 import util.exception.PatientNotFoundException;
-import util.exception.InvalidInputException;
-import util.security.EncryptionHelper;
 
 /**
  *

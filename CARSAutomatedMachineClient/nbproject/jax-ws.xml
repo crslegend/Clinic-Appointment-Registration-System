@@ -5,7 +5,7 @@
     <client name="AppointmentWebService">
       <wsdl-url>http://localhost:8080/AppointmentWebService/AppointmentWebService?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8080/AppointmentWebService/AppointmentWebService.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">ws.client.appointmentop</package-name>
+      <package-name forceReplace="true">ws.client</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>
         <wsimport-option>
@@ -34,14 +34,14 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>ws.client.appointmentop</wsimport-option-value>
+          <wsimport-option-value>ws.client</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>
     <client name="CARSRemoteUserWebService">
       <wsdl-url>http://localhost:8080/CARSWebService/CARSRemoteUserWebService?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8080/CARSWebService/CARSRemoteUserWebService.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">ws.client.userop</package-name>
+      <package-name forceReplace="true">ws.client</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>
         <wsimport-option>
@@ -70,7 +70,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>ws.client.userop</wsimport-option-value>
+          <wsimport-option-value>ws.client</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

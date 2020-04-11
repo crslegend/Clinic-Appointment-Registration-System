@@ -9,11 +9,11 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author crs
  */
 @Entity
+@XmlRootElement
 public class DoctorEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
