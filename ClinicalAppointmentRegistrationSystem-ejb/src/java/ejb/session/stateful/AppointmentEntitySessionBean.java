@@ -73,7 +73,7 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
         try {
             return (AppointmentEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new AppointmentNotFoundException("Appoint does not exist!");
+            throw new AppointmentNotFoundException("Appointment does not exist!");
         }
     }
     

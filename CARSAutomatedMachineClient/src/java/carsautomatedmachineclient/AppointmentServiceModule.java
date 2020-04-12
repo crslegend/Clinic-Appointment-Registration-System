@@ -41,7 +41,7 @@ public class AppointmentServiceModule {
         Integer response = 0;
 
         while (true) {
-            System.out.println("\n*** Self-Service Kiosk :: Main ***\n");
+            System.out.println("\n*** AMS Client :: Main ***\n");
             System.out.println("You are login as " + currentPatientEntity.getFirstName() + " " + currentPatientEntity.getLastName() + "\n");
             System.out.println("1: View Appointments");
             System.out.println("2: Add Appointment");
@@ -90,7 +90,7 @@ public class AppointmentServiceModule {
     
     public void viewPatientAppointments() {
 
-        System.out.println("\n*** Self-Service Kiosk :: View Patient Appointments ***\n");
+        System.out.println("\n*** AMS Client :: View Patient Appointments ***\n");
 
         List<AppointmentEntity> appointments = retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());
 
@@ -108,7 +108,7 @@ public class AppointmentServiceModule {
     public void addNewAppointment() throws DoctorNotFoundException_Exception, IllegalArgumentException, AppointmentInvalidException_Exception, InputMismatchException, ClinicNotOpenException_Exception, AlreadyBookedAppointment_Exception {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** Self-Service Kiosk :: Add Appointment ***\n");
+        System.out.println("\n*** AMS Client :: Add Appointment ***\n");
 
         List<DoctorEntity> doctors = retrieveAllDoctors();
 
@@ -177,7 +177,7 @@ public class AppointmentServiceModule {
     public void cancelAppointment() throws AppointmentNotFoundException_Exception, IllegalArgumentException, InputMismatchException {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** Self-Service Kiosk :: Cancel Appointment ***\n");
+        System.out.println("\n*** AMS Client :: Cancel Appointment ***\n");
 
         List<AppointmentEntity> appointments = retrieveListOfAppointmentsByPatientId(currentPatientEntity.getPatientId());
 
