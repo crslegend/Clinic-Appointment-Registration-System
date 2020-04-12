@@ -119,7 +119,7 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
         for (DoctorEntity de : doctors) {
             try {
                 em.refresh(de);
-                if (!isAvailableAtDate(de, currentDate)) {
+                if (!isAvailableAtDate(de.getDoctorId(), currentDate)) {
                     doctors.remove(de);
                 }
             } catch (DoctorNotFoundException ex) {
@@ -130,9 +130,9 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) throws DoctorNotFoundException {
+    public Boolean isAvailableAtTimeDate(long doctorId, Time time, Date date) throws DoctorNotFoundException {
 
-        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorEntity.getDoctorId());
+        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorId);
         em.refresh(newDoctorEntity);
         
         List<AppointmentEntity> appointments = newDoctorEntity.getListOfAppointmentEntities();
@@ -152,9 +152,9 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date currentDate) throws DoctorNotFoundException {
+    public Boolean isAvailableAtDate(long doctorId, Date currentDate) throws DoctorNotFoundException {
         
-        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorEntity.getDoctorId());
+        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorId);
         em.refresh(newDoctorEntity);
         
         List<LeaveEntity> leaveRecords = newDoctorEntity.getListOfLeaveEntities();

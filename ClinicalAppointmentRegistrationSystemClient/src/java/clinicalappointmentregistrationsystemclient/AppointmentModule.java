@@ -158,7 +158,7 @@ public class AppointmentModule {
 
         System.out.print("Enter Date> ");
         Date date = Date.valueOf(sc.nextLine().trim()); // "2020-05-20"
-        if (!doctorEntitySessionBeanRemote.isAvailableAtDate(doctorEntity, date)) {
+        if (!doctorEntitySessionBeanRemote.isAvailableAtDate(doctorEntity.getDoctorId(), date)) {
             throw new InvalidInputException("Doctor is not available!");
         }
         if (date.before(Date.valueOf(LocalDate.now().plusDays(2)))) {
@@ -170,7 +170,7 @@ public class AppointmentModule {
         List<Time> allTimeSlots = computationSessionBeanRemote.getAllTimeSlots(date);
         for (int i = 0; i < allTimeSlots.size(); i++) {
             Time time = allTimeSlots.get(i);
-            if (!doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doctorEntity, time, date)) {
+            if (!doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doctorEntity.getDoctorId(), time, date)) {
                 allTimeSlots.remove(i);
             }
         }
@@ -187,7 +187,7 @@ public class AppointmentModule {
         System.out.print("Enter Patient Identity Number> ");
         PatientEntity patientEntity = patientEntitySessionBeanRemote.retrievePatientByIdNum(sc.nextLine().trim());
 
-        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity, date)) {
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity.getPatientId(), date)) {
             throw new AlreadyBookedAppointment("Patient already has appointment on " + date.toString());
         }
         

@@ -124,7 +124,7 @@ public class AppointmentServiceModule {
 
         System.out.print("Enter Date> ");
         Date date = Date.valueOf(sc.nextLine().trim());
-        if (!isAvailableAtDate(doctorEntity, date.toString())) {
+        if (!isAvailableAtDate(doctorEntity.getDoctorId(), date.toString())) {
             System.out.println("Doctor is not available!");
             return;
         }
@@ -132,7 +132,7 @@ public class AppointmentServiceModule {
             System.out.println("Appointment should be booked 2 days in advance!");
             return;
         }
-        if (hasAppointmentOnDay(currentPatientEntity, date.toString())) {
+        if (hasAppointmentOnDay(currentPatientEntity.getPatientId(), date.toString())) {
             System.out.println("Patient already has appointment on " + date.toString());
             return;
         }
@@ -142,7 +142,7 @@ public class AppointmentServiceModule {
         List<String> allTimeSlots = getAllTimeSlots(date.toString());
         for (int i = 0; i < allTimeSlots.size(); i++) {
             String time = allTimeSlots.get(i);
-            if (isAvailableAtTimeDate(doctorEntity, time, date.toString())) {
+            if (!isAvailableAtTimeDate(doctorEntity.getDoctorId(), time, date.toString())) {
                 allTimeSlots.remove(i);
             }
         }
@@ -164,7 +164,7 @@ public class AppointmentServiceModule {
         appointmentEntity.setPatientEntity(currentPatientEntity);
         appointmentEntity.setStartTime(time.toString());
 
-        createNewAppointment(appointmentEntity);
+        createNewAppointment(date.toString(), doctorEntity.getDoctorId(), currentPatientEntity.getPatientId(), time.toString());
         System.out.println(currentPatientEntity.getFirstName() + " "  + currentPatientEntity.getLastName()
                 + " appointment with "
                 + doctorEntity.getFirstName() + " " + doctorEntity.getLastName()
@@ -223,34 +223,10 @@ public class AppointmentServiceModule {
         return port.retrieveDoctorById(arg0);
     }
 
-    private static Boolean isAvailableAtDate(ws.client.DoctorEntity arg0, java.lang.String arg1) throws DoctorNotFoundException_Exception {
-        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
-        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
-        return port.isAvailableAtDate(arg0, arg1);
-    }
-
-    private static Boolean hasAppointmentOnDay(ws.client.PatientEntity arg0, java.lang.String arg1) {
-        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
-        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
-        return port.hasAppointmentOnDay(arg0, arg1);
-    }
-
     private static java.util.List<String> getAllTimeSlots(java.lang.String arg0) throws ClinicNotOpenException_Exception {
         ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
         ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
         return port.getAllTimeSlots(arg0);
-    }
-
-    private static Boolean isAvailableAtTimeDate(ws.client.DoctorEntity arg0, java.lang.String arg1, java.lang.String arg2) throws DoctorNotFoundException_Exception {
-        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
-        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
-        return port.isAvailableAtTimeDate(arg0, arg1, arg2);
-    }
-
-    private static void createNewAppointment(ws.client.AppointmentEntity arg0) throws AppointmentInvalidException_Exception {
-        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
-        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
-        port.createNewAppointment(arg0);
     }
 
     private static AppointmentEntity retrieveAppointmentById(java.lang.Long arg0) throws AppointmentNotFoundException_Exception {
@@ -263,6 +239,30 @@ public class AppointmentServiceModule {
         ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
         ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
         return port.cancelAppointment(arg0);
+    }
+
+    private static Boolean isAvailableAtDate(long arg0, java.lang.String arg1) throws DoctorNotFoundException_Exception {
+        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
+        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
+        return port.isAvailableAtDate(arg0, arg1);
+    }
+
+    private static Boolean isAvailableAtTimeDate(long arg0, java.lang.String arg1, java.lang.String arg2) throws DoctorNotFoundException_Exception {
+        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
+        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
+        return port.isAvailableAtTimeDate(arg0, arg1, arg2);
+    }
+
+    private static Boolean hasAppointmentOnDay(long arg0, java.lang.String arg1) {
+        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
+        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
+        return port.hasAppointmentOnDay(arg0, arg1);
+    }
+
+    private static void createNewAppointment(java.lang.String arg0, long arg1, long arg2, java.lang.String arg3) throws AppointmentInvalidException_Exception {
+        ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
+        ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
+        port.createNewAppointment(arg0, arg1, arg2, arg3);
     }
     
 }
