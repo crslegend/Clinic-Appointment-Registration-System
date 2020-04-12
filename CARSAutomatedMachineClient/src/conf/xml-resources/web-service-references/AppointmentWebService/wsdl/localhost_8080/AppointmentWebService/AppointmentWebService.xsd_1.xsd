@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.3 (RELEASE-2.4.3-ad3323c; 2019-01-21T17:46:06+0000) JAXWS-RI/2.3.2 JAXWS-API/2.3.2 JAXB-RI/2.3.2 JAXB-API/2.3.2 git-revision#unknown. --><xs:schema xmlns:tns="http://ws.session.ejb/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.session.ejb/">
 
+<xs:element name="AlreadyBookedAppointment" type="tns:AlreadyBookedAppointment"/>
+
 <xs:element name="AppointmentInvalidException" type="tns:AppointmentInvalidException"/>
 
 <xs:element name="AppointmentNotFoundException" type="tns:AppointmentNotFoundException"/>
@@ -104,6 +106,19 @@
 <xs:sequence/>
 </xs:complexType>
 
+<xs:complexType name="hasAppointmentOnDay">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hasAppointmentOnDayResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="getAllTimeSlots">
 <xs:sequence>
 <xs:element name="arg0" type="xs:string" minOccurs="0"/>
@@ -119,19 +134,6 @@
 <xs:complexType name="ClinicNotOpenException">
 <xs:sequence>
 <xs:element name="message" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="hasAppointmentOnDay">
-<xs:sequence>
-<xs:element name="arg0" type="xs:long"/>
-<xs:element name="arg1" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="hasAppointmentOnDayResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -202,6 +204,18 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="retrieveDoctorById">
+<xs:sequence>
+<xs:element name="arg0" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveDoctorByIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:doctorEntity" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="createNewAppointment">
 <xs:sequence>
 <xs:element name="arg0" type="xs:string" minOccurs="0"/>
@@ -221,15 +235,9 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="retrieveDoctorById">
+<xs:complexType name="AlreadyBookedAppointment">
 <xs:sequence>
-<xs:element name="arg0" type="xs:long"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveDoctorByIdResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:doctorEntity" minOccurs="0"/>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

@@ -8,6 +8,7 @@ package ejb.session.stateful;
 import entity.AppointmentEntity;
 import java.util.List;
 import javax.ejb.Remote;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 
@@ -18,7 +19,7 @@ import util.exception.AppointmentNotFoundException;
 @Remote
 public interface AppointmentEntitySessionBeanRemote {
 
-    public void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException;
+    public void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException, AlreadyBookedAppointment;
 
     public List<AppointmentEntity> retrieveListOfAppointments();
 

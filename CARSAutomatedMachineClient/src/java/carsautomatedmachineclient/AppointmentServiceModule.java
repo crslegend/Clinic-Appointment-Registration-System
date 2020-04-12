@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import ws.client.AlreadyBookedAppointment_Exception;
 import ws.client.AppointmentEntity;
 import ws.client.AppointmentInvalidException_Exception;
 import ws.client.AppointmentNotFoundException_Exception;
@@ -58,7 +59,7 @@ public class AppointmentServiceModule {
                     } else if (response == 2) {
                          try {
                             addNewAppointment();
-                        } catch (DoctorNotFoundException_Exception | AppointmentInvalidException_Exception | ClinicNotOpenException_Exception ex) {
+                        } catch (DoctorNotFoundException_Exception | AppointmentInvalidException_Exception | ClinicNotOpenException_Exception | AlreadyBookedAppointment_Exception ex) {
                             System.out.println(ex.getMessage());
                         } catch (IllegalArgumentException | InputMismatchException ex) {
                             System.out.println("Invalid Input!");
@@ -104,7 +105,7 @@ public class AppointmentServiceModule {
 
     }
     
-    public void addNewAppointment() throws DoctorNotFoundException_Exception, IllegalArgumentException, AppointmentInvalidException_Exception, InputMismatchException, ClinicNotOpenException_Exception {
+    public void addNewAppointment() throws DoctorNotFoundException_Exception, IllegalArgumentException, AppointmentInvalidException_Exception, InputMismatchException, ClinicNotOpenException_Exception, AlreadyBookedAppointment_Exception {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("\n*** Self-Service Kiosk :: Add Appointment ***\n");
@@ -259,7 +260,7 @@ public class AppointmentServiceModule {
         return port.hasAppointmentOnDay(arg0, arg1);
     }
 
-    private static void createNewAppointment(java.lang.String arg0, long arg1, long arg2, java.lang.String arg3) throws AppointmentInvalidException_Exception {
+    private static void createNewAppointment(java.lang.String arg0, long arg1, long arg2, java.lang.String arg3) throws AppointmentInvalidException_Exception, AlreadyBookedAppointment_Exception {
         ws.client.AppointmentWebService_Service service = new ws.client.AppointmentWebService_Service();
         ws.client.AppointmentWebService port = service.getAppointmentWebServicePort();
         port.createNewAppointment(arg0, arg1, arg2, arg3);

@@ -23,6 +23,7 @@ import javax.jws.WebParam;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 import util.exception.ClinicNotOpenException;
@@ -95,7 +96,7 @@ public class AppointmentWebService {
     }
 
     @WebMethod
-    public void createNewAppointment(@WebParam String date, @WebParam long doctorId, @WebParam long patientId, @WebParam String startTime) throws AppointmentInvalidException {
+    public void createNewAppointment(@WebParam String date, @WebParam long doctorId, @WebParam long patientId, @WebParam String startTime) throws AppointmentInvalidException, AlreadyBookedAppointment {
         
         DoctorEntity doctorEntity = em.find(DoctorEntity.class, doctorId);
         PatientEntity patientEntity = em.find(PatientEntity.class, patientId);
