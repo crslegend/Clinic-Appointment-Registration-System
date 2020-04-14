@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Singleton;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 
 /**
@@ -43,7 +44,7 @@ public class ConsultationSessionBean implements ConsultationSessionBeanRemote, C
 
     @Override
     public Long createNewConsultation(
-            DoctorEntity doctorEntity, PatientEntity patientEntity, Time time, Date date) throws AppointmentInvalidException {
+            DoctorEntity doctorEntity, PatientEntity patientEntity, Time time, Date date) throws AppointmentInvalidException, AlreadyBookedAppointment {
 
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDate(date);

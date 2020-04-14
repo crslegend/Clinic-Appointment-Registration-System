@@ -141,8 +141,8 @@ public class RegistrationModule {
                 String input = sc.nextLine().trim();
                 if (input.length() == 6) {
                     Long num = Long.parseLong(input);
-                    String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(input));
-                    pe.setPassword(hashPassword);
+//                    String hashPassword = EncryptionHelper.getInstance().byteArrayToHexString(EncryptionHelper.getInstance().doMD5Hashing(input));
+                    pe.setPassword(input);
                     break;
                 } else {
                     System.out.println("Error! Password cannot be empty. Password has to be a 6-digit number!\n");
@@ -270,7 +270,7 @@ public class RegistrationModule {
             System.out.print(time.toString().substring(0, 5) + " |");
             doctors.forEach(doc -> {
                 try {
-                    if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doc, time, currentDate)) {
+                    if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doc.getDoctorId(), time, currentDate)) {
                         System.out.print("O  |");
                     } else {
                         System.out.print("X  |");
@@ -310,12 +310,12 @@ public class RegistrationModule {
         }
         PatientEntity patientEntity = patientEntitySessionBeanRemote.retrievePatientByIdNum(pId);
         
-        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity, currentDate)) {
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(patientEntity.getPatientId(), currentDate)) {
             throw new AlreadyBookedAppointment("Patient already has appointment on " + currentDate.toString());
         }
         
         for (Time time : nextSixTimeSlots) {
-            if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(currentDoctorEntity, time, currentDate)) {
+            if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(currentDoctorEntity.getDoctorId(), time, currentDate)) {
                 apptTime = time;
                 break;
             }

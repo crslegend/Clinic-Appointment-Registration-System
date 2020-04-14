@@ -31,6 +31,6 @@ public interface PatientEntitySessionBeanRemote {
 
     public void deletePatient(String identityNum) throws PatientNotFoundException;
 
-    Boolean hasAppointmentOnDay(PatientEntity patientEntity, Date date);
+    Boolean hasAppointmentOnDay(long patientId, Date date);
     
 }

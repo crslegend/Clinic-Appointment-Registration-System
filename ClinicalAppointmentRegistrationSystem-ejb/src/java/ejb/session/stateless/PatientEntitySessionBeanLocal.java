@@ -30,6 +30,6 @@ public interface PatientEntitySessionBeanLocal {
     
     public void deletePatient(String identityNum) throws PatientNotFoundException;
 
-    public Boolean hasAppointmentOnDay(PatientEntity patientEntity, Date date);
+    public Boolean hasAppointmentOnDay(long patientId, Date date);
 
 }

@@ -145,7 +145,7 @@ public class SelfServiceModule {
         // get current date
         Date currentDate = new Date(System.currentTimeMillis());
 
-        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(currentPatientEntity, currentDate)) {
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(currentPatientEntity.getPatientId(), currentDate)) {
             throw new AlreadyBookedAppointment("Patient already has appointment on " + currentDate.toString());
         }
 
@@ -168,7 +168,7 @@ public class SelfServiceModule {
             System.out.print(time.toString().substring(0, 5) + " |");
             doctors.forEach(doc -> {
                 try {
-                    if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doc, time, currentDate)) {
+                    if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doc.getDoctorId(), time, currentDate)) {
                         System.out.print("O  |");
                     } else {
                         System.out.print("X  |");
@@ -201,7 +201,7 @@ public class SelfServiceModule {
         }
 
         for (Time time : nextSixTimeSlots) {
-            if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(currentDoctorEntity, time, currentDate)) {
+            if (doctorEntitySessionBeanRemote.isAvailableAtTimeDate(currentDoctorEntity.getDoctorId(), time, currentDate)) {
                 apptTime = time;
                 break;
             }
@@ -300,13 +300,13 @@ public class SelfServiceModule {
 
         System.out.print("Enter Date> ");
         Date date = Date.valueOf(sc.nextLine().trim());
-        if (!doctorEntitySessionBeanRemote.isAvailableAtDate(doctorEntity, date)) {
+        if (!doctorEntitySessionBeanRemote.isAvailableAtDate(doctorEntity.getDoctorId(), date)) {
             throw new InvalidInputException("Doctor is not available!");
         }
         if (date.before(Date.valueOf(LocalDate.now().plusDays(2)))) {
             throw new InvalidInputException("Appointment should be booked 2 days in advance!");
         }
-        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(currentPatientEntity, date)) {
+        if (patientEntitySessionBeanRemote.hasAppointmentOnDay(currentPatientEntity.getPatientId(), date)) {
             throw new AlreadyBookedAppointment("Patient already has appointment on " + date.toString());
         }
         System.out.println();
@@ -315,7 +315,7 @@ public class SelfServiceModule {
         List<Time> allTimeSlots = computationSessionBeanRemote.getAllTimeSlots(date);
         for (int i = 0; i < allTimeSlots.size(); i++) {
             Time time = allTimeSlots.get(i);
-            if (!doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doctorEntity, time, date)) {
+            if (!doctorEntitySessionBeanRemote.isAvailableAtTimeDate(doctorEntity.getDoctorId(), time, date)) {
                 allTimeSlots.remove(i);
             }
         }

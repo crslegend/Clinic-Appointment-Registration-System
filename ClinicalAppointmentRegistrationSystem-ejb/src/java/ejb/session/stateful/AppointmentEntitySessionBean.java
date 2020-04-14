@@ -5,8 +5,12 @@
  */
 package ejb.session.stateful;
 
+import ejb.session.stateless.PatientEntitySessionBeanLocal;
 import entity.AppointmentEntity;
+import entity.PatientEntity;
+import java.sql.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
@@ -16,6 +20,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 
@@ -31,11 +36,21 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
     @PersistenceContext(unitName = "ClinicalAppointmentRegistrationSystem-ejbPU")
     EntityManager em;
     
+    @EJB
+    private PatientEntitySessionBeanLocal patientEntitySessionBeanLocal;
+    
     public AppointmentEntitySessionBean() {
     }
 
     @Override
-    public void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException {
+    public void createNewAppointment(AppointmentEntity appointmentEntity) throws AppointmentInvalidException, AlreadyBookedAppointment {
+        PatientEntity patientEntity = appointmentEntity.getPatientEntity();
+        Date date = appointmentEntity.getDate();
+        
+        if (patientEntitySessionBeanLocal.hasAppointmentOnDay(patientEntity.getPatientId(), date)) {
+            throw new AlreadyBookedAppointment("Patient already has appointment on " + date.toString());
+        }
+        
         try {
             em.persist(appointmentEntity);
             em.flush();
@@ -58,7 +73,7 @@ public class AppointmentEntitySessionBean implements AppointmentEntitySessionBea
         try {
             return (AppointmentEntity) query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException ex) {
-            throw new AppointmentNotFoundException("Appoint does not exist!");
+            throw new AppointmentNotFoundException("Appointment does not exist!");
         }
     }
     

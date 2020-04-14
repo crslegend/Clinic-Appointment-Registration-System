@@ -31,7 +31,7 @@ public class MainApp {
         Integer response = 0;
 
         while (true) {
-            System.out.println("*** Welcome to Self-Service Kiosk ***\n");
+            System.out.println("*** Welcome to AMS Client ***\n");
             System.out.println("1: Register");
             System.out.println("2: Login");
             System.out.println("3: Exit\n");
@@ -79,7 +79,7 @@ public class MainApp {
         String patientId = "";
         String password = "";
 
-        System.out.println("\n*** Self-Service Kiosk :: Login ***\n");
+        System.out.println("\n*** AMS Client :: Login ***\n");
         System.out.print("Enter Identity Number> ");
         patientId = scanner.nextLine().trim();
         System.out.print("Enter password> ");
@@ -95,7 +95,7 @@ public class MainApp {
     public void doRegister() throws PatientExistException_Exception {
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n*** Welcome to Self-Service Kiosk :: Register ***\n");
+        System.out.println("\n*** Welcome to AMS Client :: Register ***\n");
 
         PatientEntity patientEntity = new PatientEntity();
 

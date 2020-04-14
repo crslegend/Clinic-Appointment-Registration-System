@@ -21,6 +21,9 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 import util.exception.AppointmentNotFoundException;
 import util.exception.ClinicNotOpenException;
@@ -42,6 +45,9 @@ public class AppointmentWebService {
 
     @EJB
     private DoctorEntitySessionBeanLocal doctorEntitySessionBeanLocal;
+    
+    @PersistenceContext(unitName = "ClinicalAppointmentRegistrationSystem-ejbPU")
+    private EntityManager em;
 
     @EJB
     private ComputationSessionBeanLocal computationSessionBeanLocal;
@@ -62,13 +68,16 @@ public class AppointmentWebService {
     }
 
     @WebMethod
-    public Boolean isAvailableAtDate(@WebParam DoctorEntity doctorEntity, @WebParam String date) throws DoctorNotFoundException {
-        return doctorEntitySessionBeanLocal.isAvailableAtDate(doctorEntity, Date.valueOf(date));
+    public Boolean isAvailableAtDate(@WebParam long doctorId, @WebParam String date) throws DoctorNotFoundException {
+        System.err.println("*********** web param date :" + date);
+       
+        
+        return doctorEntitySessionBeanLocal.isAvailableAtDate(doctorId, Date.valueOf(date));
     }
 
     @WebMethod
-    public Boolean hasAppointmentOnDay(@WebParam PatientEntity patientEntity, @WebParam String date) {
-        return patientEntitySessionBeanLocal.hasAppointmentOnDay(patientEntity, Date.valueOf(date));
+    public Boolean hasAppointmentOnDay(@WebParam long patientId, @WebParam String date) {
+        return patientEntitySessionBeanLocal.hasAppointmentOnDay(patientId, Date.valueOf(date));
     }
 
     @WebMethod
@@ -82,12 +91,21 @@ public class AppointmentWebService {
     }
 
     @WebMethod
-    public Boolean isAvailableAtTimeDate(@WebParam DoctorEntity doctorEntity, @WebParam String time, @WebParam String date) throws DoctorNotFoundException {
-        return doctorEntitySessionBeanLocal.isAvailableAtTimeDate(doctorEntity, Time.valueOf(time), Date.valueOf(date));
+    public Boolean isAvailableAtTimeDate(@WebParam long doctorId, @WebParam String time, @WebParam String date) throws DoctorNotFoundException {
+        return doctorEntitySessionBeanLocal.isAvailableAtTimeDate(doctorId, Time.valueOf(time), Date.valueOf(date));
     }
 
     @WebMethod
-    public void createNewAppointment(@WebParam AppointmentEntity appointmentEntity) throws AppointmentInvalidException {
+    public void createNewAppointment(@WebParam String date, @WebParam long doctorId, @WebParam long patientId, @WebParam String startTime) throws AppointmentInvalidException, AlreadyBookedAppointment {
+        
+        DoctorEntity doctorEntity = em.find(DoctorEntity.class, doctorId);
+        PatientEntity patientEntity = em.find(PatientEntity.class, patientId);
+        AppointmentEntity appointmentEntity = new AppointmentEntity(); 
+        appointmentEntity.setDate(Date.valueOf(date));
+        appointmentEntity.setDoctorEntity(doctorEntity);
+        appointmentEntity.setPatientEntity(patientEntity);
+        appointmentEntity.setStartTime(Time.valueOf(startTime));
+        
         appointmentEntitySessionBeanLocal.createNewAppointment(appointmentEntity);
     }
     

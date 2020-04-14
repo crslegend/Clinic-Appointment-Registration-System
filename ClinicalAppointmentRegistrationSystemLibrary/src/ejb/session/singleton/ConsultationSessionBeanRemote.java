@@ -10,6 +10,7 @@ import entity.PatientEntity;
 import java.sql.Date;
 import java.sql.Time;
 import javax.ejb.Remote;
+import util.exception.AlreadyBookedAppointment;
 import util.exception.AppointmentInvalidException;
 
 /**
@@ -19,7 +20,7 @@ import util.exception.AppointmentInvalidException;
 @Remote
 public interface ConsultationSessionBeanRemote {
 
-    Long createNewConsultation(DoctorEntity doctorEntity, PatientEntity patientEntity, Time time, Date date) throws AppointmentInvalidException;
+    Long createNewConsultation(DoctorEntity doctorEntity, PatientEntity patientEntity, Time time, Date date) throws AppointmentInvalidException, AlreadyBookedAppointment;
 
     long confirmConsultation();
     

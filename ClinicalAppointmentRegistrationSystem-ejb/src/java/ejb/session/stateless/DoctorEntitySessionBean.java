@@ -111,45 +111,6 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public void applyLeave(String registration, Date dateOfLeave) throws LeaveRejectedException, DoctorNotFoundException {
-        if (dateOfLeave.after(Date.valueOf(LocalDate.now().plusDays(7)))) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(dateOfLeave);
-            int wkNum1 = calendar.get(Calendar.WEEK_OF_YEAR);
-            LeaveEntity leaveEntity = new LeaveEntity(dateOfLeave);
-            
-            DoctorEntity doctorEntity = retrieveDoctorByRegistration(registration);
-            em.refresh(doctorEntity);
-            List<LeaveEntity> listOfLeaveEntities = doctorEntity.getListOfLeaveEntities();
-            List<AppointmentEntity> listOfAppointmentEntities = doctorEntity.getListOfAppointmentEntities();
-            listOfLeaveEntities.size();
-            listOfAppointmentEntities.size();
-            
-            // to check whether date of leave clashes with any appointments
-            for (AppointmentEntity ae : listOfAppointmentEntities) {
-                if (ae.getDate().toString().equals(dateOfLeave.toString())) {
-                    throw new LeaveRejectedException("Leave cannot be applied: Doctor has an appointment with patient on " + dateOfLeave.toString());
-                }
-            }
-            
-            // to check whether any applied leaves exist in the same week as the date of leave
-            for (LeaveEntity le : listOfLeaveEntities) {
-                Date date = le.getStartDate();
-                calendar.setTime(date);
-                int wkNum2 = calendar.get(Calendar.WEEK_OF_YEAR);
-                System.out.println(wkNum1 == wkNum2);
-                if (wkNum1 == wkNum2) {
-                    throw new LeaveRejectedException("Leave cannot be applied: There is already a leave applied in the same week!");
-                }
-            }
-            leaveEntity.setDoctorEntity(doctorEntity);
-            leaveEntitySessionBeanLocal.createNewLeaveEntity(leaveEntity);
-        } else {
-            throw new LeaveRejectedException("Leave cannot be applied: Leave has to be applied 1 week in advance!");
-        }
-    }
-
-    @Override
     public List<DoctorEntity> retrieveDoctorsOnDuty()  {
 
         // get today's date
@@ -158,7 +119,7 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
         for (DoctorEntity de : doctors) {
             try {
                 em.refresh(de);
-                if (!isAvailableAtDate(de, currentDate)) {
+                if (!isAvailableAtDate(de.getDoctorId(), currentDate)) {
                     doctors.remove(de);
                 }
             } catch (DoctorNotFoundException ex) {
@@ -169,9 +130,9 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public Boolean isAvailableAtTimeDate(DoctorEntity doctorEntity, Time time, Date date) throws DoctorNotFoundException {
+    public Boolean isAvailableAtTimeDate(long doctorId, Time time, Date date) throws DoctorNotFoundException {
 
-        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorEntity.getDoctorId());
+        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorId);
         em.refresh(newDoctorEntity);
         
         List<AppointmentEntity> appointments = newDoctorEntity.getListOfAppointmentEntities();
@@ -191,9 +152,9 @@ public class DoctorEntitySessionBean implements DoctorEntitySessionBeanRemote, D
     }
 
     @Override
-    public Boolean isAvailableAtDate(DoctorEntity doctorEntity, Date currentDate) throws DoctorNotFoundException {
+    public Boolean isAvailableAtDate(long doctorId, Date currentDate) throws DoctorNotFoundException {
         
-        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorEntity.getDoctorId());
+        DoctorEntity newDoctorEntity = retrieveDoctorById(doctorId);
         em.refresh(newDoctorEntity);
         
         List<LeaveEntity> leaveRecords = newDoctorEntity.getListOfLeaveEntities();

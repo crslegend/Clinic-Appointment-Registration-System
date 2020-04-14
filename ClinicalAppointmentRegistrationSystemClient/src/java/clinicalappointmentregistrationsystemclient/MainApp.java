@@ -8,6 +8,7 @@ package clinicalappointmentregistrationsystemclient;
 import ejb.session.singleton.ComputationSessionBeanRemote;
 import ejb.session.singleton.ConsultationSessionBeanRemote;
 import ejb.session.stateful.AppointmentEntitySessionBeanRemote;
+import ejb.session.stateful.LeaveEntitySessionBeanRemote;
 import ejb.session.stateless.DoctorEntitySessionBeanRemote;
 import ejb.session.stateless.PatientEntitySessionBeanRemote;
 import ejb.session.stateless.StaffEntitySessionBeanRemote;
@@ -29,6 +30,7 @@ public class MainApp {
     private ComputationSessionBeanRemote computationSessionBeanRemote;
     private ConsultationSessionBeanRemote consultationSessionBeanRemote;
     private AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote;
+    private LeaveEntitySessionBeanRemote leaveEntitySessionBeanRemote;
     
     // modules
     private AdministrationModule administrationModule;
@@ -46,13 +48,15 @@ public class MainApp {
             PatientEntitySessionBeanRemote patientEntitySessionBeanRemote,
             ComputationSessionBeanRemote computationSessionBeanRemote,
             ConsultationSessionBeanRemote consultationSessionBeanRemote,
-            AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote) {
+            AppointmentEntitySessionBeanRemote appointmentEntitySessionBeanRemote, 
+            LeaveEntitySessionBeanRemote leaveEntitySessionBeanRemote) {
         this.staffEntitySessionBeanRemote = staffEntitySessionBeanRemote;
         this.doctorEntitySessionBeanRemote = doctorEntitySessionBeanRemote;
         this.patientEntitySessionBeanRemote = patientEntitySessionBeanRemote;
         this.computationSessionBeanRemote = computationSessionBeanRemote;
         this.consultationSessionBeanRemote = consultationSessionBeanRemote;
         this.appointmentEntitySessionBeanRemote = appointmentEntitySessionBeanRemote;
+        this.leaveEntitySessionBeanRemote = leaveEntitySessionBeanRemote;
     }
     
     
@@ -77,7 +81,7 @@ public class MainApp {
                             doLogin();
                             System.out.println("Login successful!\n");
 
-                            administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity);
+                            administrationModule = new AdministrationModule(staffEntitySessionBeanRemote, doctorEntitySessionBeanRemote, patientEntitySessionBeanRemote, currentStaffEntity, leaveEntitySessionBeanRemote);
                             registrationModule = new RegistrationModule(
                                     patientEntitySessionBeanRemote, 
                                     doctorEntitySessionBeanRemote, 

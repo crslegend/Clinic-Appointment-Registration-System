@@ -115,10 +115,10 @@ public class PatientEntitySessionBean implements PatientEntitySessionBeanRemote,
     }
 
     @Override
-    public Boolean hasAppointmentOnDay(PatientEntity patientEntity, Date date) {
+    public Boolean hasAppointmentOnDay(long patientId, Date date) {
         System.out.println(date.toString());
         
-        PatientEntity newPatientEntity = em.find(PatientEntity.class, patientEntity.getPatientId());
+        PatientEntity newPatientEntity = em.find(PatientEntity.class, patientId);
         em.refresh(newPatientEntity);
         
         List<AppointmentEntity> appointments = newPatientEntity.getListOfAppointmentEntities();
